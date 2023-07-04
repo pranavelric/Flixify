@@ -11,32 +11,28 @@ class MainTabBarViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let homeVC = UINavigationController(rootViewController: HomeViewController())
-        let upcomingVC = UINavigationController(rootViewController: UpcomingViewController())
-        let searchVC = UINavigationController(rootViewController: SearchViewController())
-        let downloadsVC = UINavigationController(rootViewController: DownloadsViewController())
-        
-        
-        homeVC.tabBarItem.image = UIImage(systemName: "house")
-        upcomingVC.tabBarItem.image = UIImage(systemName: "play.circle")
-        searchVC.tabBarItem.image = UIImage(systemName: "magnifyingglass")
-        downloadsVC.tabBarItem.image = UIImage(systemName: "arrow.down.to.line")
-        
-        homeVC.title = "Home"
-        upcomingVC.title = "Coming soon"
-        searchVC.title = "Top Search"
-        downloadsVC.title = "Downloads"
-        
-        
-        tabBar.tintColor = .label
-        
-        
-        
-        
-        setViewControllers([homeVC,upcomingVC,searchVC,downloadsVC], animated: true)
+        setupTabBar()
+
     }
 
+    
+    
+     private func setupTabBar() {
+         let homeVC = createNavigationController(rootViewController: HomeViewController(), title: "Home", imageName: "house")
+         let upcomingVC = createNavigationController(rootViewController: UpcomingViewController(), title: "Coming soon", imageName: "play.circle")
+         let searchVC = createNavigationController(rootViewController: SearchViewController(), title: "Top Search", imageName: "magnifyingglass")
+         let downloadsVC = createNavigationController(rootViewController: DownloadsViewController(), title: "Downloads", imageName: "arrow.down.to.line")
+         
+         setViewControllers([homeVC, upcomingVC, searchVC, downloadsVC], animated: true)
+         tabBar.tintColor = .label
+     }
+     
+     private func createNavigationController(rootViewController: UIViewController, title: String, imageName: String) -> UINavigationController {
+         rootViewController.title = title
+         rootViewController.tabBarItem.image = UIImage(systemName: imageName)
+         let navigationController = UINavigationController(rootViewController: rootViewController)
+         return navigationController
+     }
 
 }
 
