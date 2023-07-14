@@ -9,7 +9,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    let sectionTitle:[String] = ["Trending Movies","Popular","Treding TV","Upcoming Movies","Top Rated"]
+    let sectionTitle:[String] = ["Trending movies","Treding tv","Popular","Upcoming movies","Top rated"]
     
     private let homeFeedTable: UITableView = {
         let table = UITableView()
@@ -28,6 +28,7 @@ class HomeViewController: UIViewController {
         homeFeedTable.dataSource = self
         
         configNavBar()
+        getTrendingMovies()
         
         
         let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
@@ -38,6 +39,8 @@ class HomeViewController: UIViewController {
         super.viewDidLayoutSubviews()
         homeFeedTable.frame = view.bounds
     }
+    
+    
 
     
     private func configNavBar(){
@@ -54,7 +57,17 @@ class HomeViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .white
     }
 
-
+    
+    private func getTrendingMovies(){
+        ApiCaller.shared.getTredingMovies{results in
+            switch results{
+            case .success(let movies):
+                print(movies)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 
     
 }
