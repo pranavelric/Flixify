@@ -29,6 +29,7 @@ class HomeViewController: UIViewController {
         
         configNavBar()
         getTrendingMovies()
+        getTrendingTv()
         
         
         let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
@@ -62,12 +63,25 @@ class HomeViewController: UIViewController {
         ApiCaller.shared.getTredingMovies{results in
             switch results{
             case .success(let movies):
-                print(movies)
+                print("movies")
             case .failure(let error):
                 print(error)
             }
         }
     }
+    
+    private func getTrendingTv(){        
+        ApiCaller.shared.fetchData(from: "/trending/tv/day") { (result: Result<TrendingTv, Error>) in
+               switch result {
+               case .success(let response):
+                   print(response)
+               case .failure(let error):
+                   print(error)
+               }
+           }
+    }
+    
+    
 
     
 }
