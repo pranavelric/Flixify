@@ -58,14 +58,14 @@ class ApiCaller{
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else {
                 let error = NSError(domain: "No data received", code: 0, userInfo: nil)
-                completion(.failure(error))
+                completion(.failure(APIError.failedToGetData))
                 return
             }
             do {
                 let results = try JSONDecoder().decode(T.self, from: data)
                 completion(.success(results))
             } catch {
-                completion(.failure(error))
+                completion(.failure(APIError.failedToGetData))
             }
         }
         task.resume()

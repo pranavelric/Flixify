@@ -7,6 +7,18 @@
 
 import UIKit
 
+
+enum Sections: Int{
+    case TrendingMovie  = 0
+    case TrendingTv     = 1
+    case Popular        = 2
+    case UpcomingMovies = 3
+    case TopRated       = 4
+    case NowPlaying     = 5
+    
+}
+
+
 class HomeViewController: UIViewController {
     
     let sectionTitle:[String] = ["Trending movies","Treding tv","Popular","Upcoming movies","Top rated", "Now playing"]
@@ -28,12 +40,6 @@ class HomeViewController: UIViewController {
         homeFeedTable.dataSource = self
         
         configNavBar()
-        getTrendingMovies()
-        getTrendingTv()
-        getTopRatedMovies()
-        getPopularMovies()
-        getUpComingMovies()
-        getNowPlayingMovies()
         
         
         let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
@@ -63,11 +69,11 @@ class HomeViewController: UIViewController {
     }
 
     
-    private func getTrendingMovies(){
+    private func getTrendingMovies(with cell:CollectionViewTableViewCell){
         ApiCaller.shared.fetchData(from: Constants.TRENDING_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
-                   print(response)
+                   cell.configure(with: response.results)
                case .failure(let error):
                    print(error)
                }
@@ -75,55 +81,55 @@ class HomeViewController: UIViewController {
         
     }
     
-    private func getTrendingTv(){        
-        ApiCaller.shared.fetchData(from: Constants.TRENDING_TV) { (result: Result<TrendingTvResponse, Error>) in
-               switch result {
-               case .success(let response):
-                   print(response)
-               case .failure(let error):
-                   print(error)
-               }
-           }
-    }
+//    private func getTrendingTv(with cell:CollectionViewTableViewCell){
+//        ApiCaller.shared.fetchData(from: Constants.TRENDING_TV) { (result: Result<TrendingTvResponse, Error>) in
+//               switch result {
+//               case .success(let response):
+//                   cell.configure(with: response.results)
+//               case .failure(let error):
+//                   print(error)
+//               }
+//           }
+//    }
     
     
-    private func getTopRatedMovies(){
+    private func getTopRatedMovies(with cell:CollectionViewTableViewCell){
         ApiCaller.shared.fetchData(from: Constants.TOP_RATED_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
-                   print(response)
+                   cell.configure(with: response.results)
                case .failure(let error):
                    print(error)
                }
            }
     }
     
-    private func getUpComingMovies(){
+    private func getUpComingMovies(with cell:CollectionViewTableViewCell){
         ApiCaller.shared.fetchData(from: Constants.UPCOMING_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
-                   print(response)
+                   cell.configure(with: response.results)
                case .failure(let error):
                    print(error)
                }
            }
     }
     
-    private func getPopularMovies(){
+    private func getPopularMovies(with cell:CollectionViewTableViewCell){
         ApiCaller.shared.fetchData(from: Constants.POPULAR_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
-                   print(response)
+                   cell.configure(with: response.results)
                case .failure(let error):
                    print(error)
                }
            }
     }
-    private func getNowPlayingMovies(){
+    private func getNowPlayingMovies(with cell:CollectionViewTableViewCell){
         ApiCaller.shared.fetchData(from: Constants.POPULAR_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
-                   print(response)
+                   cell.configure(with: response.results)
                case .failure(let error):
                    print(error)
                }
@@ -168,11 +174,28 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource{
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else{
             return UITableViewCell()
         }
+        
+        switch indexPath.section{
+            case Sections.TrendingMovie.rawValue:
+                getTrendingMovies(with: cell)
+//            case Sections.TrendingTv.rawValue:
+//                getTrendingTv(with: cell)
+            case Sections.Popular.rawValue:
+                getPopularMovies(with: cell)
+            case Sections.UpcomingMovies.rawValue:
+                getUpComingMovies(with: cell)
+            case Sections.TopRated.rawValue:
+                getTopRatedMovies(with: cell)
+            case Sections.NowPlaying.rawValue:
+                getNowPlayingMovies(with: cell)
+            default:
+                return UITableViewCell()
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200
+        return 300
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
