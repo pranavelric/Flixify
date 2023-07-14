@@ -9,7 +9,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    let sectionTitle:[String] = ["Trending movies","Treding tv","Popular","Upcoming movies","Top rated"]
+    let sectionTitle:[String] = ["Trending movies","Treding tv","Popular","Upcoming movies","Top rated", "Now playing"]
     
     private let homeFeedTable: UITableView = {
         let table = UITableView()
@@ -30,6 +30,10 @@ class HomeViewController: UIViewController {
         configNavBar()
         getTrendingMovies()
         getTrendingTv()
+        getTopRatedMovies()
+        getPopularMovies()
+        getUpComingMovies()
+        getNowPlayingMovies()
         
         
         let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
@@ -60,18 +64,19 @@ class HomeViewController: UIViewController {
 
     
     private func getTrendingMovies(){
-        ApiCaller.shared.getTredingMovies{results in
-            switch results{
-            case .success(let movies):
-                print("movies")
-            case .failure(let error):
-                print(error)
-            }
-        }
+        ApiCaller.shared.fetchData(from: Constants.TRENDING_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
+               switch result {
+               case .success(let response):
+                   print(response)
+               case .failure(let error):
+                   print(error)
+               }
+           }
+        
     }
     
     private func getTrendingTv(){        
-        ApiCaller.shared.fetchData(from: "/trending/tv/day") { (result: Result<TrendingTv, Error>) in
+        ApiCaller.shared.fetchData(from: Constants.TRENDING_TV) { (result: Result<TrendingTvResponse, Error>) in
                switch result {
                case .success(let response):
                    print(response)
@@ -82,7 +87,49 @@ class HomeViewController: UIViewController {
     }
     
     
-
+    private func getTopRatedMovies(){
+        ApiCaller.shared.fetchData(from: Constants.TOP_RATED_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
+               switch result {
+               case .success(let response):
+                   print(response)
+               case .failure(let error):
+                   print(error)
+               }
+           }
+    }
+    
+    private func getUpComingMovies(){
+        ApiCaller.shared.fetchData(from: Constants.UPCOMING_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
+               switch result {
+               case .success(let response):
+                   print(response)
+               case .failure(let error):
+                   print(error)
+               }
+           }
+    }
+    
+    private func getPopularMovies(){
+        ApiCaller.shared.fetchData(from: Constants.POPULAR_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
+               switch result {
+               case .success(let response):
+                   print(response)
+               case .failure(let error):
+                   print(error)
+               }
+           }
+    }
+    private func getNowPlayingMovies(){
+        ApiCaller.shared.fetchData(from: Constants.POPULAR_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
+               switch result {
+               case .success(let response):
+                   print(response)
+               case .failure(let error):
+                   print(error)
+               }
+           }
+    }
+    
     
 }
 

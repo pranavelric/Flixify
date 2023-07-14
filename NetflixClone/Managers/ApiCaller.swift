@@ -19,6 +19,26 @@ struct Constants{
     static let YOUTUBE_URL          = " https://www.youtube.com/watch?v="
     static let SEARCH_Movie_DELAY   = 1000
     static let MOVIE_PAGE_SIZE      = 20
+    
+//    urls
+    static let TRENDING_MOVIES                  = "/3/trending/movie/day"
+    static let TRENDING_TV                      = "/3/trending/tv/day"
+    static let UPCOMING_MOVIES                  = "/3/movie/upcoming"
+    static let POPULAR_MOVIES                   = "/3/movie/popular"
+    static let TOP_RATED_MOVIES                 = "/3/movie/top_rated"
+    static let NOW_PLAYING_MOVIES               = "/3/movie/now_playing"
+    static let MOVIE_DETAILS                    = "/3/movie/"
+    static let SIMILLAR_MOVIES                  = "/3/movie/{movie_id}/similar"
+    static let MOVIE_CREDITS                    = "/3/movie/{movie_id}/credits"
+    static let MOVIE_RECOMMENDATIONS            = "/3/movie/{movie_id}/recommendations"
+    static let DICOVER_MOVIES                   = "/3/discover/movie"
+    static let GENRE_LIST_FOR_MOVIES            = "/3/genre/movie/list"
+    static let TRENDING_MOVIES_FOR_GIVEN_TIME   = "/3/trending/movie/{time_window}"
+    static let SEARCH_MOVIE                     = "/3/search/movie"
+    static let MOVIE_VIDEOS                     = "/3/movie/{id}/videos"
+    static let PERSON_DETAILS                   = "/3/person/{person_id}"
+
+    
 }
 
 enum APIError : Error {
@@ -28,94 +48,8 @@ enum APIError : Error {
 class ApiCaller{
     static let shared = ApiCaller()
     
-    func getTredingMovies(completion: @escaping (Result<[Movie],Error>) -> Void){
-        guard let url = URL(string: "\(Constants.BASE_URL)/3/trending/movie/day?api_key=\(Constants.API_KEY)") else {
-            let error = NSError(domain: "Invalid URL", code: 0, userInfo: nil)
-            completion(.failure(error))
-            return
-            
-        }
-        
-        let task     = URLSession.shared.dataTask(with: URLRequest(url: url)){data,_,error in
-            guard let data = data, error==nil else {
-                let error = NSError(domain: "No data received", code: 0, userInfo: nil)
-                completion(.failure(error))
-                return
-            }
-            do{
-                let results = try JSONDecoder().decode(TrendingMovieResponse.self, from: data)
-                completion(.success(results.results))
-            } catch{
-                completion(.failure(error))
-            }
-            
-            
-        }
-        task.resume()
-        
-    }
-    
-    func getTredingTV(completion: @escaping (Result<[Tv],Error>) -> Void){
-        guard let url = URL(string: "\(Constants.BASE_URL)/3/trending/tv/day?api_key=\(Constants.API_KEY)") else {
-            let error = NSError(domain: "Invalid URL", code: 0, userInfo: nil)
-            completion(.failure(error))
-            return
-            
-        }
-        
-        let task     = URLSession.shared.dataTask(with: URLRequest(url: url)){data,_,error in
-            guard let data = data, error==nil else {
-                let error = NSError(domain: "No data received", code: 0, userInfo: nil)
-                completion(.failure(error))
-                return
-            }
-            do{
-                let results = try JSONDecoder().decode(TrendingTv.self, from: data)
-                completion(.success(results.results))
-            } catch{
-                completion(.failure(error))
-            }
-            
-            
-        }
-        task.resume()
-        
-    }
-    
-    
-    func getUpcomingMovies(completion: @escaping (Result<[Movie],Error>) -> Void){
-        guard let url = URL(string: "\(Constants.BASE_URL)/3/movie/upcoming?api_key=\(Constants.API_KEY)") else {
-            let error = NSError(domain: "Invalid URL", code: 0, userInfo: nil)
-            completion(.failure(error))
-            return
-            
-        }
-        
-        let task     = URLSession.shared.dataTask(with: URLRequest(url: url)){data,_,error in
-            guard let data = data, error==nil else {
-                let error = NSError(domain: "No data received", code: 0, userInfo: nil)
-                completion(.failure(error))
-                return
-            }
-            do{
-                let results = try JSONDecoder().decode(TrendingMovieResponse.self, from: data)
-                completion(.success(results.results))
-            } catch{
-                completion(.failure(error))
-            }
-            
-            
-        }
-        task.resume()
-        
-    }
-    
-    
-    
-    
-    
     func fetchData<T: Decodable>(from endpoint: String, completion: @escaping (Result<T, Error>) -> Void) {
-        guard let url = URL(string: "\(Constants.BASE_URL)/3\(endpoint)?api_key=\(Constants.API_KEY)") else {
+        guard let url = URL(string: "\(Constants.BASE_URL)\(endpoint)?api_key=\(Constants.API_KEY)") else {
             let error = NSError(domain: "Invalid URL", code: 0, userInfo: nil)
             completion(.failure(error))
             return
@@ -136,74 +70,4 @@ class ApiCaller{
         }
         task.resume()
     }
-    
-    
-    
-//    @GET("movie/popular")
-//       suspend fun getPopularMovies(@Query("page") page: Int): Response<MovieResponse>
-//
-//       @GET("movie/upcoming")
-//       suspend fun getUpComingMovies(@Query("page") page: Int): Response<MovieResponse>
-//
-//       @GET("movie/now_playing")
-//       suspend fun getNowPlayingMovies(
-//           @Query("page") page: Int,
-//
-//           ): Response<MovieResponse>
-//
-//       @GET("movie/{movie_id}")
-//       suspend fun getMovieDetail(@Path("movie_id") movieId: Int): Response<MovieDetailResponse>
-//
-//       @GET("movie/{movie_id}/similar")
-//       suspend fun getSimilarMovies(@Path("movie_id") movieId: Int): Response<MovieResponse>
-//
-//       @GET("movie/{movie_id}/credits")
-//       suspend fun getMovieCredits(@Path("movie_id") movieId: Int): Response<CastResponse>
-//
-//       @GET("movie/{movie_id}/recommendations")
-//       suspend fun getRecommendationMovies(@Path("movie_id") movieId: Int): Response<MovieResponse>
-//
-//       @GET("discover/movie")
-//       suspend fun discoverMoviesByGenre(
-//           @Query("with_genres") with_genres: Int,
-//           @Query("page") page: Int,
-//           @Query("sort_by") sort_by: String = "popularity.desc"
-//
-//       ): Response<MovieResponse>
-//
-//       @GET("genre/movie/list")
-//       suspend fun getGenres(): Response<GenreResponse>
-//
-//       @GET("trending/movie/{time_window}")
-//       suspend fun trendingMovie(
-//           @Path("time_window") time: String,
-//           @QueryMap params: Map<String, String>
-//       ): Response<MovieResponse>
-//
-//       @GET("search/movie")
-//       suspend fun searchMovie(
-//           @Query("query") query: String,
-//           @Query("page") page: Int
-//       ): Response<MovieResponse>
-//
-//       @GET("trending/movie/day")
-//       suspend fun getTrendingMovies(@Query("page") page: Int): Response<MovieResponse>
-//
-//       @GET("movie/top_rated")
-//       suspend fun getTopRatedMovies(
-//           @Query("page") page: Int
-//       ): Response<MovieResponse>
-//
-//       @GET("movie/{id}/videos")
-//       suspend fun findTrailersById(
-//           @Path("id") movieId: Int,
-//       ): Response<TrailerResponse>
-//
-//       @GET("person/{person_id}")
-//       suspend fun findPersonById(
-//           @Path("person_id") person_id: Int
-//       ): Response<Person>
-
-    
-    
 }
