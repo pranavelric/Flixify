@@ -9,9 +9,12 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
+    let sectionTitle:[String] = ["Trending Movies","Popular","Treding TV","Upcoming Movies","Top Rated"]
+    
     private let homeFeedTable: UITableView = {
         let table = UITableView()
         table.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifier)
+        table.separatorColor = .clear
         return table
         
     }()
@@ -80,7 +83,7 @@ extension UIImage {
 extension HomeViewController : UITableViewDelegate, UITableViewDataSource{
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 12
+        return sectionTitle.count
     }
     
     
@@ -108,26 +111,29 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource{
         navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0,-offset))
         
     }
-//
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let sectionHeaderBackgroundColor = UIColor(hue: 0.021, saturation: 0.34, brightness: 0.94, alpha: 0.4)
-//    let sectionHeaderLabelView = UIView()
-//        sectionHeaderLabelView.backgroundColor = sectionHeaderBackgroundColor
-//
-//        let sectionHeaderImage = UIImage(named: "SourceIcon")
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionTitle[section]
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let sectionHeaderLabelView = UIView()
+        sectionHeaderLabelView.backgroundColor = .black.withAlphaComponent(0.6)
+
+//        let sectionHeaderImage = UIImage(named: "Netflix-Symbol")
 //        let sectionHeaderImageView = UIImageView(image: sectionHeaderImage)
 //        sectionHeaderImageView.frame = CGRect(x: 3, y: 10, width: 30, height: 30)
 //        sectionHeaderLabelView.addSubview(sectionHeaderImageView)
-//
-//        let sectionHeaderLabel = UILabel()
-//        sectionHeaderLabel.text = "text"
-//        sectionHeaderLabel.textColor = .brown
-//        sectionHeaderLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
-//        sectionHeaderLabel.frame = CGRect(x: 43, y: 5, width: 250, height: 40)
-//        sectionHeaderLabelView.addSubview(sectionHeaderLabel)
-//
-//        return sectionHeaderLabelView
-//    }
-//
+
+        let sectionHeaderLabel = UILabel()
+        sectionHeaderLabel.text = sectionTitle[section]
+        sectionHeaderLabel.textColor = .white.withAlphaComponent(0.8)
+        sectionHeaderLabel.font = UIFont.systemFont(ofSize: 18.0, weight: .semibold)
+        sectionHeaderLabel.frame = CGRect(x: 0, y: 10, width: view.bounds.width, height: 20)
+        sectionHeaderLabelView.addSubview(sectionHeaderLabel)
+
+        return sectionHeaderLabelView
+    }
+
     
 }
