@@ -24,7 +24,7 @@ class HomeViewController: UIViewController {
     let sectionTitle:[String] = ["Trending movies","Treding tv","Popular","Upcoming movies","Top rated", "Now playing"]
     
     private let homeFeedTable: UITableView = {
-        let table = UITableView()
+        let table = UITableView(frame: CGRect(), style: .grouped)
         table.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifier)
         table.separatorColor = .clear
         table.backgroundColor = .clear
@@ -227,8 +227,8 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource{
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let defaultOffset = view.safeAreaInsets.top
-        let offset = scrollView.contentOffset.y + defaultOffset
+//        let defaultOffset = view.safeAreaInsets.top
+//        let offset = scrollView.contentOffset.y + defaultOffset
 
         let gradientLayer =  self.view?.layer.sublayers?.first
         let offsetY = self.homeFeedTable.contentOffset.y
