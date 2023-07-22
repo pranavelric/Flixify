@@ -235,14 +235,18 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource{
     }
 
     
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-////        let defaultOffset =
-////        let offset =  + defaultOffset
-////        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0,-offset))
-//
-//
-//
-//    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        let defaultOffset =
+//        let offset =  + defaultOffset
+//        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0,-offset))
+        let gradientLayer =  self.view?.layer.sublayers?.first
+               let offsetY = self.homeFeedTable.contentOffset.y
+               let gradientY = min(-offsetY, 0)
+               let gradientFrame = CGRect(x: 0, y: gradientY, width: homeFeedTable.bounds.width, height: 450)
+               gradientLayer!.frame = gradientFrame
+
+
+    }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionTitle[section]

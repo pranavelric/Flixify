@@ -63,8 +63,7 @@ class HeroHeaderUIView: UIView {
 //        addGradient()
         addSubview(playbutton)
         addSubview(downloadButton)
-        applyConstraint()
-        
+        applyConstraint()     
     }
     
     func addGradient(){
