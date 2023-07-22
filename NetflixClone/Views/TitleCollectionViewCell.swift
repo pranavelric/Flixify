@@ -14,7 +14,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
     
     private let posterImageView :UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
