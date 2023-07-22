@@ -17,8 +17,14 @@ class HeroHeaderUIView: UIView {
     private let downloadButton:UIButton = {
         let button:UIButton =  UIButton()
         button.setTitle("Download", for: .normal)
-        button.layer.borderColor = UIColor.white.cgColor
-        button.layer.borderWidth = 1
+//        button.layer.borderColor = UIColor.white.cgColor
+//        button.layer.borderWidth = 1
+        button.configuration = .filled()
+        button.configuration?.baseBackgroundColor = .darkGray
+        button.configuration?.baseForegroundColor = .white
+        button.configuration?.image = UIImage(systemName: "plus")
+        button.configuration?.imagePadding = 2
+        button.configuration?.imagePlacement = .leading
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius =  8
         return button
@@ -27,8 +33,14 @@ class HeroHeaderUIView: UIView {
     private let playbutton : UIButton = {
         let button:UIButton = UIButton()
         button.setTitle("Play", for: .normal)
-        button.layer.borderColor = UIColor.white.cgColor
-        button.layer.borderWidth = 1
+//        button.layer.borderColor = UIColor.white.cgColor
+//        button.layer.borderWidth = 1
+        button.configuration = .filled()
+        button.configuration?.baseBackgroundColor = .white
+        button.configuration?.baseForegroundColor = .black
+        button.configuration?.image = UIImage(systemName: "play.fill")
+        button.configuration?.imagePlacement = .leading
+        button.configuration?.imagePadding = 5
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius =  8
         return button
@@ -91,12 +103,12 @@ class HeroHeaderUIView: UIView {
         let playButtonConstraints = [
             playbutton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 70),
             playbutton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -50),
-            playbutton.widthAnchor.constraint(equalToConstant: 120)
+            playbutton.widthAnchor.constraint(equalToConstant: 130)
         ]
         let downloadButtonConstraints = [
             downloadButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -70),
             downloadButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -50),
-            downloadButton.widthAnchor.constraint(equalToConstant: 120)
+            downloadButton.widthAnchor.constraint(equalToConstant: 130)
         ]
 
         NSLayoutConstraint.activate(playButtonConstraints)

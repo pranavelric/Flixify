@@ -10,18 +10,19 @@ import UIKit
 
 enum Sections: Int{
     case TrendingMovie  = 0
-    case TrendingTv     = 1
-    case Popular        = 2
-    case UpcomingMovies = 3
-    case TopRated       = 4
-    case NowPlaying     = 5
+//    case TrendingTv     = 1
+    case Popular        = 1
+    case UpcomingMovies = 2
+    case TopRated       = 3
+    case NowPlaying     = 4
     
 }
 
 
 class HomeViewController: UIViewController {
     
-    let sectionTitle:[String] = ["Trending movies","Treding tv","Popular","Upcoming movies","Top rated", "Now playing"]
+//    later add : "Treding tv",
+    let sectionTitle:[String] = ["Trending movies","Popular","Upcoming movies","Top rated", "Now playing"]
     
     private let homeFeedTable: UITableView = {
         let table = UITableView(frame: CGRect(), style: .grouped)
@@ -35,15 +36,14 @@ class HomeViewController: UIViewController {
     func setGradientBackground() {
         let colorTop =  UIColor(red: 0.60, green: 0.21, blue: 0.08, alpha: 0.2).cgColor
         let colorBetween = UIColor(red: 0.00, green: 0.00, blue: 0.00, alpha: 1.00).cgColor
-         let colorBottom = UIColor(red: 0.00, green: 0.00, blue: 0.00, alpha: 1.00).cgColor
+        let colorBottom = UIColor(red: 0.00, green: 0.00, blue: 0.00, alpha: 1.00).cgColor
              
                     
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [colorTop, colorBetween , colorBottom]
         gradientLayer.locations = [0.0, 1.0]
-        gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 550)
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 450)
         self.view.layer.insertSublayer(gradientLayer, at:0)
-//        homeFeedTable.superview?.layer.insertSublayer(gradientLayer, at: 0)
     }
 
     override func viewDidLoad() {
@@ -51,14 +51,14 @@ class HomeViewController: UIViewController {
 
         view.backgroundColor = .systemBackground
         view.addSubview(homeFeedTable)
+       
+
         homeFeedTable.delegate   = self
         homeFeedTable.dataSource = self
-        configNavBar()
-        
-        
         let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 550))
         homeFeedTable.tableHeaderView =  headerView
         homeFeedTable.sectionHeaderTopPadding = 0
+        configNavBar()
     }
     
     override func viewDidLayoutSubviews() {
@@ -226,31 +226,54 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource{
         return 40
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let defaultOffset = view.safeAreaInsets.top
-//        let offset = scrollView.contentOffset.y + defaultOffset
-
-        let gradientLayer =  self.view?.layer.sublayers?.first
-        let offsetY = self.homeFeedTable.contentOffset.y
-        let gradientY = min(-offsetY, 0)
-        let gradientFrame = CGRect(x: 0, y: gradientY, width: homeFeedTable.bounds.width, height: 550)
-        gradientLayer!.frame = gradientFrame
-
-//        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0,-offset))
-
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return .leastNonzeroMagnitude
     }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: .leastNonzeroMagnitude))
+    }
+
+    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+////        let defaultOffset =
+////        let offset =  + defaultOffset
+////        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0,-offset))
+//
+//
+//
+//    }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionTitle[section]
     }
 
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard let header = view as? UITableViewHeaderFooterView else {return}
-        header.textLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
-        header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
-        header.textLabel?.textColor = .white
-        header.textLabel?.text = header.textLabel?.text?.capitalizeFirstLetter()
+    
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let sectionHeaderLabelView = UIView()
+        
+        sectionHeaderLabelView.backgroundColor = .black
+        let sectionHeaderLabel = UILabel()
+        sectionHeaderLabel.text = sectionTitle[section]
+        sectionHeaderLabel.textColor = .white.withAlphaComponent(0.8)
+        sectionHeaderLabel.font = UIFont.systemFont(ofSize: 18.0, weight: .semibold)
+        sectionHeaderLabel.frame = CGRect(x: 20, y: 0, width: view.bounds.width, height: 40)
+        sectionHeaderLabelView.addSubview(sectionHeaderLabel)
+
+        return sectionHeaderLabelView
     }
+    
+    
+//    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+//        guard let header = view as? UITableViewHeaderFooterView else {return}
+//        header.contentView.backgroundColor = .black
+//        header.textLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+//        header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
+//        header.textLabel?.textColor = .white
+//        header.textLabel?.text = header.textLabel?.text?.capitalizeFirstLetter()
+//    }
+    
 
     
 }
