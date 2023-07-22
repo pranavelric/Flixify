@@ -7,6 +7,11 @@
 
 import UIKit
 
+
+
+
+
+
 class HeroHeaderUIView: UIView {
     
     private let downloadButton:UIButton = {
@@ -34,16 +39,16 @@ class HeroHeaderUIView: UIView {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.image = UIImage(named: "heroImage")
-        imageView.contentMode = .scaleAspectFill;
-     
-        
+        imageView.layer.cornerRadius = 8
         return imageView
     }()
+    
+    
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(heroImageView)
-        addGradient()
+//        addGradient()
         addSubview(playbutton)
         addSubview(downloadButton)
         applyConstraint()
@@ -62,7 +67,7 @@ class HeroHeaderUIView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        heroImageView.frame = bounds
+//        heroImageView.frame = bounds
     }
     
     required init?(coder: NSCoder) {
@@ -71,6 +76,18 @@ class HeroHeaderUIView: UIView {
     
     
     private func applyConstraint(){
+        
+        let margin: CGFloat = 16 // Set your desired margin value here
+
+          // Hero image constraints
+          heroImageView.translatesAutoresizingMaskIntoConstraints = false
+          heroImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: margin).isActive = true
+          heroImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -margin).isActive = true
+          heroImageView.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
+          heroImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin).isActive = true
+
+        
+        
         let playButtonConstraints = [
             playbutton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 70),
             playbutton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -50),
@@ -81,8 +98,10 @@ class HeroHeaderUIView: UIView {
             downloadButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -50),
             downloadButton.widthAnchor.constraint(equalToConstant: 120)
         ]
+
         NSLayoutConstraint.activate(playButtonConstraints)
         NSLayoutConstraint.activate(downloadButtonConstraints)
+         
     }
     
     

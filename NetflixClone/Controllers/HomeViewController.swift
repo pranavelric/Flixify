@@ -27,9 +27,24 @@ class HomeViewController: UIViewController {
         let table = UITableView()
         table.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifier)
         table.separatorColor = .clear
+        table.backgroundColor = .clear
         return table
         
     }()
+    
+    func setGradientBackground() {
+        let colorTop =  UIColor(red: 0.60, green: 0.21, blue: 0.08, alpha: 0.2).cgColor
+        let colorBetween = UIColor(red: 0.00, green: 0.00, blue: 0.00, alpha: 1.00).cgColor
+         let colorBottom = UIColor(red: 0.00, green: 0.00, blue: 0.00, alpha: 1.00).cgColor
+             
+                    
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [colorTop, colorBetween , colorBottom]
+        gradientLayer.locations = [0.0, 1.0]
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 550)
+        self.view.layer.insertSublayer(gradientLayer, at:0)
+//        homeFeedTable.superview?.layer.insertSublayer(gradientLayer, at: 0)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,21 +53,19 @@ class HomeViewController: UIViewController {
         view.addSubview(homeFeedTable)
         homeFeedTable.delegate   = self
         homeFeedTable.dataSource = self
-        
         configNavBar()
         
         
-        let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 450))
+        let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 550))
         homeFeedTable.tableHeaderView =  headerView
+        homeFeedTable.sectionHeaderTopPadding = 0
     }
     
     override func viewDidLayoutSubviews() {
+        setGradientBackground()
         super.viewDidLayoutSubviews()
         homeFeedTable.frame = view.bounds
     }
-    
-    
-
     
     private func configNavBar(){
         var image = UIImage(named: "Netflix-Symbol")
@@ -60,12 +73,13 @@ class HomeViewController: UIViewController {
         
         image = image?.scaleImage(toSize: CGSize(width: 10, height: 10))
         image = image?.withRenderingMode(.alwaysOriginal)
+//        navigationItem.title = "Test"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: nil)
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "play.rectangle"), style: .done, target: self, action: nil)
         ]
-        navigationController?.navigationBar.tintColor = .white
+        self.navigationController!.navigationBar.isTranslucent = true
     }
 
     
@@ -204,32 +218,27 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource{
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let defaultOffset = view.safeAreaInsets.top
         let offset = scrollView.contentOffset.y + defaultOffset
-        
-        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0,-offset))
-        
+
+        let gradientLayer =  self.view?.layer.sublayers?.first
+        let offsetY = self.homeFeedTable.contentOffset.y
+        let gradientY = min(-offsetY, 0)
+        let gradientFrame = CGRect(x: 0, y: gradientY, width: homeFeedTable.bounds.width, height: 550)
+        gradientLayer!.frame = gradientFrame
+
+//        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0,-offset))
+
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionTitle[section]
     }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let sectionHeaderLabelView = UIView()
-        sectionHeaderLabelView.backgroundColor = .black.withAlphaComponent(0.6)
-
-//        let sectionHeaderImage = UIImage(named: "Netflix-Symbol")
-//        let sectionHeaderImageView = UIImageView(image: sectionHeaderImage)
-//        sectionHeaderImageView.frame = CGRect(x: 3, y: 10, width: 30, height: 30)
-//        sectionHeaderLabelView.addSubview(sectionHeaderImageView)
-
-        let sectionHeaderLabel = UILabel()
-        sectionHeaderLabel.text = sectionTitle[section]
-        sectionHeaderLabel.textColor = .white.withAlphaComponent(0.8)
-        sectionHeaderLabel.font = UIFont.systemFont(ofSize: 18.0, weight: .semibold)
-        sectionHeaderLabel.frame = CGRect(x: 0, y: 10, width: view.bounds.width, height: 20)
-        sectionHeaderLabelView.addSubview(sectionHeaderLabel)
-
-        return sectionHeaderLabelView
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else {return}
+        header.textLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
+        header.textLabel?.textColor = .white
+        header.textLabel?.text = header.textLabel?.text?.capitalizeFirstLetter()
     }
 
     

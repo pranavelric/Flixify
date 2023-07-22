@@ -1,6 +1,24 @@
 {
   "pins" : [
     {
+      "identity" : "acarousel",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JWAutumn/ACarousel.git",
+      "state" : {
+        "revision" : "8a322513580f21288fd87eb3a1341c247b3e2a76",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "scalingcarousel",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/superpeteblaze/ScalingCarousel.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "f2bfde4db386243fd4e0e4687fcfff530c239c20"
+      }
+    },
+    {
       "identity" : "sdwebimage",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDWebImage/SDWebImage.git",
