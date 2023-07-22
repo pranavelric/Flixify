@@ -73,12 +73,23 @@ class HomeViewController: UIViewController {
         
         image = image?.scaleImage(toSize: CGSize(width: 10, height: 10))
         image = image?.withRenderingMode(.alwaysOriginal)
-//        navigationItem.title = "Test"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: nil)
+        navigationItem.title = ""
+        let label = UILabel()
+        label.textColor = UIColor.white
+//        replace this with "For <username>"
+        label.text = "Home"
+        label.font = .systemFont(ofSize: 25, weight: .semibold)
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: label)
+        
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: nil)
         navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil),
+            UIBarButtonItem(image: UIImage(systemName: "person"), style: .plain, target: self, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "play.rectangle"), style: .done, target: self, action: nil)
         ]
+        navigationItem.rightBarButtonItems?.forEach({ button in
+            button.tintColor = .white
+        })
         self.navigationController!.navigationBar.isTranslucent = true
     }
 
