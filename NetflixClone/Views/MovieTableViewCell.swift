@@ -87,8 +87,7 @@ class MovieTableViewCell: UITableViewCell {
     }()
     
     public func configure(with movie: Movie){
-        self.movie = movie
-        configureUI()
+        self.movie = movie        
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -101,16 +100,11 @@ class MovieTableViewCell: UITableViewCell {
         contentView.addSubview(titleLabel)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(genreLabels)
-
-        
-        
-        
-        
-        
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        configureUI()
     }
     
     required init?(coder: NSCoder) {
@@ -145,7 +139,7 @@ class MovieTableViewCell: UITableViewCell {
     }
     
     private func configureReleaseDateLabel(){
-        releaseDateLabel.text = "Coming \(self.movie?.release_date ?? "---")"
+        releaseDateLabel.text = "Coming:  \(self.movie?.release_date?.getFormattedDate() ?? "---")"
         releaseDateLabel.leadingAnchor.constraint(equalTo: moviePosterImageView.leadingAnchor).isActive = true
         releaseDateLabel.topAnchor.constraint(equalTo: moviePosterImageView.bottomAnchor,constant: 20).isActive = true
     }
@@ -177,9 +171,13 @@ class MovieTableViewCell: UITableViewCell {
     
     private func configureGenreLabel(){
 //        genreLabels.text = "\(self.movie?.genre_ids ?? "unknown")"
-        genreLabels.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
-        genreLabels.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,constant: 10).isActive = true
-        genreLabels.trailingAnchor.constraint(equalTo: moviePosterImageView.trailingAnchor).isActive = true
+        let genreNames = self.movie?.genre_ids?.compactMap({ Constants.genreMap[$0] as? String }).joined(separator: " \u{2022} ") ?? ""
+
+                
+        genreLabels.text = "\u{2022} \(genreNames)"
+        genreLabels.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor).isActive = true
+        genreLabels.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor,constant: 10).isActive = true
+        genreLabels.trailingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor).isActive = true
         genreLabels.numberOfLines = 0
     }
 }
