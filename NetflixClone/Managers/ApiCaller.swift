@@ -17,8 +17,8 @@ enum APIError : Error {
 class ApiCaller{
     static let shared = ApiCaller()
     
-    func fetchData<T: Decodable>(from endpoint: String, completion: @escaping (Result<T, Error>) -> Void) {
-        guard let url = URL(string: "\(Constants.BASE_URL)\(endpoint)?api_key=\(Constants.API_KEY)") else {
+    func fetchData<T: Decodable>(from endpoint: String,with extraQueryParams: String? = nil, completion: @escaping (Result<T, Error>) -> Void) {
+        guard let url = URL(string: "\(Constants.BASE_URL)\(endpoint)?api_key=\(Constants.API_KEY)\(extraQueryParams != nil && !extraQueryParams!.isEmpty ? "&\(extraQueryParams ?? "")" : "")") else {
             let error = NSError(domain: "Invalid URL", code: 0, userInfo: nil)
             completion(.failure(error))
             return

@@ -22,6 +22,20 @@ class UpcomingViewController: UIViewController {
         return table
     }()
     
+    
+    func setGradientBackground() {
+        let colorTop =  UIColor(red: 0.60, green: 0.21, blue: 0.08, alpha: 0.2).cgColor
+        let colorBetween = UIColor(red: 0.00, green: 0.00, blue: 0.00, alpha: 1.00).cgColor
+        let colorBottom = UIColor(red: 0.00, green: 0.00, blue: 0.00, alpha: 1.00).cgColor
+             
+                    
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [colorTop, colorBetween , colorBottom]
+        gradientLayer.locations = [0.0, 1.0]
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 450)
+        self.view.layer.insertSublayer(gradientLayer, at:0)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -37,6 +51,7 @@ class UpcomingViewController: UIViewController {
     }
 
     override func viewDidLayoutSubviews() {
+        setGradientBackground()
         super.viewDidLayoutSubviews()
         upcomingTable.frame = view.bounds
     }
@@ -55,9 +70,6 @@ class UpcomingViewController: UIViewController {
            }
     }
 
-    private func animateTable(){
-        
-    }
 }
 
 extension UpcomingViewController : UITableViewDelegate, UITableViewDataSource{
@@ -80,6 +92,7 @@ extension UpcomingViewController : UITableViewDelegate, UITableViewDataSource{
             return UITableViewCell()
         }
         cell.selectionStyle = .none
+        cell.backgroundColor = .clear
         cell.configure(with: self.upComingMovies[indexPath.row])
 
         return cell
