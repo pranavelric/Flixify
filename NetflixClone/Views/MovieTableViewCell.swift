@@ -27,7 +27,7 @@ class MovieTableViewCell: UITableViewCell {
 //        button.setTitle("Remind Me", for: .normal)
         button.configuration = .tinted()
         button.titleLabel?.font = .systemFont(ofSize: 2)
-        button.configuration?.baseBackgroundColor = .black
+        button.configuration?.baseBackgroundColor = .clear
         button.configuration?.baseForegroundColor = .white
         button.configuration?.buttonSize = .mini
         button.titleLabel?.font = .systemFont(ofSize: 12)
@@ -44,7 +44,7 @@ class MovieTableViewCell: UITableViewCell {
 //        button.setTitle("Info", for: .normal)
         button.configuration = .tinted()
         button.titleLabel?.font = .systemFont(ofSize: 2)
-        button.configuration?.baseBackgroundColor = .black
+        button.configuration?.baseBackgroundColor = .clear
         button.configuration?.baseForegroundColor = .white
         button.configuration?.buttonSize = .mini
         button.titleLabel?.font = .systemFont(ofSize: 12)
@@ -92,7 +92,6 @@ class MovieTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         contentView.addSubview(moviePosterImageView)
         contentView.addSubview(releaseDateLabel)
         contentView.addSubview(infoButton)
@@ -130,7 +129,7 @@ class MovieTableViewCell: UITableViewCell {
 
         moviePosterImageView .translatesAutoresizingMaskIntoConstraints = false
         moviePosterImageView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-
+        moviePosterImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20).isActive = true
         moviePosterImageView .leadingAnchor.constraint(equalTo: leadingAnchor, constant: margin).isActive = true
         moviePosterImageView .trailingAnchor.constraint(equalTo: trailingAnchor, constant: -margin).isActive = true
 //        moviePosterImageView .topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
