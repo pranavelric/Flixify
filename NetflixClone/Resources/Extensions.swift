@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension String {
     func capitalizeFirstLetter()-> String{
@@ -24,4 +25,33 @@ extension String {
             return "Unknown Date" // Return a default value in case the date conversion fails.
         }
     }
+}
+
+
+
+extension UITableView {
+   func scrollToBottom(){
+
+    DispatchQueue.main.async {
+        let indexPath = IndexPath(
+            row: self.numberOfRows(inSection:  self.numberOfSections-1) - 1,
+            section: self.numberOfSections - 1)
+        self.scrollToRow(at: indexPath, at: .bottom, animated: true)//        if self.hasRowAtIndexPath(indexPath: indexPath) {
+//            self.scrollToRow(at: indexPath, at: .bottom, animated: true)
+//        }
+    }
+}
+
+func scrollToTop() {
+    DispatchQueue.main.async {
+        let indexPath = IndexPath(row: 0, section: 0)
+        if self.hasRowAtIndexPath(indexPath: indexPath) {
+            self.scrollToRow(at: indexPath, at: .top, animated: true)
+       }
+    }
+}
+
+func hasRowAtIndexPath(indexPath: IndexPath) -> Bool {
+    return indexPath.section < self.numberOfSections && indexPath.row < self.numberOfRows(inSection: indexPath.section)
+}
 }

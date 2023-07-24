@@ -21,7 +21,7 @@
 		1E8292212A6D4E320069B858 /* GenreResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8292202A6D4E320069B858 /* GenreResponse.swift */; };
 		1E84B4A02A547B4900989B79 /* CollectionViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E84B49F2A547B4900989B79 /* CollectionViewTableViewCell.swift */; };
 		1EB8ED7B2A6C715500E970CF /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB8ED7A2A6C715500E970CF /* MovieTableViewCell.swift */; };
-		1ECA11772A6EAF46000E7E53 /* SearchResiltViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECA11762A6EAF46000E7E53 /* SearchResiltViewController.swift */; };
+		1ECA11772A6EAF46000E7E53 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECA11762A6EAF46000E7E53 /* SearchResultViewController.swift */; };
 		1EDF03042A542D1E00985EBE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDF03032A542D1E00985EBE /* AppDelegate.swift */; };
 		1EDF03062A542D1E00985EBE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDF03052A542D1E00985EBE /* SceneDelegate.swift */; };
 		1EDF03082A542D1E00985EBE /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDF03072A542D1E00985EBE /* MainTabBarViewController.swift */; };
@@ -45,7 +45,7 @@
 		1E8292202A6D4E320069B858 /* GenreResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreResponse.swift; sourceTree = "<group>"; };
 		1E84B49F2A547B4900989B79 /* CollectionViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTableViewCell.swift; sourceTree = "<group>"; };
 		1EB8ED7A2A6C715500E970CF /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
-		1ECA11762A6EAF46000E7E53 /* SearchResiltViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResiltViewController.swift; sourceTree = "<group>"; };
+		1ECA11762A6EAF46000E7E53 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		1EDF03002A542D1E00985EBE /* NetflixClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetflixClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EDF03032A542D1E00985EBE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1EDF03052A542D1E00985EBE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +128,25 @@
 			path = utils;
 			sourceTree = "<group>";
 		};
+		1ECA11782A6EBA67000E7E53 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				1EDF03192A5430D800985EBE /* HomeViewController.swift */,
+				1EDF031B2A5430FE00985EBE /* UpcomingViewController.swift */,
+				1EDF031D2A54311500985EBE /* SearchViewController.swift */,
+				1EDF031F2A54312C00985EBE /* DownloadsViewController.swift */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
+		1ECA11792A6EBA7A000E7E53 /* general */ = {
+			isa = PBXGroup;
+			children = (
+				1ECA11762A6EAF46000E7E53 /* SearchResultViewController.swift */,
+			);
+			path = general;
+			sourceTree = "<group>";
+		};
 		1EDF02F72A542D1E00985EBE = {
 			isa = PBXGroup;
 			children = (
@@ -167,11 +186,8 @@
 		1EDF03182A5430CA00985EBE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1EDF03192A5430D800985EBE /* HomeViewController.swift */,
-				1EDF031B2A5430FE00985EBE /* UpcomingViewController.swift */,
-				1EDF031D2A54311500985EBE /* SearchViewController.swift */,
-				1EDF031F2A54312C00985EBE /* DownloadsViewController.swift */,
-				1ECA11762A6EAF46000E7E53 /* SearchResiltViewController.swift */,
+				1ECA11792A6EBA7A000E7E53 /* general */,
+				1ECA11782A6EBA67000E7E53 /* core */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -259,7 +275,7 @@
 			files = (
 				1EDF031E2A54311500985EBE /* SearchViewController.swift in Sources */,
 				1E82921F2A6D4BF10069B858 /* Constants.swift in Sources */,
-				1ECA11772A6EAF46000E7E53 /* SearchResiltViewController.swift in Sources */,
+				1ECA11772A6EAF46000E7E53 /* SearchResultViewController.swift in Sources */,
 				1EDF03082A542D1E00985EBE /* MainTabBarViewController.swift in Sources */,
 				1E84B4A02A547B4900989B79 /* CollectionViewTableViewCell.swift in Sources */,
 				1EFF626B2A55AB2E00D953A9 /* HeroHeaderUIView.swift in Sources */,

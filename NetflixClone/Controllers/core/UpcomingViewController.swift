@@ -1,5 +1,5 @@
 //
-//  SearchViewController.swift
+//  UpcomingViewController.swift
 //  NetflixClone
 //
 //  Created by Pranav Choudhary on 04/07/23.
@@ -7,22 +7,20 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
-
+class UpcomingViewController: UIViewController {
     
-    
-//https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=true&language=en-US&page=1&sort_by=popularity.desc
-    
-    private var topSearchMovies: [Movie] = []
+    private var upComingMovies: [Movie] = []
     private var toTop:Bool = false
     private var newOffset :CGFloat = CGFloat()
     private var currentOffset : CGFloat =  CGFloat()
     
-    private let topSearchTable: UITableView = {
-        let table  = UITableView(frame: CGRect(), style: .grouped)
+    private let upcomingTable: UITableView = {
+        let table  = UITableView()
         table.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.IDENTIFIER)
         table.separatorColor = .clear
         table.backgroundColor = .clear
+        table.estimatedRowHeight = 600
+        table.rowHeight = UITableView.automaticDimension
         return table
     }()
     
@@ -40,71 +38,67 @@ class SearchViewController: UIViewController {
         self.view.layer.insertSublayer(gradientLayer, at:0)
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .systemBackground
-        title = "Search"
+        title = "Upcoming"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
-        
-        view.addSubview(topSearchTable)
-        topSearchTable.dataSource = self
-        topSearchTable.delegate = self
-        
-        getTopSearchMovies()
-        
-        
-        
+        view.addSubview(upcomingTable)
+        upcomingTable.dataSource = self
+        upcomingTable.delegate = self
+
+        getUpComingMovies()
         
     }
 
     override func viewDidLayoutSubviews() {
         setGradientBackground()
         super.viewDidLayoutSubviews()
-        topSearchTable.frame = view.bounds
-  
+        upcomingTable.frame = view.bounds
+   
+    
     }
     
-    private func getTopSearchMovies(){
-        ApiCaller.shared.fetchData(from: Constants.DICOVER_MOVIES, with: "&include_adult=true&include_video=true&language=en-US&page=1&sort_by=popularity.desc") { (result: Result<TrendingMovieResponse, Error>) in
+    private func getUpComingMovies(){
+        ApiCaller.shared.fetchData(from: Constants.UPCOMING_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
-                   self.topSearchMovies = response.results
+                   self.upComingMovies = response.results
                    DispatchQueue.main.async {
-                       self.topSearchTable.reloadData()
+                       self.upcomingTable.reloadData()
                    }
+                   
+//                   self.upcomingTable.reloadData()
+                   self.upcomingTable.scrollToBottom()
+//                   self.upcomingTable.scrollToTop()
+                   
+                   
                case .failure(let error):
                    print(error)
                }
            }
     }
 
-
 }
 
+extension UpcomingViewController : UITableViewDelegate, UITableViewDataSource{
 
-extension SearchViewController  : UITableViewDelegate, UITableViewDataSource{
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.topSearchMovies.count
+        return self.upComingMovies.count
     }
     
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 420
-//    }
-    
-
-
+  
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
            return 600
        }
-//
+
        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-           return UITableView.automaticDimension 
+           return UITableView.automaticDimension
        }
+    
+    
 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -113,14 +107,15 @@ extension SearchViewController  : UITableViewDelegate, UITableViewDataSource{
         }
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
-        cell.configure(with: self.topSearchMovies[indexPath.row])
+        cell.configure(with: self.upComingMovies[indexPath.row])
+
         return cell
     }
     
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // instead of return perhaps should do a simpler animation
-        if !tableView.isDragging || indexPath.row == self.topSearchMovies.count { return }
+        if !tableView.isDragging || indexPath.row == self.upComingMovies.count { return }
         
 
         
@@ -155,4 +150,3 @@ extension SearchViewController  : UITableViewDelegate, UITableViewDataSource{
     }
  
 }
-
