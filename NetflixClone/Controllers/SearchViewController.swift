@@ -19,7 +19,7 @@ class SearchViewController: UIViewController {
     private var currentOffset : CGFloat =  CGFloat()
     
     private let topSearchTable: UITableView = {
-        let table  = UITableView()
+        let table  = UITableView(frame: CGRect(), style: .grouped)
         table.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.IDENTIFIER)
         table.separatorColor = .clear
         table.backgroundColor = .clear
@@ -56,12 +56,15 @@ class SearchViewController: UIViewController {
         getTopSearchMovies()
         
         
+        
+        
     }
 
     override func viewDidLayoutSubviews() {
         setGradientBackground()
         super.viewDidLayoutSubviews()
         topSearchTable.frame = view.bounds
+  
     }
     
     private func getTopSearchMovies(){
@@ -69,7 +72,6 @@ class SearchViewController: UIViewController {
                switch result {
                case .success(let response):
                    self.topSearchMovies = response.results
-                   print(self.topSearchMovies)
                    DispatchQueue.main.async {
                        self.topSearchTable.reloadData()
                    }
@@ -90,12 +92,19 @@ extension SearchViewController  : UITableViewDelegate, UITableViewDataSource{
         return self.topSearchMovies.count
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 420
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 420
+//    }
     
-    
-    
+
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+           return 600
+       }
+//
+       func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+           return UITableView.automaticDimension 
+       }
 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -105,7 +114,6 @@ extension SearchViewController  : UITableViewDelegate, UITableViewDataSource{
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
         cell.configure(with: self.topSearchMovies[indexPath.row])
-
         return cell
     }
     

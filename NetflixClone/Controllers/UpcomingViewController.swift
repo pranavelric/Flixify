@@ -79,10 +79,14 @@ extension UpcomingViewController : UITableViewDelegate, UITableViewDataSource{
         return self.upComingMovies.count
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 420
-    }
-    
+  
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+           return 600
+       }
+
+       func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+           return UITableView.automaticDimension
+       }
     
     
 

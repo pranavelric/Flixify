@@ -69,6 +69,8 @@ class MovieTableViewCell: UITableViewCell {
         label.font = .systemFont(ofSize: 16, weight: .bold)
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 0
         return label
     }()
     private let descriptionLabel : UILabel = {
@@ -76,6 +78,9 @@ class MovieTableViewCell: UITableViewCell {
         label.font = .systemFont(ofSize: 12)
         label.textColor = .lightGray
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 0
+
         return label
     }()
     private let genreLabels : UILabel = {
@@ -83,6 +88,9 @@ class MovieTableViewCell: UITableViewCell {
         label.font = .systemFont(ofSize: 12)
         label.textColor = .white.withAlphaComponent(0.9)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 0
+        label.sizeToFit()
         return label
     }()
     
@@ -118,7 +126,6 @@ class MovieTableViewCell: UITableViewCell {
             configureTitleLabel()
             configureDescriptionLabel()
             configureGenreLabel()
-            
     }
         
     private func configureMoviePosterImage(){
@@ -138,21 +145,25 @@ class MovieTableViewCell: UITableViewCell {
     }
     
     private func configureReleaseDateLabel(){
+        releaseDateLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         releaseDateLabel.text = "Coming:  \(self.movie?.release_date?.getFormattedDate() ?? "---")"
         releaseDateLabel.leadingAnchor.constraint(equalTo: moviePosterImageView.leadingAnchor).isActive = true
         releaseDateLabel.topAnchor.constraint(equalTo: moviePosterImageView.bottomAnchor,constant: 20).isActive = true
     }
     
     private func configureInfoButton(){
+        infoButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
         infoButton.trailingAnchor.constraint(equalTo: moviePosterImageView.trailingAnchor).isActive = true
         infoButton.topAnchor.constraint(equalTo: moviePosterImageView.bottomAnchor, constant: 15).isActive = true
     }
     private func configureRemindMeButton(){
+        remindMeButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
         remindMeButton.trailingAnchor.constraint(equalTo: infoButton.leadingAnchor).isActive = true
         remindMeButton.topAnchor.constraint(equalTo: moviePosterImageView.bottomAnchor, constant: 15).isActive = true
     }
     
     private func configureTitleLabel(){
+        
         titleLabel.text = "\(self.movie?.title ?? self.movie?.original_title ?? "unknown")"
         titleLabel.leadingAnchor.constraint(equalTo: moviePosterImageView.leadingAnchor).isActive = true
         titleLabel.topAnchor.constraint(equalTo: releaseDateLabel.bottomAnchor,constant: 15).isActive = true
@@ -160,23 +171,31 @@ class MovieTableViewCell: UITableViewCell {
     }
     
     private func configureDescriptionLabel(){
+        
+        descriptionLabel.widthAnchor.constraint(equalToConstant: contentView.frame.width).isActive = true
+        descriptionLabel.sizeToFit()
         descriptionLabel.text = "\(self.movie?.overview ?? "unknown")"
         descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
         descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,constant: 10).isActive = true
         descriptionLabel.trailingAnchor.constraint(equalTo: moviePosterImageView.trailingAnchor).isActive = true
-        descriptionLabel.numberOfLines = 0
+    
+        
     }
     
     
     private func configureGenreLabel(){
 //        genreLabels.text = "\(self.movie?.genre_ids ?? "unknown")"
         let genreNames = self.movie?.genre_ids?.compactMap({ Constants.genreMap[$0] as? String }).joined(separator: " \u{2022} ") ?? ""
-
-                
         genreLabels.text = "\u{2022} \(genreNames)"
         genreLabels.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor).isActive = true
         genreLabels.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor,constant: 10).isActive = true
         genreLabels.trailingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor).isActive = true
-        genreLabels.numberOfLines = 0
+        genreLabels.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
+        
+        genreLabels.heightAnchor.constraint(greaterThanOrEqualToConstant: 20).isActive = true
+        
+
     }
+    
+
 }
