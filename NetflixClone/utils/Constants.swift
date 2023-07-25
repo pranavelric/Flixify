@@ -8,6 +8,7 @@
 import Foundation
 struct Constants{
     static let API_KEY              = "9c8b6d11ed2c2ff1c474a2724a27e190"
+    static let YOUTUBE_API_KEY      = "AIzaSyBgQdnTD-pvQNQMd05L3F1VlR5dCTCJZMw"
     static let POSTER_PATH          = "https://image.tmdb.org/t/p/w600_and_h900_bestv2"
     static let BACKDROP_PATH        = "https://image.tmdb.org/t/p/w533_and_h300_bestv2"
     static let ORIGINAL_BG_PATH     = "https://image.tmdb.org/t/p/original"
@@ -35,7 +36,9 @@ struct Constants{
     static let SEARCH_MOVIE                     = "/3/search/movie"
     static let MOVIE_VIDEOS                     = "/3/movie/{id}/videos"
     static let PERSON_DETAILS                   = "/3/person/{person_id}"
-
+    
+    static let YOUTUBE_BASE_URL                 = "https://youtube.googleapis.com/youtube/v3/search?"
+    
     static var genreMap : [Int?: String?] = [:]
 
    
