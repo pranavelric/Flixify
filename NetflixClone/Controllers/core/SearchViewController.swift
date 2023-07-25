@@ -72,7 +72,6 @@ class SearchViewController: UIViewController {
         
         navigationItem.searchController?.searchResultsUpdater = self
         
-        
        
         
         
@@ -121,6 +120,7 @@ class SearchViewController: UIViewController {
                     
                     switch result {
                     case .success(let response):
+
                         searchResultController.movies = response.results
                         searchResultController.searcResultCollectionView.reloadData()
                     case .failure(let error):
@@ -210,10 +210,12 @@ extension SearchViewController  : UITableViewDelegate, UITableViewDataSource{
 }
 
 
-extension SearchViewController : UISearchResultsUpdating{
+extension SearchViewController :  UISearchResultsUpdating{
+//    UISearchResultsUpdating,
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
-        print(searchBar.text)
+        var searchWorkItem: DispatchWorkItem?
+        
         guard let query = searchBar.text,
               !query.trimmingCharacters(in: .whitespaces).isEmpty,
               query.trimmingCharacters(in: .whitespaces).count >= 3,
@@ -221,14 +223,33 @@ extension SearchViewController : UISearchResultsUpdating{
             return
         }
         
-        
-        
-        
-        getSearchedMovies(with: query,controller: resultsController)
-        
-        
-                
+ 
+        // Cancel any ongoing search work item if user is still typing
+        searchWorkItem?.cancel()
+
+
+        guard let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else{
+            return
+        }
+            
+
+        // Delay the search to avoid rapid updates while typing
+       let newWorkItem = DispatchWorkItem { [weak self] in
+           self?.getSearchedMovies(with: encodedQuery,controller: resultsController)
+       }
+
+       searchWorkItem = newWorkItem
+       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: newWorkItem)
+
+
     }
+    
+    
+    
+    
+    
+    
+
     
     
 }

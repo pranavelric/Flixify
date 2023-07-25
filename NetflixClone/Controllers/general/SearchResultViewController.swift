@@ -59,19 +59,15 @@ class SearchResultViewController: UIViewController {
 
 extension SearchResultViewController : UICollectionViewDelegate, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(movies)
-        print("movies")
-        return movies.count
+        return self.movies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifier, for: indexPath) as? TitleCollectionViewCell else{
-            return UICollectionViewCell()
+           return UICollectionViewCell()
         }
         
-        guard let posterPath = movies[indexPath.row].poster_path else {
-            return UICollectionViewCell()
-        }
+        let posterPath = self.movies[indexPath.row].poster_path ?? ""
         cell.configure(with: posterPath)
         cell.backgroundColor = .darkGray
         cell.layer.cornerRadius = 8

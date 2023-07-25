@@ -26,6 +26,7 @@ class CollectionViewTableViewCell: UITableViewCell {
         contentView.backgroundColor = .red
         contentView.addSubview(collectionView)
         
+       
         collectionView.dataSource = self
         collectionView.delegate = self
     }
