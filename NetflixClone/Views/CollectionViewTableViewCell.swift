@@ -7,9 +7,14 @@
 
 import UIKit
 
+protocol CollectionViewTableViewCellDelegate :AnyObject{
+    func collectionViewTableViewCellDidTapCell(_cell: CollectionViewTableViewCell, viewModel: MoviePreviewViewModel)
+}
+
 class CollectionViewTableViewCell: UITableViewCell {
     
     static let identifier = "CollectionViewTableViewCell"
+    weak var delegate: (CollectionViewTableViewCellDelegate)?
     private var titles:[Movie] = []
     
     private let collectionView: UICollectionView = {
@@ -66,6 +71,39 @@ extension CollectionViewTableViewCell : UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return titles.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let title = titles[indexPath.row]
+        guard let titleName = title.original_title ?? title.title else {
+            return
+        }
+        
+        ApiCaller.shared.getMoviesFromYoutube(with: titleName + "trailer"){
+            
+            [weak self] (result: Result<YouTubeSearchListResponse, Error>) in
+                   switch result {
+                   case .success(let response):
+                       
+                       let videoNames = response.items
+                       let title = self?.titles[indexPath.row]
+                       guard let titleOverview = title?.overview else{
+                           return
+                       }
+                       
+                       guard let strongSelf = self else {
+                           return
+                       }
+                       
+                       
+                       
+                       let viewModel = MoviePreviewViewModel(title: titleName , youtubeView: videoNames, titleOverview: titleOverview)
+                       self?.delegate?.collectionViewTableViewCellDidTapCell(_cell: strongSelf, viewModel: viewModel)
+                   case .failure(let error):
+                       print(error)
+                   }
+        }
+        
     }
     
     
