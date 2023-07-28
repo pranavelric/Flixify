@@ -12,6 +12,7 @@ import WebKit
 
 class MovieViewController: UIViewController {
     
+    private var movieDetail : MovieDetail? = nil
     private let scrollView: UIScrollView  =  {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -96,9 +97,9 @@ class MovieViewController: UIViewController {
 
     private func  configureConstraints(){
         let webViewConstraints = [
-            webView.topAnchor.constraint(equalTo: view.topAnchor,constant: 0),
-            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            webView.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 0),
+            webView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             webView.heightAnchor.constraint(equalToConstant: 350)
             
         ]
@@ -122,30 +123,24 @@ class MovieViewController: UIViewController {
         let overviewLabelConstraints = [
             overviewLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor,constant: 20),
             overviewLabel.leadingAnchor.constraint(equalTo: movieTitleLabel.leadingAnchor,constant: 20),
-            movieTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            overviewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             overviewLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ]
-        
-        
-        
-        
+
         NSLayoutConstraint.activate(webViewConstraints)
         NSLayoutConstraint.activate(movieTitleLabelConstraints)
         NSLayoutConstraint.activate(overviewLabelConstraints)
         
     }
     func configure(with model: MoviePreviewViewModel){
-        self.movieTitleLabel.text = model.title
-        self.overviewLabel.text = model.titleOverview
+        self.movieDetail = model.movieDetail
+        self.movieTitleLabel.text = movieDetail?.title ?? movieDetail?.originalTitle ?? "unknown"
+        self.overviewLabel.text = movieDetail?.overview ?? "unknown"
         
         guard  let url = URL(string: "https://www.youtube.com/embed/\(model.youtubeView[0].id.videoId)") else{
             return
         }
-        print(model.title)
-        print(model.titleOverview
-        )
-        print(model.youtubeView[0])
-        print(url)
+       
         self.webView.load(URLRequest(url: url))
         self.webView.isUserInteractionEnabled = true
     }

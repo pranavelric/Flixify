@@ -297,7 +297,7 @@ extension HomeViewController : CollectionViewTableViewCellDelegate{
         DispatchQueue.main.async { [weak self] in
             let vc = MovieViewController()
             vc.configure(with: viewModel)
-            vc.modalPresentationStyle = .pageSheet
+            vc.modalPresentationStyle = .formSheet
             self?.present(vc, animated: true)
 //            self?.navigationController?.pushViewController(vc, animated: true)
         }

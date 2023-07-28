@@ -52,6 +52,8 @@ class CollectionViewTableViewCell: UITableViewCell {
             self?.collectionView.reloadData()
         }
     }
+    
+    
 }
 
 
@@ -73,6 +75,8 @@ extension CollectionViewTableViewCell : UICollectionViewDelegate, UICollectionVi
         return titles.count
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let title = titles[indexPath.row]
         guard let titleName = title.original_title ?? title.title else {
@@ -82,29 +86,52 @@ extension CollectionViewTableViewCell : UICollectionViewDelegate, UICollectionVi
         ApiCaller.shared.getMoviesFromYoutube(with: titleName + "trailer"){
             
             [weak self] (result: Result<YouTubeSearchListResponse, Error>) in
-                   switch result {
-                   case .success(let response):
-                       
-                       let videoNames = response.items
-                       let title = self?.titles[indexPath.row]
-                       guard let titleOverview = title?.overview else{
-                           return
-                       }
-                       
-                       guard let strongSelf = self else {
-                           return
-                       }
-                       
-                       
-                       
-                       let viewModel = MoviePreviewViewModel(title: titleName , youtubeView: videoNames, titleOverview: titleOverview)
-                       self?.delegate?.collectionViewTableViewCellDidTapCell(_cell: strongSelf, viewModel: viewModel)
-                   case .failure(let error):
-                       print(error)
-                   }
+            switch result {
+            case .success(let response):
+                
+                let videoNames = response.items
+                let title = self?.titles[indexPath.row]
+                guard let id = title?.id else{
+                    return
+                }
+                guard let titleOverview = title?.overview else{
+                    return
+                }
+                
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                // here after fetching video , fetch details
+                self?.getMovieDetail(with:id,youtubeView: videoNames)
+                
+                //                       let viewModel = MoviePreviewViewModel(title: titleName , youtubeView: videoNames, titleOverview: titleOverview)
+                //                       self?.delegate?.collectionViewTableViewCellDidTapCell(_cell: strongSelf, viewModel: viewModel)
+                
+                
+            case .failure(let error):
+                print(error)
+            }
         }
         
     }
     
+    
+    
+    
+    func getMovieDetail(with movieId: Int,youtubeView videoNames: [YouTubeVideoItem] ) {
+        //    https://api.themoviedb.org/3/movie/12
+        ApiCaller.shared.fetchData(from: Constants.MOVIE_DETAILS+"\(movieId)"){
+            (result: Result<MovieDetail, Error>) in
+            switch result {
+            case .success(let response):
+                let viewModel = MoviePreviewViewModel( movieDetail: response, youtubeView: videoNames)
+                self.delegate?.collectionViewTableViewCellDidTapCell(_cell: self, viewModel: viewModel)
+            case .failure(let error):
+                print(error)
+            }
+        }
+ 
+    }
     
 }

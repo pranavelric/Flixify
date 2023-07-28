@@ -9,8 +9,10 @@ import Foundation
 
 
 struct MoviePreviewViewModel{
-    let title: String
+    
+    let movieDetail: MovieDetail?
+//    let title: String
     let youtubeView : [YouTubeVideoItem]
-    let titleOverview : String
+//    let titleOverview : String
     
 }
