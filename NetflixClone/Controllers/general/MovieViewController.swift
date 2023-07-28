@@ -12,13 +12,29 @@ import WebKit
 
 class MovieViewController: UIViewController {
     
+    private let scrollView: UIScrollView  =  {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.isScrollEnabled = true
+        scrollView.isUserInteractionEnabled = true
+        return scrollView
+    }()
+    
+    private let contentView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isUserInteractionEnabled = true
+        return view
+    }()
+    
     private let webView: WKWebView  = {
         
         let webView = WKWebView()
         webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.isUserInteractionEnabled = true
         return webView
     }()
-    
+        
     private let movieTitleLabel : UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 22, weight: .bold)
@@ -39,24 +55,42 @@ class MovieViewController: UIViewController {
         label.numberOfLines = 0
         return label
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         // Do any additional setup after loading the view.
         view.backgroundColor = .systemBackground
-        view.addSubview(webView)
-        view.addSubview(movieTitleLabel)
-        view.addSubview(overviewLabel)
         
-        
-        
-        
+        setupScrollView()
+        setupViews()
+       
         navigationController?.navigationBar.isHidden = true
-        
         configureConstraints()
         
         self.edgesForExtendedLayout = []
+    }
+    
+    private func setupScrollView(){
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+       
+        scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+    }
+    private func setupViews(){
+      
+        contentView.addSubview(webView)
+        contentView.addSubview(movieTitleLabel)
+        contentView.addSubview(overviewLabel)
     }
     
 
@@ -69,10 +103,11 @@ class MovieViewController: UIViewController {
             
         ]
         
+        webView.isUserInteractionEnabled = true
+        webView.scrollView.isScrollEnabled = true
         webView.configuration.allowsInlineMediaPlayback = true
         webView.configuration.mediaTypesRequiringUserActionForPlayback = []
         webView.configuration.allowsPictureInPictureMediaPlayback = true
-        
         webView.contentMode = .scaleToFill
         webView.sizeToFit()
         webView.autoresizesSubviews = true
@@ -88,7 +123,9 @@ class MovieViewController: UIViewController {
             overviewLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor,constant: 20),
             overviewLabel.leadingAnchor.constraint(equalTo: movieTitleLabel.leadingAnchor,constant: 20),
             movieTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            overviewLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ]
+        
         
         
         
@@ -110,6 +147,7 @@ class MovieViewController: UIViewController {
         print(model.youtubeView[0])
         print(url)
         self.webView.load(URLRequest(url: url))
+        self.webView.isUserInteractionEnabled = true
     }
 
 }

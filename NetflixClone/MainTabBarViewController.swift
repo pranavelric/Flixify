@@ -15,8 +15,7 @@ class MainTabBarViewController: UITabBarController {
 
     }
 
-    
-    
+
      private func setupTabBar() {
          let homeVC = createNavigationController(rootViewController: HomeViewController(), title: "Home", imageName: "house")
          let upcomingVC = createNavigationController(rootViewController: UpcomingViewController(), title: "Coming soon", imageName: "play.circle")

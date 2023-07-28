@@ -166,6 +166,8 @@ class HomeViewController: UIViewController {
            }
     }
     
+
+    
     
 }
 
@@ -295,7 +297,9 @@ extension HomeViewController : CollectionViewTableViewCellDelegate{
         DispatchQueue.main.async { [weak self] in
             let vc = MovieViewController()
             vc.configure(with: viewModel)
-            self?.navigationController?.pushViewController(vc, animated: true)
+            vc.modalPresentationStyle = .pageSheet
+            self?.present(vc, animated: true)
+//            self?.navigationController?.pushViewController(vc, animated: true)
         }
       
     }
