@@ -28,12 +28,15 @@ class ApiCaller{
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
 
             guard let data = data, error == nil else {
+                print(error)
                 let error = NSError(domain: "No data received", code: 0, userInfo: nil)
+                
                 completion(.failure(APIError.failedToGetData))
                 return
             }
             do {
                 let results = try JSONDecoder().decode(T.self, from: data)
+                
                 completion(.success(results))
             } catch {
                 completion(.failure(APIError.failedToGetData))
@@ -53,7 +56,9 @@ class ApiCaller{
     
     func getMoviesFromYoutube<T: Decodable>(with query: String? = nil, completion: @escaping (Result<T, Error>) -> Void){
         guard let query = query?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
+            print("in youtube error")
             let error = NSError(domain: "Invalid URL", code: 0, userInfo: nil)
+            print(error)
             completion(.failure(error))
             return}
         guard let url = URL(string: "\(Constants.YOUTUBE_BASE_URL)q=\(query)&key=\(Constants.YOUTUBE_API_KEY)") else{
@@ -61,7 +66,7 @@ class ApiCaller{
             completion(.failure(error))
             return
         }
-        
+        print("youtube url : \(url)")
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else {
                 let error = NSError(domain: "No data received", code: 0, userInfo: nil)
@@ -70,8 +75,10 @@ class ApiCaller{
             }
             do {
                 let results = try JSONDecoder().decode(T.self, from: data)
+                print(results)
                 completion(.success(results))
-            } catch {
+            } catch let error{
+                print(error)
                 completion(.failure(APIError.failedToGetData))
             }
         }

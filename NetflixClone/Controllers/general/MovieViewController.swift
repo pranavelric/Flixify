@@ -55,6 +55,41 @@ class MovieViewController: UIViewController {
         "origin" : "https://www.youtube.com/embed/"
         
     ] as [AnyHashable  :Any]?
+    
+    private let customThumnailImageView : UIImageView = {
+        let imageView = UIImageView(frame: .zero)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.image = UIImage(named: "heroImage")
+        imageView.backgroundColor = .red
+        return imageView
+    }()
+    
+    private let playButton : UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+//        button.setImage(UIImage(named: "play_button"), for: .normal)
+        button.configuration = .filled()
+        button.configuration?.baseBackgroundColor = .red
+        button.configuration?.baseForegroundColor = .white
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.white.cgColor
+        button.configuration?.image = UIImage(systemName: "play")
+        button.configuration?.imagePadding = 2
+        button.configuration?.imagePlacement = .all
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius =  8
+        button.clipsToBounds = true
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = button.bounds
+        gradient.locations = [0.0, 1.0]
+        gradient.colors = [UIColor.red.cgColor,UIColor.black.cgColor]
+        button.layer.insertSublayer(gradient, at: 1)
+        
+        return button
+    }()
+    
+    //end here
         
     private let movieTitleLabel : UILabel = {
         let label = UILabel()
@@ -89,7 +124,7 @@ class MovieViewController: UIViewController {
         trailerView.delegate = self
         navigationController?.navigationBar.isHidden = true
         configureConstraints()
-        
+
         self.edgesForExtendedLayout = []
     }
     
@@ -109,10 +144,13 @@ class MovieViewController: UIViewController {
     }
     private func setupViews(){
       
-//        contentView.addSubview(webView)
+        contentView.addSubview(webView)
         contentView.addSubview(trailerView)
+        contentView.addSubview(customThumnailImageView)
+        contentView.addSubview(playButton)
         contentView.addSubview(movieTitleLabel)
         contentView.addSubview(overviewLabel)
+
     }
     
 
@@ -140,15 +178,34 @@ class MovieViewController: UIViewController {
             trailerView.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 0),
             trailerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             trailerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            trailerView.heightAnchor.constraint(equalToConstant: 350),
+            trailerView.heightAnchor.constraint(equalToConstant: 250),
             trailerView.widthAnchor.constraint(equalTo: trailerView.heightAnchor, multiplier: aspectRatio)
         ]
 
+        //custom thumbnail
+        customThumnailImageView.translatesAutoresizingMaskIntoConstraints = false
+        let customThumbnailConstraints = [
+            customThumnailImageView.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 0),
+            customThumnailImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            customThumnailImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            customThumnailImageView.heightAnchor.constraint(equalToConstant: 600)
+            
+        ]
+        customThumnailImageView.layer.cornerRadius = 10
         
+        
+        let playButtonConstrains = [
+            playButton.centerXAnchor.constraint(equalTo: customThumnailImageView.centerXAnchor,constant: 0),
+            playButton.centerYAnchor.constraint(equalTo: customThumnailImageView.centerYAnchor),
+            playButton.heightAnchor.constraint(equalToConstant: 50),
+            playButton.widthAnchor.constraint(equalToConstant: 100)
+        ]
+        
+        playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
    
         let movieTitleLabelConstraints = [
-            movieTitleLabel.topAnchor.constraint(equalTo: trailerView.bottomAnchor,constant: 20),
-            movieTitleLabel.leadingAnchor.constraint(equalTo: trailerView.leadingAnchor,constant: 20),
+            movieTitleLabel.topAnchor.constraint(equalTo: customThumnailImageView.bottomAnchor,constant: 20),
+            movieTitleLabel.leadingAnchor.constraint(equalTo: customThumnailImageView.leadingAnchor,constant: 20),
             movieTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ]
         let overviewLabelConstraints = [
@@ -158,9 +215,17 @@ class MovieViewController: UIViewController {
             overviewLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ]
 
+        
+        
+       
+        
+        
+        
         NSLayoutConstraint.activate(webViewConstraints)
         NSLayoutConstraint.activate(movieTitleLabelConstraints)
         NSLayoutConstraint.activate(overviewLabelConstraints)
+        NSLayoutConstraint.activate(customThumbnailConstraints)
+        NSLayoutConstraint.activate(playButtonConstrains)
         
     }
     func configure(with model: MoviePreviewViewModel){
@@ -174,12 +239,41 @@ class MovieViewController: UIViewController {
        
 //        self.webView.load(URLRequest(url: url))
 //        self.webView.isUserInteractionEnabled = true
-
+        customThumnailImageView.sd_setImage(with: URL(string: "\(Constants.POSTER_PATH)/\(self.movieDetail?.posterPath ?? self.movieDetail?.backdropPath ?? "")"), placeholderImage: UIImage(named: "placeholder.png"))
+        
         trailerView.load(withPlayerParams: playerVar)
-        trailerView.load(withVideoId: "\(model.youtubeView[0].id.videoId)", playerVars: playerVar)
-        trailerView.layer.cornerRadius = 32
+        trailerView.load(withVideoId: "\(model.youtubeView?[0].id.videoId)", playerVars: playerVar)
+        trailerView.layer.cornerRadius = 10
         trailerView.clipsToBounds = true
         
+        
+        
+    
+    }
+    
+    @objc private func playButtonTapped(){
+//        customThumnailImageView.isHidden = true
+        self.movieTitleLabel.topAnchor.constraint(equalTo: self.trailerView.bottomAnchor,constant: 20).isActive = true
+        self.movieTitleLabel.leadingAnchor.constraint(equalTo: self.trailerView.leadingAnchor,constant: 20).isActive = true
+        UIView.animate(withDuration: 0.5, animations: {
+                    // Set the view's alpha to 0 to make it fade out
+//                    self.customThumnailImageView.alpha = 0
+            
+//            self.customThumnailImageView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+            self.customThumnailImageView.transform = CGAffineTransformMakeScale(0.1, 0.1);
+            self.playButton.transform = CGAffineTransformMakeScale(0.1, 0.1);
+            self.playButton.alpha = 0
+            self.customThumnailImageView.alpha = 0
+            self.view.layoutIfNeeded()
+           
+                }) { (finished) in
+                    // Once the animation completes, hide the view completely (optional)
+                    self.customThumnailImageView.isHidden = true
+                    self.playButton.isHidden = true
+//                    self.trailerView.playVideo()  //enable it later
+                }
+        
+      
         
     }
 
@@ -189,7 +283,7 @@ class MovieViewController: UIViewController {
 extension MovieViewController : YTPlayerViewDelegate {
       func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
            // The player is ready to play the video, you can control playback here if needed
-           trailerView.playVideo()
+//           trailerView.playVideo()
        }
 
        func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {

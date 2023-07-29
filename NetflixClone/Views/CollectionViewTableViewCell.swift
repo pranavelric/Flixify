@@ -119,7 +119,7 @@ extension CollectionViewTableViewCell : UICollectionViewDelegate, UICollectionVi
     
     
     
-    func getMovieDetail(with movieId: Int,youtubeView videoNames: [YouTubeVideoItem] ) {
+    func getMovieDetail(with movieId: Int,youtubeView videoNames: [YouTubeVideoItem]? ) {
         //    https://api.themoviedb.org/3/movie/12
         ApiCaller.shared.fetchData(from: Constants.MOVIE_DETAILS+"\(movieId)"){
             (result: Result<MovieDetail, Error>) in
