@@ -7,7 +7,7 @@
 
 import UIKit
 import WebKit
-
+import YouTubeiOSPlayerHelper
 
 
 class MovieViewController: UIViewController {
@@ -35,6 +35,26 @@ class MovieViewController: UIViewController {
         webView.isUserInteractionEnabled = true
         return webView
     }()
+    
+    // testing ytplayer
+    private let trailerView : YTPlayerView = {
+        let trailerView = YTPlayerView()
+        trailerView.translatesAutoresizingMaskIntoConstraints = false
+        trailerView.isUserInteractionEnabled = true
+        return trailerView
+    }()
+//    private let trailerView = YTPlayerView(frame: CGRect(x: 0, y: 0, width: .zero, height: 350))
+    let playerVar = [
+        "playsinline":1,
+        "showinfo": 1,
+        "rel": 0,
+        "modestbranding": 1,
+        "controls": 1,
+        "color": "white",
+        "iv_load_policy": 3,
+        "origin" : "https://www.youtube.com/embed/"
+        
+    ] as [AnyHashable  :Any]?
         
     private let movieTitleLabel : UILabel = {
         let label = UILabel()
@@ -66,7 +86,7 @@ class MovieViewController: UIViewController {
         
         setupScrollView()
         setupViews()
-       
+        trailerView.delegate = self
         navigationController?.navigationBar.isHidden = true
         configureConstraints()
         
@@ -89,35 +109,46 @@ class MovieViewController: UIViewController {
     }
     private func setupViews(){
       
-        contentView.addSubview(webView)
+//        contentView.addSubview(webView)
+        contentView.addSubview(trailerView)
         contentView.addSubview(movieTitleLabel)
         contentView.addSubview(overviewLabel)
     }
     
 
     private func  configureConstraints(){
+//        let webViewConstraints = [
+//            webView.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 0),
+//            webView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+//            webView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+//            webView.heightAnchor.constraint(equalToConstant: 350)
+//
+//        ]
+        
+//        webView.isUserInteractionEnabled = true
+//        webView.scrollView.isScrollEnabled = true
+//        webView.configuration.allowsInlineMediaPlayback = true
+//        webView.configuration.mediaTypesRequiringUserActionForPlayback = []
+//        webView.configuration.allowsPictureInPictureMediaPlayback = true
+//        webView.contentMode = .scaleToFill
+//        webView.sizeToFit()
+//        webView.autoresizesSubviews = true
+//
+        let aspectRatio: CGFloat = 16.0 / 9.0 // 16:9 aspect ratio for YouTube videos
+              
         let webViewConstraints = [
-            webView.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 0),
-            webView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            webView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            webView.heightAnchor.constraint(equalToConstant: 350)
-            
+            trailerView.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 0),
+            trailerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            trailerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            trailerView.heightAnchor.constraint(equalToConstant: 350),
+            trailerView.widthAnchor.constraint(equalTo: trailerView.heightAnchor, multiplier: aspectRatio)
         ]
+
         
-        webView.isUserInteractionEnabled = true
-        webView.scrollView.isScrollEnabled = true
-        webView.configuration.allowsInlineMediaPlayback = true
-        webView.configuration.mediaTypesRequiringUserActionForPlayback = []
-        webView.configuration.allowsPictureInPictureMediaPlayback = true
-        webView.contentMode = .scaleToFill
-        webView.sizeToFit()
-        webView.autoresizesSubviews = true
-        
-        
-        
+   
         let movieTitleLabelConstraints = [
-            movieTitleLabel.topAnchor.constraint(equalTo: webView.bottomAnchor,constant: 20),
-            movieTitleLabel.leadingAnchor.constraint(equalTo: webView.leadingAnchor,constant: 20),
+            movieTitleLabel.topAnchor.constraint(equalTo: trailerView.bottomAnchor,constant: 20),
+            movieTitleLabel.leadingAnchor.constraint(equalTo: trailerView.leadingAnchor,constant: 20),
             movieTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ]
         let overviewLabelConstraints = [
@@ -137,12 +168,36 @@ class MovieViewController: UIViewController {
         self.movieTitleLabel.text = movieDetail?.title ?? movieDetail?.originalTitle ?? "unknown"
         self.overviewLabel.text = movieDetail?.overview ?? "unknown"
         
-        guard  let url = URL(string: "https://www.youtube.com/embed/\(model.youtubeView[0].id.videoId)") else{
-            return
-        }
+//        guard  let url = URL(string: "https://www.youtube.com/embed/\(model.youtubeView[0].id.videoId)") else{
+//            return
+//        }
        
-        self.webView.load(URLRequest(url: url))
-        self.webView.isUserInteractionEnabled = true
+//        self.webView.load(URLRequest(url: url))
+//        self.webView.isUserInteractionEnabled = true
+
+        trailerView.load(withPlayerParams: playerVar)
+        trailerView.load(withVideoId: "\(model.youtubeView[0].id.videoId)", playerVars: playerVar)
+        trailerView.layer.cornerRadius = 32
+        trailerView.clipsToBounds = true
+        
+        
     }
 
+}
+
+
+extension MovieViewController : YTPlayerViewDelegate {
+      func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
+           // The player is ready to play the video, you can control playback here if needed
+           trailerView.playVideo()
+       }
+
+       func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
+           // Handle video state changes (e.g., started, paused, ended, etc.)
+       }
+
+       func playerView(_ playerView: YTPlayerView, receivedError error: YTPlayerError) {
+           // Handle any errors encountered during video playback
+           print("error is \(error)")
+       }
 }

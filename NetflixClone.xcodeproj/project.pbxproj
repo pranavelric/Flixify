@@ -23,6 +23,7 @@
 		1E82921F2A6D4BF10069B858 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E82921E2A6D4BF10069B858 /* Constants.swift */; };
 		1E8292212A6D4E320069B858 /* GenreResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8292202A6D4E320069B858 /* GenreResponse.swift */; };
 		1E84B4A02A547B4900989B79 /* CollectionViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E84B49F2A547B4900989B79 /* CollectionViewTableViewCell.swift */; };
+		1E86B35A2A7516DE0015FEA3 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 1E86B3592A7516DE0015FEA3 /* YouTubeiOSPlayerHelper */; };
 		1EA49A6D2A7408F900783E23 /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA49A6C2A7408F900783E23 /* MovieDetail.swift */; };
 		1EB8ED7B2A6C715500E970CF /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB8ED7A2A6C715500E970CF /* MovieTableViewCell.swift */; };
 		1ECA11772A6EAF46000E7E53 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECA11762A6EAF46000E7E53 /* SearchResultViewController.swift */; };
@@ -77,6 +78,7 @@
 				1E5746882A62C0A60094CFA9 /* ACarousel in Frameworks */,
 				1E6045FE2A6BB90D00FC0141 /* ScalingCarousel in Frameworks */,
 				1E30D1F92A61E38300F4CB94 /* SDWebImage in Frameworks */,
+				1E86B35A2A7516DE0015FEA3 /* YouTubeiOSPlayerHelper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,6 +227,7 @@
 				1E30D1FA2A61E38300F4CB94 /* SDWebImageMapKit */,
 				1E5746872A62C0A60094CFA9 /* ACarousel */,
 				1E6045FD2A6BB90D00FC0141 /* ScalingCarousel */,
+				1E86B3592A7516DE0015FEA3 /* YouTubeiOSPlayerHelper */,
 			);
 			productName = NetflixClone;
 			productReference = 1EDF03002A542D1E00985EBE /* NetflixClone.app */;
@@ -258,6 +261,7 @@
 				1E30D1F72A61E38200F4CB94 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				1E5746862A62C0A60094CFA9 /* XCRemoteSwiftPackageReference "ACarousel" */,
 				1E6045FC2A6BB90D00FC0141 /* XCRemoteSwiftPackageReference "ScalingCarousel" */,
+				1E86B3582A7516DE0015FEA3 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
 			);
 			productRefGroup = 1EDF03012A542D1E00985EBE /* Products */;
 			projectDirPath = "";
@@ -547,6 +551,14 @@
 				kind = branch;
 			};
 		};
+		1E86B3582A7516DE0015FEA3 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/youtube/youtube-ios-player-helper.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -569,6 +581,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1E6045FC2A6BB90D00FC0141 /* XCRemoteSwiftPackageReference "ScalingCarousel" */;
 			productName = ScalingCarousel;
+		};
+		1E86B3592A7516DE0015FEA3 /* YouTubeiOSPlayerHelper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1E86B3582A7516DE0015FEA3 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */;
+			productName = YouTubeiOSPlayerHelper;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
