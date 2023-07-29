@@ -36,7 +36,6 @@ class ApiCaller{
             }
             do {
                 let results = try JSONDecoder().decode(T.self, from: data)
-                
                 completion(.success(results))
             } catch {
                 completion(.failure(APIError.failedToGetData))
