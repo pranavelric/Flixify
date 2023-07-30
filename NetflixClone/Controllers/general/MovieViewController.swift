@@ -79,11 +79,19 @@ productionCompanies: Optional(
  */
 
 
+enum Section: Int {
+    case genres = 0
+   
+}
+
 
 
 class MovieViewController: UIViewController {
     
     private var movieDetail : MovieDetail? = nil
+    
+    private var genres : [Genre]? = []
+    
     private let scrollView: UIScrollView  =  {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -224,10 +232,75 @@ class MovieViewController: UIViewController {
         return button
     }()
     
+    
+    // collection views
+    private let genreCollectionView : UICollectionView = {
+               let genresLayout = UICollectionViewFlowLayout()
+               let genresCollectioView = UICollectionView(frame: .zero, collectionViewLayout: genresLayout)
+        genresLayout.scrollDirection = .horizontal
+        
+        genresCollectioView.translatesAutoresizingMaskIntoConstraints = false
+        genresCollectioView.backgroundColor = .clear
+               genresCollectioView.tag = Section.genres.rawValue
+               genresCollectioView.register(GenreCollectionViewCell.self, forCellWithReuseIdentifier: GenreCollectionViewCell.IDENTIFIER)
+        genresLayout.minimumInteritemSpacing = 20
+        genresCollectioView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+               return genresCollectioView
+    }()
+    
+    
+    private let starLabel : UILabel = {
+        
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12, weight: .regular)
+        label.textColor = .white.withAlphaComponent(0.5)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 0
+        return label
+        
+        
+//        let button = UIButton(frame: .zero)
+//        button.configuration = .tinted()
+//        button.configuration?.baseBackgroundColor = .clear
+//        button.configuration?.baseForegroundColor = .systemYellow
+//        button.configuration?.image = UIImage(systemName: "star",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
+//        button.configuration?.imagePadding = 0
+//        button.configuration?.imagePlacement = .leading
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.clipsToBounds = true
+//        return button
+    }()
+    
+    private let runtimeLabel : UILabel = {
+        
+
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12, weight: .regular)
+        label.textColor = .white.withAlphaComponent(0.5)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 0
+        return label
+        
+    }()
+    
+    
     private let taglineLabel : UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .regular)
         label.textColor = .white.withAlphaComponent(0.5)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    private let synopsisLabel : UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.textColor = .white.withAlphaComponent(0.9)
+        label.text = "Synopsis"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.numberOfLines = 0
@@ -247,11 +320,12 @@ class MovieViewController: UIViewController {
     
     private let releaseDateLabel : UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .white
+        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.textColor = .white.withAlphaComponent(0.5)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.numberOfLines = 0
+        
         return label
     }()
     
@@ -270,7 +344,7 @@ class MovieViewController: UIViewController {
     private let movieTitleLabel : UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 22, weight: .bold)
-        label.textColor = .white
+        label.textColor = .white.withAlphaComponent(0.8)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.numberOfLines = 0
@@ -298,6 +372,9 @@ class MovieViewController: UIViewController {
         setupScrollView()
         setupViews()
         trailerView.delegate = self
+        genreCollectionView.delegate = self
+        genreCollectionView.dataSource = self
+
         navigationController?.navigationBar.isHidden = true
         configureConstraints()
 
@@ -330,9 +407,11 @@ class MovieViewController: UIViewController {
         contentView.addSubview(infoButton)
         contentView.addSubview(bookmarkButton)
         contentView.addSubview(movieTitleLabel)
+        contentView.addSubview(synopsisLabel)
         contentView.addSubview(overviewLabel)
-        
-        
+        contentView.addSubview(starLabel)
+        contentView.addSubview(runtimeLabel)
+        contentView.addSubview(genreCollectionView)
 //        contentView.addSubview(taglineLabel)
 
     }
@@ -372,7 +451,7 @@ class MovieViewController: UIViewController {
             customThumnailImageView.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 0),
             customThumnailImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             customThumnailImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            customThumnailImageView.heightAnchor.constraint(equalToConstant: 500)
+            customThumnailImageView.heightAnchor.constraint(equalToConstant: 700)
             
         ]
         customThumnailImageView.layer.cornerRadius = 10
@@ -386,7 +465,7 @@ class MovieViewController: UIViewController {
         ]
         customThumnailCardImageView.layer.cornerRadius = 10
         let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.frame = CGRect(x: 0, y: 0, width: 600, height: 500)
+        gradient.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 700)
         gradient.locations = [0.0, 1.0]
         gradient.colors = [UIColor.clear.cgColor,UIColor.systemBackground.cgColor]
         customThumnailImageView.layer.addSublayer(gradient)
@@ -415,29 +494,23 @@ class MovieViewController: UIViewController {
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
    
         
-        
-        let releaseDateConstraints = [
-            releaseDateLabel.topAnchor.constraint(equalTo: customThumnailImageView.bottomAnchor,constant: 10),
-            releaseDateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 20),
-            releaseDateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            releaseDateLabel.heightAnchor.constraint(equalToConstant: 20),
-        ]
+
         
         let goToWebsiteButtonConstraints = [
-            goToWebsiteButton.topAnchor.constraint(equalTo: customThumnailImageView.bottomAnchor,constant: 10),
+            goToWebsiteButton.topAnchor.constraint(equalTo: genreCollectionView.bottomAnchor,constant: 20),
             goToWebsiteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             goToWebsiteButton.heightAnchor.constraint(equalToConstant: 20),
         ]
         
         let infoButtonConstraints = [
-            infoButton.topAnchor.constraint(equalTo: customThumnailImageView.bottomAnchor,constant: 10),
+            infoButton.topAnchor.constraint(equalTo: genreCollectionView.bottomAnchor,constant: 20),
             infoButton.trailingAnchor.constraint(equalTo: goToWebsiteButton.leadingAnchor, constant: -5),
             infoButton.heightAnchor.constraint(equalToConstant: 20),
         ]
         
        
         let bookmarkButtonConstraints = [
-            bookmarkButton.topAnchor.constraint(equalTo: customThumnailImageView.bottomAnchor,constant: 10),
+            bookmarkButton.topAnchor.constraint(equalTo: genreCollectionView.bottomAnchor,constant: 20),
             bookmarkButton.trailingAnchor.constraint(equalTo: infoButton.leadingAnchor, constant: -5),
             bookmarkButton.heightAnchor.constraint(equalToConstant: 20),
         ]
@@ -449,13 +522,43 @@ class MovieViewController: UIViewController {
         
         
         let movieTitleLabelConstraints = [
-            movieTitleLabel.topAnchor.constraint(equalTo: releaseDateLabel.bottomAnchor,constant: 20),
+            movieTitleLabel.topAnchor.constraint(equalTo: customThumnailCardImageView.bottomAnchor,constant: 40),
             movieTitleLabel.leadingAnchor.constraint(equalTo: customThumnailImageView.leadingAnchor,constant: 20),
             movieTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ]
+        
+        let starLabelConstraints = [
+            starLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor,constant: 5),
+            starLabel.leadingAnchor.constraint(equalTo: movieTitleLabel.leadingAnchor)
+        ]
+        let genreCollectionViewConstraints = [
+            genreCollectionView.topAnchor.constraint(equalTo: starLabel.bottomAnchor,constant: 10),
+            genreCollectionView.leadingAnchor.constraint(equalTo: movieTitleLabel.leadingAnchor),
+            genreCollectionView.trailingAnchor.constraint(equalTo: movieTitleLabel.trailingAnchor),
+//            genreCollectionView.bottomAnchor.constraint(equalTo: releaseDateLabel.topAnchor,constant: -20),
+            genreCollectionView.heightAnchor.constraint(equalToConstant: 40)
+        ]
+        
+        let runtimeLabelConstraints = [
+            runtimeLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor,constant: 5),
+            runtimeLabel.leadingAnchor.constraint(equalTo: starLabel.trailingAnchor,constant: 5),
+        ]
+        
+        
+        let releaseDateConstraints = [
+            releaseDateLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor,constant: 5),
+            releaseDateLabel.leadingAnchor.constraint(equalTo: runtimeLabel.trailingAnchor,constant: 5),
+        ]
+        
+        let synopsisLabelConstraints = [
+            synopsisLabel.topAnchor.constraint(equalTo: genreCollectionView.bottomAnchor,constant: 20),
+            synopsisLabel.leadingAnchor.constraint(equalTo: customThumnailImageView.leadingAnchor,constant: 20),
+            synopsisLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ]
+        
         let overviewLabelConstraints = [
-            overviewLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor,constant: 20),
-            overviewLabel.leadingAnchor.constraint(equalTo: movieTitleLabel.leadingAnchor,constant: 20),
+            overviewLabel.topAnchor.constraint(equalTo: synopsisLabel.bottomAnchor,constant: 20),
+            overviewLabel.leadingAnchor.constraint(equalTo: synopsisLabel.leadingAnchor),
             overviewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             overviewLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ]
@@ -473,6 +576,9 @@ class MovieViewController: UIViewController {
         
         NSLayoutConstraint.activate(webViewConstraints)
         NSLayoutConstraint.activate(movieTitleLabelConstraints)
+        NSLayoutConstraint.activate(starLabelConstraints)
+        NSLayoutConstraint.activate(runtimeLabelConstraints)
+        NSLayoutConstraint.activate(synopsisLabelConstraints)
         NSLayoutConstraint.activate(overviewLabelConstraints)
         NSLayoutConstraint.activate(customThumbnailConstraints)
         NSLayoutConstraint.activate(customThumbnailCardConstraints)
@@ -484,10 +590,16 @@ class MovieViewController: UIViewController {
         NSLayoutConstraint.activate(infoButtonConstraints)
         NSLayoutConstraint.activate(bookmarkButtonConstraints)
         
+        NSLayoutConstraint.activate(genreCollectionViewConstraints)
+        
         
     }
     func configure(with model: MoviePreviewViewModel){
         self.movieDetail = model.movieDetail
+        self.genres = self.movieDetail?.genres
+        print("hererefksd;lfksdal;kf'as0")
+        print(self.genres)
+        print("end")
         self.movieTitleLabel.text = movieDetail?.title ?? movieDetail?.originalTitle ?? "unknown"
         self.overviewLabel.text = movieDetail?.overview ?? "unknown"
         
@@ -501,12 +613,18 @@ class MovieViewController: UIViewController {
         
         customThumnailCardImageView.sd_setImage(with: URL(string: "\(Constants.POSTER_PATH)/\(self.movieDetail?.posterPath ?? self.movieDetail?.backdropPath ?? "")"), placeholderImage: UIImage(named: "placeholder.png"))
         
+
         trailerView.load(withPlayerParams: playerVar)
-        trailerView.load(withVideoId: "\(model.youtubeView?[0].id.videoId)", playerVars: playerVar)
+        trailerView.load(withVideoId: "\(model.youtubeView?[0].id.videoId ?? "" )", playerVars: playerVar)
         trailerView.layer.cornerRadius = 10
         trailerView.clipsToBounds = true
         
-        releaseDateLabel.text = "\(self.movieDetail?.releaseDate?.getFormattedDate() ?? "")"
+        starLabel.addLeading(image: UIImage(systemName: "star") ?? UIImage(), text: "\(self.movieDetail?.voteAverage ?? 0.0)",height: CGFloat(integerLiteral: 12) ,color: .systemYellow.withAlphaComponent(0.5))
+        runtimeLabel.addLeading(image: UIImage(systemName:  "clock") ?? UIImage(), text: "\(self.movieDetail?.runtime ?? 0) mins",height: CGFloat(integerLiteral: 12) ,color: .systemYellow.withAlphaComponent(0.5))
+   
+      
+        releaseDateLabel.addLeading(image: UIImage(systemName:  "calendar") ?? UIImage(), text: "\(self.movieDetail?.releaseDate?.getFormattedDate() ?? "")",height: CGFloat(integerLiteral: 12) ,color: .systemYellow.withAlphaComponent(0.5))
+//        releaseDateLabel.text = "\(self.movieDetail?.releaseDate?.getFormattedDate() ?? "")"
 //        taglineLabel.text = " \"\(self.movieDetail?.tagline ??  "")\" "
         
         
@@ -546,6 +664,7 @@ class MovieViewController: UIViewController {
       
         
     }
+    
 
 }
 
@@ -565,3 +684,82 @@ extension MovieViewController : YTPlayerViewDelegate {
            print("error is \(error)")
        }
 }
+
+
+
+extension MovieViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch Section(rawValue: collectionView.tag) {
+                case .genres:
+                    return genres?.count ?? 0
+//                case .carsMembers:
+//                    return carsMembers.count
+//                case .relatedMovies:
+//                    return relatedMovies.count
+//                case .recommendedMovies:
+//                    return recommendedMovies.count
+                case .none:
+                    return 0
+                }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        
+
+        
+        switch Section(rawValue: collectionView.tag) {
+                case .genres:
+                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GenreCollectionViewCell.IDENTIFIER, for: indexPath) as? GenreCollectionViewCell else {
+                        return UICollectionViewCell()
+                    }
+                            // Configure the cell with genre information
+                    let genre = genres?[indexPath.item] ?? nil
+                    cell.configure(with: genre)
+                    
+                    return cell
+//                case .carsMembers:
+//                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CarsMembersCollectionViewCell", for: indexPath) as! CarsMembersCollectionViewCell
+//                    // Configure the cell with cars members information
+//                    cell.memberNameLabel.text = carsMembers[indexPath.item]
+//                    return cell
+//                case .relatedMovies:
+//                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RelatedMoviesCollectionViewCell", for: indexPath) as! RelatedMoviesCollectionViewCell
+//                    // Configure the cell with related movie information
+//                    // Assuming Movie class has a 'title' property
+//                    cell.movieTitleLabel.text = relatedMovies[indexPath.item].title
+//                    return cell
+//                case .recommendedMovies:
+//                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecommendedMoviesCollectionViewCell", for: indexPath) as! RecommendedMoviesCollectionViewCell
+//                    // Configure the cell with recommended movie information
+//                    // Assuming Movie class has a 'title' property
+//                    cell.movieTitleLabel.text = recommendedMovies[indexPath.item].title
+//                    return cell
+                case .none:
+                    return UICollectionViewCell()
+                }
+            }
+    
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        if (collectionView ==  genreCollectionView )  {
+//
+//            return CGSize(width: self.view.frame.width / CGFloat(genres.count)+20, height: self.view.frame.height / 4)
+//
+//           } else {
+//
+//               return collectionView.frame.size
+//           }
+//   }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: (genres?[indexPath.item].name
+            .size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)]).width ?? 0) + 25, height: 30)
+    }
+
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        return 40
+//    }
+    
+    }
+    
