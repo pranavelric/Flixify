@@ -112,27 +112,27 @@ extension UpcomingViewController : UITableViewDelegate, UITableViewDataSource{
         return cell
     }
     
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // instead of return perhaps should do a simpler animation
-        if !tableView.isDragging || indexPath.row == self.upComingMovies.count { return }
-        
-
-        
-        
-        if toTop {
-            cell.contentView.transform = CGAffineTransformMakeTranslation(0, -80)
-            
-        } else {
-            cell.contentView.transform = CGAffineTransformMakeTranslation(0, 80)
-            
-        }
-        
-        UIView.animate(withDuration: 1.0, delay: 0.05 , usingSpringWithDamping: 0.8, initialSpringVelocity: 0.1, options: UIView.AnimationOptions.curveEaseOut, animations: { () -> Void in
-            cell.contentView.transform = CGAffineTransformMakeTranslation(0, 0)
-        }, completion: nil)
-
-    }
+    // used for animation, but will disable userinteration untill animation
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        // instead of return perhaps should do a simpler animation
+//        if !tableView.isDragging || indexPath.row == self.upComingMovies.count { return }
+//        
+//
+//        
+//        
+//        if toTop {
+//            cell.contentView.transform = CGAffineTransformMakeTranslation(0, -80)
+//            
+//        } else {
+//            cell.contentView.transform = CGAffineTransformMakeTranslation(0, 80)
+//            
+//        }
+//        
+//        UIView.animate(withDuration: 1.0, delay: 0.05 , usingSpringWithDamping: 0.8, initialSpringVelocity: 0.1, options: UIView.AnimationOptions.curveEaseOut, animations: { () -> Void in
+//            cell.contentView.transform = CGAffineTransformMakeTranslation(0, 0)
+//        }, completion: nil)
+//
+//    }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         currentOffset = scrollView.contentOffset.y

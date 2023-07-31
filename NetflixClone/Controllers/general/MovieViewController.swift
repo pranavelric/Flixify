@@ -214,9 +214,9 @@ class MovieViewController: UIViewController {
         button.configuration = .filled()
         button.configuration?.baseBackgroundColor = .clear
         button.configuration?.baseForegroundColor = .white
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.white.cgColor
-        button.configuration?.image = UIImage(systemName: "play")
+//        button.layer.borderWidth = 1
+//        button.layer.borderColor = UIColor.white.cgColor
+        button.configuration?.image = UIImage(systemName: "play.fill")
         button.configuration?.imagePadding = 2
         button.configuration?.imagePlacement = .all
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -343,8 +343,8 @@ class MovieViewController: UIViewController {
         
     private let movieTitleLabel : UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 22, weight: .bold)
-        label.textColor = .white.withAlphaComponent(0.8)
+        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.textColor = .white.withAlphaComponent(0.99)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.numberOfLines = 0
@@ -459,9 +459,9 @@ class MovieViewController: UIViewController {
 
         let customThumbnailCardConstraints = [
             customThumnailCardImageView.centerXAnchor.constraint(equalTo: customThumnailImageView.centerXAnchor),
-            customThumnailCardImageView.centerYAnchor.constraint(equalTo: customThumnailImageView.centerYAnchor,constant: -20),
-            customThumnailCardImageView.heightAnchor.constraint(equalToConstant: 400),
-            customThumnailCardImageView.widthAnchor.constraint(equalToConstant: view.bounds.width-150)
+            customThumnailCardImageView.centerYAnchor.constraint(equalTo: customThumnailImageView.centerYAnchor,constant: -30),
+            customThumnailCardImageView.heightAnchor.constraint(equalToConstant: 450),
+            customThumnailCardImageView.widthAnchor.constraint(equalToConstant: view.bounds.width-120)
         ]
         customThumnailCardImageView.layer.cornerRadius = 10
         let gradient: CAGradientLayer = CAGradientLayer()
@@ -597,9 +597,6 @@ class MovieViewController: UIViewController {
     func configure(with model: MoviePreviewViewModel){
         self.movieDetail = model.movieDetail
         self.genres = self.movieDetail?.genres
-        print("hererefksd;lfksdal;kf'as0")
-        print(self.genres)
-        print("end")
         self.movieTitleLabel.text = movieDetail?.title ?? movieDetail?.originalTitle ?? "unknown"
         self.overviewLabel.text = movieDetail?.overview ?? "unknown"
         
@@ -633,12 +630,12 @@ class MovieViewController: UIViewController {
     
     @objc private func playButtonTapped(){
 //        customThumnailImageView.isHidden = true
-//        self.movieTitleLabel.topAnchor.constraint(equalTo: self.trailerView.bottomAnchor,constant: 20).isActive = true
+        self.movieTitleLabel.topAnchor.constraint(equalTo: self.trailerView.bottomAnchor,constant: 20).isActive = true
 //        self.movieTitleLabel.leadingAnchor.constraint(equalTo: self.trailerView.leadingAnchor,constant: 20).isActive = true
-        self.releaseDateLabel.topAnchor.constraint(equalTo: self.trailerView.bottomAnchor, constant: 20).isActive = true
-        self.goToWebsiteButton.topAnchor.constraint(equalTo: self.trailerView.bottomAnchor, constant: 20).isActive = true
-        self.infoButton.topAnchor.constraint(equalTo: self.trailerView.bottomAnchor, constant: 20).isActive = true
-        self.bookmarkButton.topAnchor.constraint(equalTo: self.trailerView.bottomAnchor, constant: 20).isActive = true
+//        self.releaseDateLabel.topAnchor.constraint(equalTo: self.trailerView.bottomAnchor, constant: 20).isActive = true
+//        self.goToWebsiteButton.topAnchor.constraint(equalTo: self.trailerView.bottomAnchor, constant: 20).isActive = true
+//        self.infoButton.topAnchor.constraint(equalTo: self.trailerView.bottomAnchor, constant: 20).isActive = true
+//        self.bookmarkButton.topAnchor.constraint(equalTo: self.trailerView.bottomAnchor, constant: 20).isActive = true
         
         UIView.animate(withDuration: 0.5, animations: {
                     // Set the view's alpha to 0 to make it fade out
