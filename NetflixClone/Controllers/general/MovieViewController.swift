@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 import YouTubeiOSPlayerHelper
 
-
+/* what extra changes : credits, images,  recommendations check videos for id*/
 
 /*
  
@@ -19,13 +19,19 @@ adult: Optional(false),
 backdropPath: Optional("/dWvDlTkt9VEGCDww6IzNRgm8fRQ.jpg"),
 belongsToCollection: nil,
 budget: Optional(80000000),
+ 
 genres: Optional([NetflixClone.Genre(id: 28, name: "Action"),
 NetflixClone.Genre(id: 12, name: "Adventure"),
 NetflixClone.Genre(id: 53, name: "Thriller")]),
+ 
 homepage: Optional("https://www.xyzfilms.com/hidden-strike"),
+
 id: Optional(457332), imdbId: Optional("tt6879446"),
+
 originalLanguage: Optional("en"),
 originalTitle: Optional("Hidden Strike"),
+
+ 
 overview: Optional("Two elite soldiers must escort civilians through a gauntlet of gunfire and explosions."),
 popularity: Optional(209.601),
 posterPath: Optional("/zsbolOkw8RhTU4DKOrpf4M7KCmi.jpg"),
@@ -81,6 +87,7 @@ productionCompanies: Optional(
 
 enum Section: Int {
     case genres = 0
+    case cast   = 1
    
 }
 
@@ -91,6 +98,7 @@ class MovieViewController: UIViewController {
     private var movieDetail : MovieDetail? = nil
     
     private var genres : [Genre]? = []
+    private var castMembers: [Cast]? = []
     
     private let scrollView: UIScrollView  =  {
         let scrollView = UIScrollView()
@@ -248,6 +256,31 @@ class MovieViewController: UIViewController {
                return genresCollectioView
     }()
     
+    private let castLabel : UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.textColor = .white.withAlphaComponent(0.9)
+        label.text = "Cast"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    private let castCollectionView : UICollectionView = {
+                let castLayout = UICollectionViewFlowLayout()
+                let castCollectioView = UICollectionView(frame: .zero, collectionViewLayout: castLayout)
+                castLayout.scrollDirection = .horizontal
+                castCollectioView.translatesAutoresizingMaskIntoConstraints = false
+                castCollectioView.backgroundColor = .clear
+                castCollectioView.tag = Section.cast.rawValue
+                castCollectioView.register(CreditCollectionViewCell.self, forCellWithReuseIdentifier: CreditCollectionViewCell.identifier)
+                castLayout.minimumInteritemSpacing = 20
+                castCollectioView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+                return castCollectioView
+    }()
+    
+    
     
     private let starLabel : UILabel = {
         
@@ -374,6 +407,9 @@ class MovieViewController: UIViewController {
         trailerView.delegate = self
         genreCollectionView.delegate = self
         genreCollectionView.dataSource = self
+        
+        castCollectionView.delegate = self
+        castCollectionView.dataSource = self
 
         navigationController?.navigationBar.isHidden = true
         configureConstraints()
@@ -412,6 +448,8 @@ class MovieViewController: UIViewController {
         contentView.addSubview(starLabel)
         contentView.addSubview(runtimeLabel)
         contentView.addSubview(genreCollectionView)
+        contentView.addSubview(castLabel)
+        contentView.addSubview(castCollectionView)
 //        contentView.addSubview(taglineLabel)
 
     }
@@ -560,9 +598,23 @@ class MovieViewController: UIViewController {
             overviewLabel.topAnchor.constraint(equalTo: synopsisLabel.bottomAnchor,constant: 20),
             overviewLabel.leadingAnchor.constraint(equalTo: synopsisLabel.leadingAnchor),
             overviewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            overviewLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+//            overviewLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ]
 
+        let castLabelConstraints = [
+            castLabel.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor,constant: 20),
+            castLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 20),
+            castLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ]
+        let castCollectionViewConstraints = [
+            castCollectionView.topAnchor.constraint(equalTo: castLabel.bottomAnchor,constant: 10),
+            castCollectionView.leadingAnchor.constraint(equalTo: castLabel.leadingAnchor),
+            castCollectionView.trailingAnchor.constraint(equalTo: castLabel.trailingAnchor),
+//            genreCollectionView.bottomAnchor.constraint(equalTo: releaseDateLabel.topAnchor,constant: -20),
+            castCollectionView.heightAnchor.constraint(equalToConstant: 200),
+            castCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ]
+        
 //        let taglineLabelConstraints = [
 //            taglineLabel.topAnchor.constraint(equalTo: customThumnailCardImageView.bottomAnchor,constant: 20),
 //            taglineLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -591,6 +643,9 @@ class MovieViewController: UIViewController {
         NSLayoutConstraint.activate(bookmarkButtonConstraints)
         
         NSLayoutConstraint.activate(genreCollectionViewConstraints)
+        NSLayoutConstraint.activate(castLabelConstraints)
+        NSLayoutConstraint.activate(castCollectionViewConstraints)
+        
         
         
     }
@@ -612,7 +667,7 @@ class MovieViewController: UIViewController {
         
 
         trailerView.load(withPlayerParams: playerVar)
-        trailerView.load(withVideoId: "\(model.youtubeView?[0].id.videoId ?? "" )", playerVars: playerVar)
+        trailerView.load(withVideoId: "\(model.youtubeView?[0].id.videoId ?? "64766d1c00508a00a72cfd2f" )", playerVars: playerVar)
         trailerView.layer.cornerRadius = 10
         trailerView.clipsToBounds = true
         
@@ -623,7 +678,7 @@ class MovieViewController: UIViewController {
         releaseDateLabel.addLeading(image: UIImage(systemName:  "calendar") ?? UIImage(), text: "\(self.movieDetail?.releaseDate?.getFormattedDate() ?? "")",height: CGFloat(integerLiteral: 12) ,color: .systemYellow.withAlphaComponent(0.5))
 //        releaseDateLabel.text = "\(self.movieDetail?.releaseDate?.getFormattedDate() ?? "")"
 //        taglineLabel.text = " \"\(self.movieDetail?.tagline ??  "")\" "
-        
+        self.getMovieCredits(with: self.movieDetail?.id ?? 0)
         
     
     }
@@ -658,8 +713,27 @@ class MovieViewController: UIViewController {
 //                    self.trailerView.playVideo()  //enable it later
                 }
         
+        
       
         
+    }
+    
+    
+    
+    private func getMovieCredits(with movieId: Int){
+            //    https://api.themoviedb.org/3/movie/12/credits
+            ApiCaller.shared.fetchData(from: Constants.MOVIE_DETAILS+"\(movieId)/credits"){
+                (result: Result<Credits, Error>) in
+                switch result {
+                case .success(let response):
+                    self.castMembers = response.cast
+                    DispatchQueue.main.async { [weak self] in
+                        self?.castCollectionView.reloadData()
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
     }
     
 
@@ -685,12 +759,18 @@ extension MovieViewController : YTPlayerViewDelegate {
 
 
 extension MovieViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
+
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch Section(rawValue: collectionView.tag) {
                 case .genres:
                     return genres?.count ?? 0
-//                case .carsMembers:
-//                    return carsMembers.count
+                case .cast:
+            return castMembers?.count ?? 0
 //                case .relatedMovies:
 //                    return relatedMovies.count
 //                case .recommendedMovies:
@@ -701,10 +781,10 @@ extension MovieViewController : UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        
 
-        
+
+
+
         switch Section(rawValue: collectionView.tag) {
                 case .genres:
                     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GenreCollectionViewCell.IDENTIFIER, for: indexPath) as? GenreCollectionViewCell else {
@@ -713,13 +793,31 @@ extension MovieViewController : UICollectionViewDataSource, UICollectionViewDele
                             // Configure the cell with genre information
                     let genre = genres?[indexPath.item] ?? nil
                     cell.configure(with: genre)
-                    
+
                     return cell
-//                case .carsMembers:
-//                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CarsMembersCollectionViewCell", for: indexPath) as! CarsMembersCollectionViewCell
-//                    // Configure the cell with cars members information
-//                    cell.memberNameLabel.text = carsMembers[indexPath.item]
-//                    return cell
+                case .cast:
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreditCollectionViewCell.identifier, for: indexPath) as! CreditCollectionViewCell
+                    cell.configureCast(with: castMembers?[indexPath.row])
+
+                    return cell
+                case .none:
+                    return UICollectionViewCell()
+                }
+            }
+
+    
+
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        switch Section(rawValue: collectionView.tag) {
+                case .genres:
+                    return CGSize(width: (genres?[indexPath.item].name
+                            .size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)]).width ?? 0) + 25, height: 30)
+                case .cast:
+                   let width = 100 //some width
+                   let height = 180//ratio
+                   return CGSize(width: width, height: height)
 //                case .relatedMovies:
 //                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RelatedMoviesCollectionViewCell", for: indexPath) as! RelatedMoviesCollectionViewCell
 //                    // Configure the cell with related movie information
@@ -733,25 +831,8 @@ extension MovieViewController : UICollectionViewDataSource, UICollectionViewDele
 //                    cell.movieTitleLabel.text = recommendedMovies[indexPath.item].title
 //                    return cell
                 case .none:
-                    return UICollectionViewCell()
+                    return CGSizeZero
                 }
-            }
-    
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        if (collectionView ==  genreCollectionView )  {
-//
-//            return CGSize(width: self.view.frame.width / CGFloat(genres.count)+20, height: self.view.frame.height / 4)
-//
-//           } else {
-//
-//               return collectionView.frame.size
-//           }
-//   }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (genres?[indexPath.item].name
-            .size(withAttributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)]).width ?? 0) + 25, height: 30)
     }
 
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

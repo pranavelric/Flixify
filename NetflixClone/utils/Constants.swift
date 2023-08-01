@@ -27,6 +27,7 @@ struct Constants{
     static let TOP_RATED_MOVIES                 = "/3/movie/top_rated"
     static let NOW_PLAYING_MOVIES               = "/3/movie/now_playing"
     static let MOVIE_DETAILS                    = "/3/movie/"
+    
     static let SIMILLAR_MOVIES                  = "/3/movie/{movie_id}/similar"
     static let MOVIE_CREDITS                    = "/3/movie/{movie_id}/credits"
     static let MOVIE_RECOMMENDATIONS            = "/3/movie/{movie_id}/recommendations"

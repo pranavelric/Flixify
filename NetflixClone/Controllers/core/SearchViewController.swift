@@ -96,8 +96,8 @@ class SearchViewController: UIViewController {
                        self.topSearchTable.reloadData()
                    }
 //                   self.topSearchTable.reloadData()
-//                   self.topSearchTable.scrollToBottom()
-//                   self.topSearchTable.scrollToTop()
+                   self.topSearchTable.scrollToBottom()
+                   self.topSearchTable.scrollToTop()
                case .failure(let error):
                    print(error)
                }
