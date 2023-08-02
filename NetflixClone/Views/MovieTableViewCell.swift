@@ -15,7 +15,7 @@ class MovieTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.image = UIImage(named: "heroImage")
+        imageView.image = UIImage(named: "film_poster_placeholder")
         imageView.layer.cornerRadius = 8
         return imageView
     }()

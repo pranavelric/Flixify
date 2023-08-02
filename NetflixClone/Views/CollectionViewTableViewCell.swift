@@ -82,37 +82,37 @@ extension CollectionViewTableViewCell : UICollectionViewDelegate, UICollectionVi
         guard let titleName = title.original_title ?? title.title else {
             return
         }
-        getMovieDetail(with:title.id,youtubeView: nil)
-//        ApiCaller.shared.getMoviesFromYoutube(with: titleName + "trailer"){
-//
-//            [weak self] (result: Result<YouTubeSearchListResponse, Error>) in
-//            switch result {
-//            case .success(let response):
-//
-//                let videoNames = response.items
-//                let title = self?.titles[indexPath.row]
-//                guard let id = title?.id else{
-//                    return
-//                }
-//                guard let titleOverview = title?.overview else{
-//                    return
-//                }
-//
-//                guard let strongSelf = self else {
-//                    return
-//                }
-//
-//                // here after fetching video , fetch details
-//                self?.getMovieDetail(with:id,youtubeView: videoNames)
-//
-//                //                       let viewModel = MoviePreviewViewModel(title: titleName , youtubeView: videoNames, titleOverview: titleOverview)
-//                //                       self?.delegate?.collectionViewTableViewCellDidTapCell(_cell: strongSelf, viewModel: viewModel)
-//
-//
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
+//        getMovieDetail(with:title.id,youtubeView: nil)
+        ApiCaller.shared.getMoviesFromYoutube(with: titleName + "trailer"){
+
+            [weak self] (result: Result<YouTubeSearchListResponse, Error>) in
+            switch result {
+            case .success(let response):
+
+                let videoNames = response.items
+                let title = self?.titles[indexPath.row]
+                guard let id = title?.id else{
+                    return
+                }
+                guard let titleOverview = title?.overview else{
+                    return
+                }
+
+                guard let strongSelf = self else {
+                    return
+                }
+
+                // here after fetching video , fetch details
+                self?.getMovieDetail(with:id,youtubeView: videoNames)
+
+                //                       let viewModel = MoviePreviewViewModel(title: titleName , youtubeView: videoNames, titleOverview: titleOverview)
+                //                       self?.delegate?.collectionViewTableViewCellDidTapCell(_cell: strongSelf, viewModel: viewModel)
+
+
+            case .failure(let error):
+                print(error)
+            }
+        }
         
     }
     

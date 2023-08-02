@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "Profile_avatar_placeholder_large.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Profile_avatar_placeholder_large 1.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "Profile_avatar_placeholder_large 2.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

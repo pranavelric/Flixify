@@ -24,6 +24,8 @@
 		1E8292212A6D4E320069B858 /* GenreResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8292202A6D4E320069B858 /* GenreResponse.swift */; };
 		1E84B4A02A547B4900989B79 /* CollectionViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E84B49F2A547B4900989B79 /* CollectionViewTableViewCell.swift */; };
 		1E86B35A2A7516DE0015FEA3 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 1E86B3592A7516DE0015FEA3 /* YouTubeiOSPlayerHelper */; };
+		1E9650EB2A7A8E4900E58366 /* TrailerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9650EA2A7A8E4900E58366 /* TrailerCollectionViewCell.swift */; };
+		1E9650ED2A7A9C6E00E58366 /* Clip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9650EC2A7A9C6E00E58366 /* Clip.swift */; };
 		1EA49A6D2A7408F900783E23 /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA49A6C2A7408F900783E23 /* MovieDetail.swift */; };
 		1EA726F32A79410500206C71 /* credit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA726F22A79410500206C71 /* credit.swift */; };
 		1EA726F52A79456400206C71 /* CreditCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA726F42A79456400206C71 /* CreditCollectionViewCell.swift */; };
@@ -55,6 +57,8 @@
 		1E82921E2A6D4BF10069B858 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1E8292202A6D4E320069B858 /* GenreResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreResponse.swift; sourceTree = "<group>"; };
 		1E84B49F2A547B4900989B79 /* CollectionViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTableViewCell.swift; sourceTree = "<group>"; };
+		1E9650EA2A7A8E4900E58366 /* TrailerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailerCollectionViewCell.swift; sourceTree = "<group>"; };
+		1E9650EC2A7A9C6E00E58366 /* Clip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clip.swift; sourceTree = "<group>"; };
 		1EA49A6C2A7408F900783E23 /* MovieDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
 		1EA726F22A79410500206C71 /* credit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = credit.swift; sourceTree = "<group>"; };
 		1EA726F42A79456400206C71 /* CreditCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -101,6 +105,7 @@
 				1EB8ED7A2A6C715500E970CF /* MovieTableViewCell.swift */,
 				1EE332182A769F2C00142376 /* GenreCollectionViewCell.swift */,
 				1EA726F42A79456400206C71 /* CreditCollectionViewCell.swift */,
+				1E9650EA2A7A8E4900E58366 /* TrailerCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -122,6 +127,7 @@
 				1E3B2C202A7055A1003D6B7F /* YoutubeSearchResult.swift */,
 				1EA49A6C2A7408F900783E23 /* MovieDetail.swift */,
 				1EA726F22A79410500206C71 /* credit.swift */,
+				1E9650EC2A7A9C6E00E58366 /* Clip.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -299,6 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1EA726F32A79410500206C71 /* credit.swift in Sources */,
+				1E9650ED2A7A9C6E00E58366 /* Clip.swift in Sources */,
 				1EDF031E2A54311500985EBE /* SearchViewController.swift in Sources */,
 				1E82921F2A6D4BF10069B858 /* Constants.swift in Sources */,
 				1ECA11772A6EAF46000E7E53 /* SearchResultViewController.swift in Sources */,
@@ -317,6 +324,7 @@
 				1E30D1F62A61E27C00F4CB94 /* TitleCollectionViewCell.swift in Sources */,
 				1EE332192A769F2C00142376 /* GenreCollectionViewCell.swift in Sources */,
 				1EA49A6D2A7408F900783E23 /* MovieDetail.swift in Sources */,
+				1E9650EB2A7A8E4900E58366 /* TrailerCollectionViewCell.swift in Sources */,
 				1E30D1F22A616C8D00F4CB94 /* Extensions.swift in Sources */,
 				1EDF031C2A5430FE00985EBE /* UpcomingViewController.swift in Sources */,
 				1EDF031A2A5430D800985EBE /* HomeViewController.swift in Sources */,

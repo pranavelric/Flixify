@@ -88,6 +88,9 @@ productionCompanies: Optional(
 enum Section: Int {
     case genres = 0
     case cast   = 1
+    case trailer = 2
+    case clips  = 3
+//    case crew   = 2
    
 }
 
@@ -99,6 +102,10 @@ class MovieViewController: UIViewController {
     
     private var genres : [Genre]? = []
     private var castMembers: [Cast]? = []
+    private var crewMembers: [Crew]? = []
+    private var trailers: [YouTubeVideoItem]? = []
+    private var clips: [ClipResult]? = []
+    
     
     private let scrollView: UIScrollView  =  {
         let scrollView = UIScrollView()
@@ -115,13 +122,13 @@ class MovieViewController: UIViewController {
         return view
     }()
     
-    private let webView: WKWebView  = {
-        
-        let webView = WKWebView()
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        webView.isUserInteractionEnabled = true
-        return webView
-    }()
+//    private let webView: WKWebView  = {
+//
+//        let webView = WKWebView()
+//        webView.translatesAutoresizingMaskIntoConstraints = false
+//        webView.isUserInteractionEnabled = true
+//        return webView
+//    }()
     
     // testing ytplayer
     private let trailerView : YTPlayerView = {
@@ -256,6 +263,57 @@ class MovieViewController: UIViewController {
                return genresCollectioView
     }()
     
+    private let trailerLabel : UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.textColor = .white.withAlphaComponent(0.9)
+        label.text = "Trailers"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 0
+        return label
+    }()
+
+    private let trailerCollectionView : UICollectionView = {
+                let trailerLayout = UICollectionViewFlowLayout()
+                let trailerCollectioView = UICollectionView(frame: .zero, collectionViewLayout: trailerLayout)
+        trailerLayout.scrollDirection = .horizontal
+        trailerCollectioView.translatesAutoresizingMaskIntoConstraints = false
+        trailerCollectioView.backgroundColor = .clear
+        trailerCollectioView.tag = Section.trailer.rawValue
+        trailerCollectioView.register(TrailerCollectionViewCell.self, forCellWithReuseIdentifier: TrailerCollectionViewCell.identifier)
+        trailerLayout.minimumInteritemSpacing = 20
+        trailerCollectioView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+
+                return trailerCollectioView
+    }()
+    
+    
+    private let clipsLabel : UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.textColor = .white.withAlphaComponent(0.9)
+        label.text = "Clips"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 0
+        return label
+    }()
+
+    private let clipsCollectionView : UICollectionView = {
+                let layout = UICollectionViewFlowLayout()
+                let collectioView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        layout.scrollDirection = .horizontal
+        collectioView.translatesAutoresizingMaskIntoConstraints = false
+        collectioView.backgroundColor = .clear
+        collectioView.tag = Section.clips.rawValue
+        collectioView.register(TrailerCollectionViewCell.self, forCellWithReuseIdentifier: TrailerCollectionViewCell.identifier)
+        layout.minimumInteritemSpacing = 20
+        collectioView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+
+                return collectioView
+    }()
+    
     private let castLabel : UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 22, weight: .bold)
@@ -279,7 +337,6 @@ class MovieViewController: UIViewController {
                 castCollectioView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
                 return castCollectioView
     }()
-    
     
     
     private let starLabel : UILabel = {
@@ -410,6 +467,12 @@ class MovieViewController: UIViewController {
         
         castCollectionView.delegate = self
         castCollectionView.dataSource = self
+        
+        trailerCollectionView.delegate = self
+        trailerCollectionView.dataSource = self
+        
+        clipsCollectionView.delegate = self
+        clipsCollectionView.dataSource = self
 
         navigationController?.navigationBar.isHidden = true
         configureConstraints()
@@ -433,7 +496,7 @@ class MovieViewController: UIViewController {
     }
     private func setupViews(){
       
-        contentView.addSubview(webView)
+//        contentView.addSubview(webView)
         contentView.addSubview(trailerView)
         contentView.addSubview(customThumnailImageView)
         contentView.addSubview(customThumnailCardImageView)
@@ -450,6 +513,10 @@ class MovieViewController: UIViewController {
         contentView.addSubview(genreCollectionView)
         contentView.addSubview(castLabel)
         contentView.addSubview(castCollectionView)
+        contentView.addSubview(trailerLabel)
+        contentView.addSubview(trailerCollectionView)
+        contentView.addSubview(clipsLabel)
+        contentView.addSubview(clipsCollectionView)
 //        contentView.addSubview(taglineLabel)
 
     }
@@ -610,9 +677,35 @@ class MovieViewController: UIViewController {
             castCollectionView.topAnchor.constraint(equalTo: castLabel.bottomAnchor,constant: 10),
             castCollectionView.leadingAnchor.constraint(equalTo: castLabel.leadingAnchor),
             castCollectionView.trailingAnchor.constraint(equalTo: castLabel.trailingAnchor),
-//            genreCollectionView.bottomAnchor.constraint(equalTo: releaseDateLabel.topAnchor,constant: -20),
             castCollectionView.heightAnchor.constraint(equalToConstant: 200),
-            castCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+//            castCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ]
+        
+        
+        let trailerLabelConstraints = [
+            trailerLabel.topAnchor.constraint(equalTo: castCollectionView.bottomAnchor,constant: 20),
+            trailerLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 20),
+            trailerLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ]
+        let trailerCollectionViewConstraints = [
+            trailerCollectionView.topAnchor.constraint(equalTo: trailerLabel.bottomAnchor,constant: 10),
+            trailerCollectionView.leadingAnchor.constraint(equalTo: trailerLabel.leadingAnchor),
+            trailerCollectionView.trailingAnchor.constraint(equalTo: trailerLabel.trailingAnchor),
+            trailerCollectionView.heightAnchor.constraint(equalToConstant: 200),
+//            trailerCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ]
+        
+        let clipsLabelConstraints = [
+            clipsLabel.topAnchor.constraint(equalTo: trailerCollectionView.bottomAnchor,constant: 20),
+            clipsLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 20),
+            clipsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ]
+        let clipsCollectionViewConstraints = [
+            clipsCollectionView.topAnchor.constraint(equalTo: clipsLabel.bottomAnchor,constant: 10),
+            clipsCollectionView.leadingAnchor.constraint(equalTo: clipsLabel.leadingAnchor),
+            clipsCollectionView.trailingAnchor.constraint(equalTo: clipsLabel.trailingAnchor),
+            clipsCollectionView.heightAnchor.constraint(equalToConstant: 200),
+            clipsCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ]
         
 //        let taglineLabelConstraints = [
@@ -645,6 +738,10 @@ class MovieViewController: UIViewController {
         NSLayoutConstraint.activate(genreCollectionViewConstraints)
         NSLayoutConstraint.activate(castLabelConstraints)
         NSLayoutConstraint.activate(castCollectionViewConstraints)
+        NSLayoutConstraint.activate(trailerLabelConstraints)
+        NSLayoutConstraint.activate(trailerCollectionViewConstraints)
+        NSLayoutConstraint.activate(clipsLabelConstraints)
+        NSLayoutConstraint.activate(clipsCollectionViewConstraints)
         
         
         
@@ -665,7 +762,7 @@ class MovieViewController: UIViewController {
         
         customThumnailCardImageView.sd_setImage(with: URL(string: "\(Constants.POSTER_PATH)/\(self.movieDetail?.posterPath ?? self.movieDetail?.backdropPath ?? "")"), placeholderImage: UIImage(named: "placeholder.png"))
         
-
+        trailers = model.youtubeView
         trailerView.load(withPlayerParams: playerVar)
         trailerView.load(withVideoId: "\(model.youtubeView?[0].id.videoId ?? "64766d1c00508a00a72cfd2f" )", playerVars: playerVar)
         trailerView.layer.cornerRadius = 10
@@ -679,7 +776,8 @@ class MovieViewController: UIViewController {
 //        releaseDateLabel.text = "\(self.movieDetail?.releaseDate?.getFormattedDate() ?? "")"
 //        taglineLabel.text = " \"\(self.movieDetail?.tagline ??  "")\" "
         self.getMovieCredits(with: self.movieDetail?.id ?? 0)
-        
+        self.getMovieClips(with:self.movieDetail?.id ?? 0)
+    
     
     }
     
@@ -727,15 +825,38 @@ class MovieViewController: UIViewController {
                 switch result {
                 case .success(let response):
                     self.castMembers = response.cast
+                    
                     DispatchQueue.main.async { [weak self] in
                         self?.castCollectionView.reloadData()
                     }
+//                    self.crewMembers = response.crew
+//                    DispatchQueue.main.async { [weak self] in
+//                        self?.crewCollectionView.reloadData()
+//                    }
                 case .failure(let error):
                     print(error)
                 }
             }
     }
     
+    
+    private func getMovieClips(with movieId: Int){
+        
+            //    https://api.themoviedb.org/3/movie/12/videos
+            ApiCaller.shared.fetchData(from: Constants.MOVIE_DETAILS+"\(movieId)/videos"){
+                (result: Result<MovieClip, Error>) in
+                switch result {
+                case .success(let response):
+                    self.clips = response.results
+                    
+                    DispatchQueue.main.async { [weak self] in
+                        self?.clipsCollectionView.reloadData()
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
 
 }
 
@@ -771,10 +892,10 @@ extension MovieViewController : UICollectionViewDataSource, UICollectionViewDele
                     return genres?.count ?? 0
                 case .cast:
             return castMembers?.count ?? 0
-//                case .relatedMovies:
-//                    return relatedMovies.count
-//                case .recommendedMovies:
-//                    return recommendedMovies.count
+                case .trailer:
+            return trailers?.count ?? 0
+            case .clips:
+            return clips?.count ?? 0
                 case .none:
                     return 0
                 }
@@ -800,6 +921,14 @@ extension MovieViewController : UICollectionViewDataSource, UICollectionViewDele
                     cell.configureCast(with: castMembers?[indexPath.row])
 
                     return cell
+        case .trailer:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrailerCollectionViewCell.identifier, for: indexPath) as! TrailerCollectionViewCell
+            cell.configure(with: trailers?[indexPath.row].id.videoId)
+            return cell
+        case .clips:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrailerCollectionViewCell.identifier, for: indexPath) as! TrailerCollectionViewCell
+            cell.configure(with: clips?[indexPath.row].key)
+            return cell
                 case .none:
                     return UICollectionViewCell()
                 }
@@ -830,6 +959,14 @@ extension MovieViewController : UICollectionViewDataSource, UICollectionViewDele
 //                    // Assuming Movie class has a 'title' property
 //                    cell.movieTitleLabel.text = recommendedMovies[indexPath.item].title
 //                    return cell
+        case .trailer:
+            let width = 300 //some width
+            let height = 180//ratio
+            return CGSize(width: width, height: height)
+        case .clips:
+            let width = 300 //some width
+            let height = 180//ratio
+            return CGSize(width: width, height: height)
                 case .none:
                     return CGSizeZero
                 }
