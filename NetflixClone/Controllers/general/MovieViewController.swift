@@ -9,9 +9,12 @@ import UIKit
 import WebKit
 import YouTubeiOSPlayerHelper
 
-/* what extra changes : credits, images,  recommendations check videos for id*/
+/* what extra changes : credits, images,  recommendations similar check videos for id*/
+/*credits done
+ videos done
 
-/*
+ */
+ /*
  
  
  MovieDetail(
@@ -90,6 +93,8 @@ enum Section: Int {
     case cast   = 1
     case trailer = 2
     case clips  = 3
+    case recommended = 4
+    case similar = 5
 //    case crew   = 2
    
 }
@@ -105,6 +110,8 @@ class MovieViewController: UIViewController {
     private var crewMembers: [Crew]? = []
     private var trailers: [YouTubeVideoItem]? = []
     private var clips: [ClipResult]? = []
+    private var recommendations: [Movie]? = []
+    private var similarMovies: [Movie]? = []
     
     
     private let scrollView: UIScrollView  =  {
@@ -314,6 +321,57 @@ class MovieViewController: UIViewController {
                 return collectioView
     }()
     
+    
+    private let recommendationLabel : UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.textColor = .white.withAlphaComponent(0.9)
+        label.text = "Recommended for you"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 0
+        return label
+    }()
+
+    private let recommendedCollectionView : UICollectionView = {
+                let layout = UICollectionViewFlowLayout()
+                let collectioView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        layout.scrollDirection = .horizontal
+        collectioView.translatesAutoresizingMaskIntoConstraints = false
+        collectioView.backgroundColor = .clear
+        collectioView.tag = Section.recommended.rawValue
+        collectioView.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.identifier)
+        layout.minimumInteritemSpacing = 20
+        collectioView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+
+                return collectioView
+    }()
+    
+    
+    private let similarMoviesLabel : UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.textColor = .white.withAlphaComponent(0.9)
+        label.text = "You may also like"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 0
+        return label
+    }()
+
+    private let similarMoviesCollectionView : UICollectionView = {
+                let layout = UICollectionViewFlowLayout()
+                let collectioView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        layout.scrollDirection = .horizontal
+        collectioView.translatesAutoresizingMaskIntoConstraints = false
+        collectioView.backgroundColor = .clear
+        collectioView.tag = Section.similar.rawValue
+        collectioView.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.identifier)
+        layout.minimumInteritemSpacing = 20
+        collectioView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+                return collectioView
+    }()
+    
     private let castLabel : UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 22, weight: .bold)
@@ -473,6 +531,12 @@ class MovieViewController: UIViewController {
         
         clipsCollectionView.delegate = self
         clipsCollectionView.dataSource = self
+        
+        recommendedCollectionView.dataSource = self
+        recommendedCollectionView.delegate   = self
+        
+        similarMoviesCollectionView.dataSource = self
+        similarMoviesCollectionView.delegate   = self
 
         navigationController?.navigationBar.isHidden = true
         configureConstraints()
@@ -517,6 +581,10 @@ class MovieViewController: UIViewController {
         contentView.addSubview(trailerCollectionView)
         contentView.addSubview(clipsLabel)
         contentView.addSubview(clipsCollectionView)
+        contentView.addSubview(recommendationLabel)
+        contentView.addSubview(recommendedCollectionView)
+        contentView.addSubview(similarMoviesLabel)
+        contentView.addSubview(similarMoviesCollectionView)
 //        contentView.addSubview(taglineLabel)
 
     }
@@ -705,7 +773,7 @@ class MovieViewController: UIViewController {
             clipsCollectionView.leadingAnchor.constraint(equalTo: clipsLabel.leadingAnchor),
             clipsCollectionView.trailingAnchor.constraint(equalTo: clipsLabel.trailingAnchor),
             clipsCollectionView.heightAnchor.constraint(equalToConstant: 200),
-            clipsCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+//            clipsCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ]
         
 //        let taglineLabelConstraints = [
@@ -714,7 +782,32 @@ class MovieViewController: UIViewController {
 //
 //
 //        ]
-//
+        
+        let recommendedLabelConstraints = [
+            recommendationLabel.topAnchor.constraint(equalTo: clipsCollectionView.bottomAnchor,constant: 20),
+            recommendationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 20),
+            recommendationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ]
+        let recommendedCollectionViewConstraints = [
+            recommendedCollectionView.topAnchor.constraint(equalTo: recommendationLabel.bottomAnchor,constant: 10),
+            recommendedCollectionView.leadingAnchor.constraint(equalTo: recommendationLabel.leadingAnchor),
+            recommendedCollectionView.trailingAnchor.constraint(equalTo: recommendationLabel.trailingAnchor),
+            recommendedCollectionView.heightAnchor.constraint(equalToConstant: 200),
+//            recommendedCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ]
+        
+        let similarMoviesLabelConstraints = [
+            similarMoviesLabel.topAnchor.constraint(equalTo: recommendedCollectionView.bottomAnchor,constant: 20),
+            similarMoviesLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 20),
+            similarMoviesLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ]
+        let similarMoviesCollectionViewConstraints = [
+            similarMoviesCollectionView.topAnchor.constraint(equalTo: similarMoviesLabel.bottomAnchor,constant: 10),
+            similarMoviesCollectionView.leadingAnchor.constraint(equalTo: similarMoviesLabel.leadingAnchor),
+            similarMoviesCollectionView.trailingAnchor.constraint(equalTo: similarMoviesLabel.trailingAnchor),
+            similarMoviesCollectionView.heightAnchor.constraint(equalToConstant: 200),
+            similarMoviesCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ]
        
         
         
@@ -742,6 +835,11 @@ class MovieViewController: UIViewController {
         NSLayoutConstraint.activate(trailerCollectionViewConstraints)
         NSLayoutConstraint.activate(clipsLabelConstraints)
         NSLayoutConstraint.activate(clipsCollectionViewConstraints)
+        
+        NSLayoutConstraint.activate(recommendedLabelConstraints)
+        NSLayoutConstraint.activate(recommendedCollectionViewConstraints)
+        NSLayoutConstraint.activate(similarMoviesLabelConstraints)
+        NSLayoutConstraint.activate(similarMoviesCollectionViewConstraints)
         
         
         
@@ -777,6 +875,10 @@ class MovieViewController: UIViewController {
 //        taglineLabel.text = " \"\(self.movieDetail?.tagline ??  "")\" "
         self.getMovieCredits(with: self.movieDetail?.id ?? 0)
         self.getMovieClips(with:self.movieDetail?.id ?? 0)
+        
+        self.getRecommendedMovies(with: self.movieDetail?.id ?? 0)
+        self.getSimilarMovies(with: self.movieDetail?.id ?? 0)
+        
     
     
     }
@@ -857,6 +959,45 @@ class MovieViewController: UIViewController {
                 }
             }
     }
+    
+    
+    private func getRecommendedMovies(with movieId: Int){
+        
+
+            ApiCaller.shared.fetchData(from: Constants.MOVIE_DETAILS+"\(movieId)/recommendations"){
+                (result: Result<TrendingMovieResponse, Error>) in
+                switch result {
+                case .success(let response):
+                    self.recommendations = response.results
+                    
+                    DispatchQueue.main.async { [weak self] in
+                        self?.recommendedCollectionView.reloadData()
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    
+    
+    private func getSimilarMovies(with movieId: Int){
+        
+
+            ApiCaller.shared.fetchData(from: Constants.MOVIE_DETAILS+"\(movieId)/similar"){
+                (result: Result<TrendingMovieResponse, Error>) in
+                switch result {
+                case .success(let response):
+                    self.similarMovies = response.results
+                    
+                    DispatchQueue.main.async { [weak self] in
+                        self?.similarMoviesCollectionView.reloadData()
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
 
 }
 
@@ -896,6 +1037,10 @@ extension MovieViewController : UICollectionViewDataSource, UICollectionViewDele
             return trailers?.count ?? 0
             case .clips:
             return clips?.count ?? 0
+        case .recommended:
+            return recommendations?.count ?? 0
+        case .similar:
+            return similarMovies?.count ?? 0
                 case .none:
                     return 0
                 }
@@ -928,6 +1073,18 @@ extension MovieViewController : UICollectionViewDataSource, UICollectionViewDele
         case .clips:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrailerCollectionViewCell.identifier, for: indexPath) as! TrailerCollectionViewCell
             cell.configure(with: clips?[indexPath.row].key)
+            return cell
+        case .recommended:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifier, for: indexPath) as! TitleCollectionViewCell
+            cell.configure(with: recommendations?[indexPath.row].poster_path ?? recommendations?[indexPath.row].backdrop_path ?? "")
+            cell.layer.cornerRadius = 8
+            cell.layer.masksToBounds = true
+            return cell
+        case .similar:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifier, for: indexPath) as! TitleCollectionViewCell
+            cell.configure(with: similarMovies?[indexPath.row].poster_path ?? similarMovies?[indexPath.row].backdrop_path ?? "")
+            cell.layer.cornerRadius = 8
+            cell.layer.masksToBounds = true
             return cell
                 case .none:
                     return UICollectionViewCell()
@@ -967,6 +1124,14 @@ extension MovieViewController : UICollectionViewDataSource, UICollectionViewDele
             let width = 300 //some width
             let height = 180//ratio
             return CGSize(width: width, height: height)
+        case .recommended:
+           let width = 120 //some width
+           let height = 150//ratio
+           return CGSize(width: width, height: height)
+        case .similar:
+            let width = 120 //some width
+            let height = 150//ratio
+           return CGSize(width: width, height: height)
                 case .none:
                     return CGSizeZero
                 }
