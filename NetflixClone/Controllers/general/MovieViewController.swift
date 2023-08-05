@@ -677,6 +677,8 @@ class MovieViewController: UIViewController {
             goToWebsiteButton.heightAnchor.constraint(equalToConstant: 20),
         ]
         
+        goToWebsiteButton.addTarget(self, action: #selector(goToWebsiteButtonTapped), for: .touchUpInside)
+        
         let infoButtonConstraints = [
             infoButton.topAnchor.constraint(equalTo: genreCollectionView.bottomAnchor,constant: 20),
             infoButton.trailingAnchor.constraint(equalTo: goToWebsiteButton.leadingAnchor, constant: -5),
@@ -847,6 +849,17 @@ class MovieViewController: UIViewController {
         
         
         
+    }
+    
+    @objc func goToWebsiteButtonTapped(){
+        DispatchQueue.main.async { [weak self] in
+            let vc = MovieHomePageViewController()
+            vc.configure(with: self?.movieDetail?.homepage )
+          
+            vc.modalPresentationStyle = .formSheet
+            self?.present(vc, animated: true)
+//            self?.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     @objc func infoButtonTapped(){

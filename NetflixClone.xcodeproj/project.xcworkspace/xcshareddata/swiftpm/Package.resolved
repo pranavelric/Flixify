@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "glideshow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/v15a1/Glideshow",
+      "state" : {
+        "revision" : "f61639a53f0a1e1a5be6a40e09c9a4848854ff83",
+        "version" : "1.1.2"
+      }
+    },
+    {
       "identity" : "scalingcarousel",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/superpeteblaze/ScalingCarousel.git",

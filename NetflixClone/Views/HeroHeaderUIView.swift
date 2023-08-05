@@ -50,7 +50,7 @@ class HeroHeaderUIView: UIView {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.image = UIImage(named: "heroImage")
+        imageView.image = UIImage(named: "film_poster_placeholder")
         imageView.layer.cornerRadius = 8
         return imageView
     }()
@@ -113,6 +113,11 @@ class HeroHeaderUIView: UIView {
         NSLayoutConstraint.activate(playButtonConstraints)
         NSLayoutConstraint.activate(downloadButtonConstraints)
          
+    }
+    
+    public func configure(imageUrl url : String?){
+        print("hereherehehehrherheh")
+        heroImageView.sd_setImage(with: URL(string: "\(Constants.POSTER_PATH)/\(url ?? "")"), placeholderImage: UIImage(named: "film_poster_placeholder"))
     }
     
     

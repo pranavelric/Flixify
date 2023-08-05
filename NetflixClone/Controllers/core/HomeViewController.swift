@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 enum Sections: Int{
     case TrendingMovie  = 0
 //    case TrendingTv     = 1
@@ -23,7 +22,9 @@ class HomeViewController: UIViewController {
     
 //    later add : "Treding tv",
     let sectionTitle:[String] = ["Trending movies","Popular","Upcoming movies","Top rated", "Now playing"]
-    
+
+    var headerMovieImage: [String]? = []
+    private var  headerView : HeroHeaderUIView = HeroHeaderUIView()
     private let homeFeedTable: UITableView = {
         let table = UITableView(frame: CGRect(), style: .grouped)
         table.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifier)
@@ -52,10 +53,9 @@ class HomeViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(homeFeedTable)
        
-
+        headerView  = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 550))
         homeFeedTable.delegate   = self
         homeFeedTable.dataSource = self
-        let headerView = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 550))
         homeFeedTable.tableHeaderView =  headerView
         homeFeedTable.sectionHeaderTopPadding = 0
         configNavBar()
@@ -66,10 +66,13 @@ class HomeViewController: UIViewController {
 
     }
     
+
+    
     override func viewDidLayoutSubviews() {
         setGradientBackground()
         super.viewDidLayoutSubviews()
         homeFeedTable.frame = view.bounds
+        
     }
     
     private func configNavBar(){
@@ -103,12 +106,14 @@ class HomeViewController: UIViewController {
         ApiCaller.shared.fetchData(from: Constants.TRENDING_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
+                   self.headerMovieImage?.append(response.results.randomElement()?.poster_path ?? response.results.randomElement()?.backdrop_path ?? "")
+                   let url = self.headerMovieImage?.randomElement()
+                   self.headerView.configure(imageUrl: url)
                    cell.configure(with: response.results)
                case .failure(let error):
                    print(error)
                }
            }
-        
     }
     
 //    private func getTrendingTv(with cell:CollectionViewTableViewCell){
@@ -127,6 +132,7 @@ class HomeViewController: UIViewController {
         ApiCaller.shared.fetchData(from: Constants.TOP_RATED_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
+                   self.headerMovieImage?.append(response.results.randomElement()?.poster_path ?? response.results.randomElement()?.backdrop_path ?? "")
                    cell.configure(with: response.results)
                case .failure(let error):
                    print(error)
@@ -138,6 +144,8 @@ class HomeViewController: UIViewController {
         ApiCaller.shared.fetchData(from: Constants.UPCOMING_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
+                   self.headerMovieImage?.append(response.results.randomElement()?.poster_path ?? response.results.randomElement()?.backdrop_path ?? "")
+                   
                    cell.configure(with: response.results)
                case .failure(let error):
                    print(error)
@@ -149,6 +157,7 @@ class HomeViewController: UIViewController {
         ApiCaller.shared.fetchData(from: Constants.POPULAR_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
+                   self.headerMovieImage?.append(response.results.randomElement()?.poster_path ?? response.results.randomElement()?.backdrop_path ?? "")
                    cell.configure(with: response.results)
                case .failure(let error):
                    print(error)
@@ -159,6 +168,7 @@ class HomeViewController: UIViewController {
         ApiCaller.shared.fetchData(from: Constants.POPULAR_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
+                   self.headerMovieImage?.append(response.results.randomElement()?.poster_path ?? response.results.randomElement()?.backdrop_path ?? "")
                    cell.configure(with: response.results)
                case .failure(let error):
                    print(error)
@@ -223,6 +233,7 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource{
             default:
                 return UITableViewCell()
         }
+        
         return cell
     }
     
@@ -304,3 +315,4 @@ extension HomeViewController : CollectionViewTableViewCellDelegate{
       
     }
 }
+

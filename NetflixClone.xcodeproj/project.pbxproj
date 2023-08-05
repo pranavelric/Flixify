@@ -36,6 +36,7 @@
 		1EBAA8992A7E4BA800710A0B /* ImageCardOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBAA8982A7E4BA800710A0B /* ImageCardOverlay.swift */; };
 		1EBAA89B2A7E4E1500710A0B /* ImageCardContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBAA89A2A7E4E1500710A0B /* ImageCardContentView.swift */; };
 		1EBAA89D2A7E534100710A0B /* MovieImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBAA89C2A7E534100710A0B /* MovieImages.swift */; };
+		1EBAA89F2A7E695A00710A0B /* MovieHomePageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBAA89E2A7E695A00710A0B /* MovieHomePageController.swift */; };
 		1ECA11772A6EAF46000E7E53 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECA11762A6EAF46000E7E53 /* SearchResultViewController.swift */; };
 		1EDF03042A542D1E00985EBE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDF03032A542D1E00985EBE /* AppDelegate.swift */; };
 		1EDF03062A542D1E00985EBE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDF03052A542D1E00985EBE /* SceneDelegate.swift */; };
@@ -74,6 +75,7 @@
 		1EBAA8982A7E4BA800710A0B /* ImageCardOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCardOverlay.swift; sourceTree = "<group>"; };
 		1EBAA89A2A7E4E1500710A0B /* ImageCardContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCardContentView.swift; sourceTree = "<group>"; };
 		1EBAA89C2A7E534100710A0B /* MovieImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieImages.swift; sourceTree = "<group>"; };
+		1EBAA89E2A7E695A00710A0B /* MovieHomePageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieHomePageController.swift; sourceTree = "<group>"; };
 		1ECA11762A6EAF46000E7E53 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		1EDF03002A542D1E00985EBE /* NetflixClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetflixClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EDF03032A542D1E00985EBE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 		1E627C5A2A54797A008AC834 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1EBAA8952A7E3E7100710A0B /* imageCard */,
 				1E84B49F2A547B4900989B79 /* CollectionViewTableViewCell.swift */,
 				1EFF626A2A55AB2E00D953A9 /* HeroHeaderUIView.swift */,
 				1E30D1F52A61E27C00F4CB94 /* TitleCollectionViewCell.swift */,
@@ -196,6 +199,7 @@
 				1ECA11762A6EAF46000E7E53 /* SearchResultViewController.swift */,
 				1E1AA1582A717EE100EA8EC6 /* MovieViewController.swift */,
 				1E7FE4662A7D10ED005037AD /* MovieImagesViewController.swift */,
+				1EBAA89E2A7E695A00710A0B /* MovieHomePageController.swift */,
 			);
 			path = general;
 			sourceTree = "<group>";
@@ -239,7 +243,6 @@
 		1EDF03182A5430CA00985EBE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1EBAA8952A7E3E7100710A0B /* imageCard */,
 				1ECA11792A6EBA7A000E7E53 /* general */,
 				1ECA11782A6EBA67000E7E53 /* core */,
 			);
@@ -304,6 +307,7 @@
 				1E6045FC2A6BB90D00FC0141 /* XCRemoteSwiftPackageReference "ScalingCarousel" */,
 				1E86B3582A7516DE0015FEA3 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
 				1EBAA8922A7E3CA800710A0B /* XCRemoteSwiftPackageReference "Shuffle" */,
+				1EBAA8A02A7E708700710A0B /* XCRemoteSwiftPackageReference "Glideshow" */,
 			);
 			productRefGroup = 1EDF03012A542D1E00985EBE /* Products */;
 			projectDirPath = "";
@@ -349,6 +353,7 @@
 				1EBAA89B2A7E4E1500710A0B /* ImageCardContentView.swift in Sources */,
 				1E8292212A6D4E320069B858 /* GenreResponse.swift in Sources */,
 				1EBAA8992A7E4BA800710A0B /* ImageCardOverlay.swift in Sources */,
+				1EBAA89F2A7E695A00710A0B /* MovieHomePageController.swift in Sources */,
 				1EDF03042A542D1E00985EBE /* AppDelegate.swift in Sources */,
 				1EDF03062A542D1E00985EBE /* SceneDelegate.swift in Sources */,
 				1EBAA89D2A7E534100710A0B /* MovieImages.swift in Sources */,
@@ -617,6 +622,14 @@
 			requirement = {
 				branch = master;
 				kind = branch;
+			};
+		};
+		1EBAA8A02A7E708700710A0B /* XCRemoteSwiftPackageReference "Glideshow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/v15a1/Glideshow";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
