@@ -14,6 +14,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
     
     private let posterImageView :UIImageView = {
         let imageView = UIImageView()
+        imageView.image = UIImage(named: "film_poster_placeholder")
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()

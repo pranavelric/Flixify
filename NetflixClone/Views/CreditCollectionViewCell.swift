@@ -14,7 +14,7 @@ class CreditCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.image = UIImage(named: "placeholderImage")
+        imageView.image = UIImage(named: "profile_placeholder")
         imageView.layer.cornerRadius = 8
         return imageView
     }()
