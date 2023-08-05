@@ -9,10 +9,10 @@ import UIKit
 import WebKit
 import YouTubeiOSPlayerHelper
 
-/* what extra changes : credits, images,  recommendations similar check videos for id*/
+/* what extra changes : images*/
 /*credits done
  videos done
-
+ recommendations similar
  */
  /*
  
@@ -112,7 +112,9 @@ class MovieViewController: UIViewController {
     private var clips: [ClipResult]? = []
     private var recommendations: [Movie]? = []
     private var similarMovies: [Movie]? = []
-    
+    private var movieImages: [Backdrop]? = []
+    private var movieImagesPosters: [Poster]? = []
+    private var movieImagesLogos: [Logo]? = []
     
     private let scrollView: UIScrollView  =  {
         let scrollView = UIScrollView()
@@ -681,6 +683,8 @@ class MovieViewController: UIViewController {
             infoButton.heightAnchor.constraint(equalToConstant: 20),
         ]
         
+        infoButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
+        
        
         let bookmarkButtonConstraints = [
             bookmarkButton.topAnchor.constraint(equalTo: genreCollectionView.bottomAnchor,constant: 20),
@@ -844,6 +848,46 @@ class MovieViewController: UIViewController {
         
         
     }
+    
+    @objc func infoButtonTapped(){
+        
+        DispatchQueue.main.async { [weak self] in
+            let vc = MovieImagesViewController()
+            vc.configure(with: MovieImagesViewModel(movieImages: self?.movieImages,movieImagesPosters: self?.movieImagesPosters,movieImagesLogos: self?.movieImagesLogos) )
+            self?.showPopover(ofViewController: vc, originView: self?.view ?? UIView())
+            vc.modalPresentationStyle = .popover
+            vc.popoverPresentationController?.permittedArrowDirections = .up
+            vc.modalTransitionStyle = .crossDissolve
+            
+            vc.preferredContentSize = .init(width:  1500, height:  600)  // the size of popover
+//            vc.preferredContentSize = .init(width: 500, height: 600)  // the size of popover
+//                   the view of the popover
+                vc.popoverPresentationController?.sourceRect = CGRect(    // the place to display the popover
+                    origin: CGPoint(
+                        x: self?.view.frame.midX ?? 0,
+                        y: 50
+                    ),
+                    size: .zero
+                )
+//            self?.present(vc, animated: true)
+//            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+      
+        
+    }
+    
+    func showPopover(ofViewController popoverViewController: UIViewController, originView: UIView) {
+        popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+        if let popoverController = popoverViewController.popoverPresentationController {
+            popoverController.delegate = self
+            popoverController.sourceView = originView
+            popoverController.sourceRect = originView.bounds
+            popoverController.backgroundColor = popoverViewController.view.backgroundColor
+            popoverController.permittedArrowDirections = UIPopoverArrowDirection.any
+        }
+        self.present(popoverViewController, animated: true)
+    }
+    
     func configure(with model: MoviePreviewViewModel){
         self.movieDetail = model.movieDetail
         self.genres = self.movieDetail?.genres
@@ -879,6 +923,7 @@ class MovieViewController: UIViewController {
         self.getRecommendedMovies(with: self.movieDetail?.id ?? 0)
         self.getSimilarMovies(with: self.movieDetail?.id ?? 0)
         
+        self.getMovieImages(with: self.movieDetail?.id ?? 0)
     
     
     }
@@ -931,6 +976,28 @@ class MovieViewController: UIViewController {
                     DispatchQueue.main.async { [weak self] in
                         self?.castCollectionView.reloadData()
                     }
+//                    self.crewMembers = response.crew
+//                    DispatchQueue.main.async { [weak self] in
+//                        self?.crewCollectionView.reloadData()
+//                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
+    
+    private func getMovieImages(with movieId: Int){
+            //  https://api.themoviedb.org/3/movie/234567/images
+            ApiCaller.shared.fetchData(from: Constants.MOVIE_DETAILS+"\(movieId)/images"){
+                (result: Result<MovieImages, Error>) in
+                switch result {
+                case .success(let response):
+                    self.movieImages = response.backdrops
+                    self.movieImagesPosters = response.posters
+                    self.movieImagesLogos = response.logos
+//                    DispatchQueue.main.async { [weak self] in
+//                        self?.castCollectionView.reloadData()
+//                    }
 //                    self.crewMembers = response.crew
 //                    DispatchQueue.main.async { [weak self] in
 //                        self?.crewCollectionView.reloadData()
@@ -1143,3 +1210,28 @@ extension MovieViewController : UICollectionViewDataSource, UICollectionViewDele
     
     }
     
+
+
+extension MovieViewController: UIPopoverPresentationControllerDelegate {
+
+    func adaptivePresentationStyle(for: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+        //return UIModalPresentationStyle.fullScreen
+    }
+
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        if traitCollection.horizontalSizeClass == .compact {
+            return UIModalPresentationStyle.none
+            //return UIModalPresentationStyle.fullScreen
+        }
+        //return UIModalPresentationStyle.fullScreen
+        return UIModalPresentationStyle.none
+    }
+
+    func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
+        switch style {
+        default:
+            return controller.presentedViewController
+        }
+    }
+}
