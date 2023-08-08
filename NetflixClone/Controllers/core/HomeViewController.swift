@@ -23,7 +23,7 @@ class HomeViewController: UIViewController {
 //    later add : "Treding tv",
     let sectionTitle:[String] = ["Trending movies","Popular","Upcoming movies","Top rated", "Now playing"]
 
-    var headerMovieImage: [String]? = []
+    var headerMovieImage: [Movie?] = []
     private var  headerView : HeroHeaderUIView = HeroHeaderUIView()
     private let homeFeedTable: UITableView = {
         let table = UITableView(frame: CGRect(), style: .grouped)
@@ -106,9 +106,11 @@ class HomeViewController: UIViewController {
         ApiCaller.shared.fetchData(from: Constants.TRENDING_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
-                   self.headerMovieImage?.append(response.results.randomElement()?.poster_path ?? response.results.randomElement()?.backdrop_path ?? "")
-                   let url = self.headerMovieImage?.randomElement()
-                   self.headerView.configure(imageUrl: url)
+                   self.headerMovieImage.append(response.results.randomElement())
+//                   self.headerMovieImage?.append(response.results.randomElement()?.poster_path ?? response.results.randomElement()?.backdrop_path ?? "")
+                   let movie = self.headerMovieImage.randomElement()!
+                   let url = movie?.poster_path ?? movie?.backdrop_path ?? ""
+                   self.headerView.configure(imageUrl: url,currentMovie: movie,controller: self)
                    cell.configure(with: response.results)
                case .failure(let error):
                    print(error)
@@ -132,7 +134,7 @@ class HomeViewController: UIViewController {
         ApiCaller.shared.fetchData(from: Constants.TOP_RATED_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
-                   self.headerMovieImage?.append(response.results.randomElement()?.poster_path ?? response.results.randomElement()?.backdrop_path ?? "")
+                   self.headerMovieImage.append(response.results.randomElement())
                    cell.configure(with: response.results)
                case .failure(let error):
                    print(error)
@@ -144,7 +146,7 @@ class HomeViewController: UIViewController {
         ApiCaller.shared.fetchData(from: Constants.UPCOMING_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
-                   self.headerMovieImage?.append(response.results.randomElement()?.poster_path ?? response.results.randomElement()?.backdrop_path ?? "")
+                   self.headerMovieImage.append(response.results.randomElement())
                    
                    cell.configure(with: response.results)
                case .failure(let error):
@@ -157,7 +159,7 @@ class HomeViewController: UIViewController {
         ApiCaller.shared.fetchData(from: Constants.POPULAR_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
-                   self.headerMovieImage?.append(response.results.randomElement()?.poster_path ?? response.results.randomElement()?.backdrop_path ?? "")
+                   self.headerMovieImage.append(response.results.randomElement())
                    cell.configure(with: response.results)
                case .failure(let error):
                    print(error)
@@ -168,7 +170,7 @@ class HomeViewController: UIViewController {
         ApiCaller.shared.fetchData(from: Constants.POPULAR_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
-                   self.headerMovieImage?.append(response.results.randomElement()?.poster_path ?? response.results.randomElement()?.backdrop_path ?? "")
+                   self.headerMovieImage.append(response.results.randomElement())
                    cell.configure(with: response.results)
                case .failure(let error):
                    print(error)

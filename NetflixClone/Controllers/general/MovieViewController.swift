@@ -901,7 +901,7 @@ class MovieViewController: UIViewController {
         } else {
             storage.addBookmarkForTitle(title: self.currentMovie!)
             bookmarkButton.configuration?.image = UIImage(systemName: "bookmark.fill",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
-            bookmarkButton.configuration?.baseForegroundColor = .green
+            bookmarkButton.configuration?.baseForegroundColor = .systemYellow
             Toast.show(message: "Bookmark added", controller: self)
             pulsate()
         }
@@ -912,8 +912,7 @@ class MovieViewController: UIViewController {
         if storage.isTitleInStorage(title: self.currentMovie! ) {
            
             bookmarkButton.configuration?.image = UIImage(systemName: "bookmark.fill",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
-            bookmarkButton.configuration?.baseForegroundColor = .green
-           
+            bookmarkButton.configuration?.baseForegroundColor = .systemYellow
         } else {
             bookmarkButton.configuration?.image?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.white]))
             bookmarkButton.configuration?.image = UIImage(systemName: "bookmark",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))

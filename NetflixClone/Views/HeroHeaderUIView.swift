@@ -13,7 +13,9 @@ import UIKit
 
 
 class HeroHeaderUIView: UIView {
-    
+    private let storage =  Storage()
+    private var currentMovie : Movie? = nil
+    private var controller: UIViewController? = nil
     private let downloadButton:UIButton = {
         let button:UIButton =  UIButton()
         button.setTitle("Bookmark", for: .normal)
@@ -22,7 +24,7 @@ class HeroHeaderUIView: UIView {
         button.configuration = .filled()
         button.configuration?.baseBackgroundColor = .darkGray
         button.configuration?.baseForegroundColor = .white
-        button.configuration?.image = UIImage(systemName: "bookmark.fill")
+        button.configuration?.image = UIImage(systemName: "bookmark.fill",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
         button.configuration?.imagePadding = 2
         button.configuration?.imagePlacement = .leading
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -38,7 +40,7 @@ class HeroHeaderUIView: UIView {
         button.configuration = .filled()
         button.configuration?.baseBackgroundColor = .white
         button.configuration?.baseForegroundColor = .black
-        button.configuration?.image = UIImage(systemName: "play.fill")
+        button.configuration?.image = UIImage(systemName: "play.fill",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
         button.configuration?.imagePlacement = .leading
         button.configuration?.imagePadding = 5
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -109,16 +111,116 @@ class HeroHeaderUIView: UIView {
             downloadButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -50),
             downloadButton.widthAnchor.constraint(equalToConstant: 130)
         ]
-
+        downloadButton.addTarget(self, action: #selector(bookmarkButtonTapped), for: .touchUpInside)
+        playbutton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         NSLayoutConstraint.activate(playButtonConstraints)
         NSLayoutConstraint.activate(downloadButtonConstraints)
          
     }
     
-    public func configure(imageUrl url : String?){
-        print("hereherehehehrherheh")
+    public func configure(imageUrl url : String?,currentMovie: Movie?,controller: HomeViewController){
+        self.controller = controller
+        self.currentMovie = currentMovie
         heroImageView.sd_setImage(with: URL(string: "\(Constants.POSTER_PATH)/\(url ?? "")"), placeholderImage: UIImage(named: "film_poster_placeholder"))
+        DispatchQueue.main.async {
+            self.checkBookmarkButton()
+        }
     }
+    @objc func bookmarkButtonTapped(){
+        
+        
+        if storage.isTitleInStorage(title: self.currentMovie! ) {
+            storage.deleteBookmark(title: self.currentMovie!)
+            downloadButton.configuration?.image = UIImage(systemName: "bookmark",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
+            downloadButton.configuration?.baseForegroundColor = .white
+            Toast.show(message: "Bookmark removed", controller: self.controller!)
+           
+        } else {
+            storage.addBookmarkForTitle(title: self.currentMovie!)
+            downloadButton.configuration?.image = UIImage(systemName: "bookmark.fill",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
+            downloadButton.configuration?.baseForegroundColor = .systemYellow
+            Toast.show(message: "Bookmark added", controller: self.controller!)
+           
+        }
+
+    }
+    
+    func checkBookmarkButton(){
+        if storage.isTitleInStorage(title: self.currentMovie! ) {
+           
+            downloadButton.configuration?.image = UIImage(systemName: "bookmark.fill",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
+            downloadButton.configuration?.baseForegroundColor = .systemYellow
+           
+        } else {
+            downloadButton.configuration?.image?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.white]))
+            downloadButton.configuration?.image = UIImage(systemName: "bookmark",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
+            downloadButton.configuration?.baseForegroundColor = .white
+        }
+    }
+    
+    @objc func playButtonTapped(){
+        
+        getData()
+        
+        
+    }
+    
+    
+    
+    func getData(){
+        //        getMovieDetail(with:title.id,youtubeView: nil)
+        ApiCaller.shared.getMoviesFromYoutube(with: self.currentMovie?.title ?? (self.currentMovie?.original_title ?? "" ) + "trailer"){
+
+                    [weak self] (result: Result<YouTubeSearchListResponse, Error>) in
+                    switch result {
+                    case .success(let response):
+
+                        let videoNames = response.items
+                        let title = self?.currentMovie
+                        guard let id = title?.id else{
+                            return
+                        }
+                        guard let titleOverview = title?.overview else{
+                            return
+                        }
+
+                        guard let strongSelf = self else {
+                            return
+                        }
+
+                        
+                        self?.getMovieDetail(with:id,youtubeView: videoNames, movie: title)
+
+
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+    }
+    
+    
+    func getMovieDetail(with movieId: Int,youtubeView videoNames: [YouTubeVideoItem]?, movie: Movie? ) {
+        //    https://api.themoviedb.org/3/movie/12
+        ApiCaller.shared.fetchData(from: Constants.MOVIE_DETAILS+"\(movieId)"){
+            (result: Result<MovieDetail, Error>) in
+            switch result {
+            case .success(let response):
+                let viewModel = MoviePreviewViewModel( movieDetail: response, youtubeView: videoNames, movie: movie )
+                DispatchQueue.main.async { [weak self] in
+                    let vc = MovieViewController()
+                    vc.configure(with: viewModel)
+                    vc.modalPresentationStyle = .formSheet
+                    self?.controller?.present(vc, animated: true)
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+ 
+    }
+    
+    
+
     
     
 }
