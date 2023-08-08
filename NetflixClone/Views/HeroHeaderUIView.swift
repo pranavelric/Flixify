@@ -16,13 +16,13 @@ class HeroHeaderUIView: UIView {
     
     private let downloadButton:UIButton = {
         let button:UIButton =  UIButton()
-        button.setTitle("Download", for: .normal)
+        button.setTitle("Bookmark", for: .normal)
 //        button.layer.borderColor = UIColor.white.cgColor
 //        button.layer.borderWidth = 1
         button.configuration = .filled()
         button.configuration?.baseBackgroundColor = .darkGray
         button.configuration?.baseForegroundColor = .white
-        button.configuration?.image = UIImage(systemName: "plus")
+        button.configuration?.image = UIImage(systemName: "bookmark.fill")
         button.configuration?.imagePadding = 2
         button.configuration?.imagePlacement = .leading
         button.translatesAutoresizingMaskIntoConstraints = false

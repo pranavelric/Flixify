@@ -131,7 +131,7 @@ class MovieTableViewCell: UITableViewCell {
     private func configureMoviePosterImage(){
         let margin: CGFloat = 16
         // Hero image constraints
-        moviePosterImageView.sd_setImage(with: URL(string: "\(Constants.POSTER_PATH)/\(self.movie?.poster_path ?? "")"), placeholderImage: UIImage(named: "placeholder.png"))
+        moviePosterImageView.sd_setImage(with: URL(string: "\(Constants.POSTER_PATH)/\(self.movie?.poster_path ?? "")"), placeholderImage: UIImage(named: "film_poster_placeholder"))
 
 
         moviePosterImageView .translatesAutoresizingMaskIntoConstraints = false

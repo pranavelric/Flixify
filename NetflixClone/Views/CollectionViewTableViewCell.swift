@@ -14,6 +14,7 @@ protocol CollectionViewTableViewCellDelegate :AnyObject{
 class CollectionViewTableViewCell: UITableViewCell {
     
     static let identifier = "CollectionViewTableViewCell"
+    private let actionsBuilder = MovieCellActionsBuilder()
     weak var delegate: (CollectionViewTableViewCellDelegate)?
     private var titles:[Movie] = []
     
@@ -53,11 +54,52 @@ class CollectionViewTableViewCell: UITableViewCell {
         }
     }
     
+    private func setupActionsForCell(at indexPath: IndexPath) -> [UIAction] {
+        let bookmarksAction = setupBookmarksAction(indexPath)
+        let learnMoreAction = setupLearnMoreAction(indexPath)
+        return [bookmarksAction, learnMoreAction]
+    }
+    
+    private func setupLearnMoreAction(_ indexPath: IndexPath) -> UIAction {
+        return actionsBuilder.createLearnMoreAction {
+           print("learn more")
+        }
+    }
+    private func setupBookmarksAction(_ indexPath: IndexPath) -> UIAction {
+//        return actionsBuilder.createAddToBookmarksAction {
+//           print("add to bookmark")
+//            Storage().addBookmarkForTitle(title: self.titles[indexPath.row])
+//        }
+        let storage =  Storage()
+        if storage.isTitleInStorage(title: titles[indexPath.row] ) {
+            return actionsBuilder.createDeleteAction {
+//                Storage.deleteBookmark(title : titles[indexPath.row])
+                storage.deleteBookmark(title: self.titles[indexPath.row])
+            }
+        } else {
+            return actionsBuilder.createAddToBookmarksAction {
+                storage.addBookmarkForTitle(title: self.titles[indexPath.row])
+            }
+        }
+    }
+    
     
 }
 
 
 extension CollectionViewTableViewCell : UICollectionViewDelegate, UICollectionViewDataSource{
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+      let config = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+          return UIMenu(title: "", children: self.setupActionsForCell(at: indexPath))
+      }
+        return config
+    }
+    
+    
+    
+    
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifier, for: indexPath) as? TitleCollectionViewCell else{
             return UICollectionViewCell()
@@ -103,7 +145,7 @@ extension CollectionViewTableViewCell : UICollectionViewDelegate, UICollectionVi
                 }
 
                 // here after fetching video , fetch details
-                self?.getMovieDetail(with:id,youtubeView: videoNames)
+                self?.getMovieDetail(with:id,youtubeView: videoNames, movie: title)
 
                 //                       let viewModel = MoviePreviewViewModel(title: titleName , youtubeView: videoNames, titleOverview: titleOverview)
                 //                       self?.delegate?.collectionViewTableViewCellDidTapCell(_cell: strongSelf, viewModel: viewModel)
@@ -119,13 +161,13 @@ extension CollectionViewTableViewCell : UICollectionViewDelegate, UICollectionVi
     
     
     
-    func getMovieDetail(with movieId: Int,youtubeView videoNames: [YouTubeVideoItem]? ) {
+    func getMovieDetail(with movieId: Int,youtubeView videoNames: [YouTubeVideoItem]?, movie: Movie? ) {
         //    https://api.themoviedb.org/3/movie/12
         ApiCaller.shared.fetchData(from: Constants.MOVIE_DETAILS+"\(movieId)"){
             (result: Result<MovieDetail, Error>) in
             switch result {
             case .success(let response):
-                let viewModel = MoviePreviewViewModel( movieDetail: response, youtubeView: videoNames)
+                let viewModel = MoviePreviewViewModel( movieDetail: response, youtubeView: videoNames, movie: movie )
                 self.delegate?.collectionViewTableViewCellDidTapCell(_cell: self, viewModel: viewModel)
             case .failure(let error):
                 print(error)

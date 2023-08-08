@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -32,6 +33,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
+    func applicationWillTerminate(_ application: UIApplication) {
+        saveContext()
+    }
+    
     
     private func getMovieGenre(){
         ApiCaller.shared.fetchData(from: Constants.GENRE_LIST_FOR_MOVIES) { (result: Result<GenreResponse, Error>) in
@@ -46,7 +51,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            }
     }
 
+    // MARK: - Core Data
     
+    lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "MovieModel")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        return container
+    }()
+
+
+    func saveContext () {
+        let context = persistentContainer.viewContext
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
+    }
 
 }
 

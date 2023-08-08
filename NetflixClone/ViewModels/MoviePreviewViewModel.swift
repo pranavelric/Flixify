@@ -14,5 +14,5 @@ struct MoviePreviewViewModel{
 //    let title: String
     let youtubeView : [YouTubeVideoItem]?
 //    let titleOverview : String
-    
+    let movie : Movie?
 }

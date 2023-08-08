@@ -104,7 +104,7 @@ enum Section: Int {
 class MovieViewController: UIViewController {
     
     private var movieDetail : MovieDetail? = nil
-    
+    private var currentMovie: Movie? = nil
     private var genres : [Genre]? = []
     private var castMembers: [Cast]? = []
     private var crewMembers: [Crew]? = []
@@ -115,7 +115,7 @@ class MovieViewController: UIViewController {
     private var movieImages: [Backdrop]? = []
     private var movieImagesPosters: [Poster]? = []
     private var movieImagesLogos: [Logo]? = []
-    
+    let storage =  Storage()
     private let scrollView: UIScrollView  =  {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -696,7 +696,7 @@ class MovieViewController: UIViewController {
         
         
         
-        
+        bookmarkButton.addTarget(self, action: #selector(bookmarkButtonTapped), for: .touchUpInside)
         
         
         
@@ -889,6 +889,66 @@ class MovieViewController: UIViewController {
         
     }
     
+    @objc func bookmarkButtonTapped(){
+        
+        
+        if storage.isTitleInStorage(title: self.currentMovie! ) {
+            storage.deleteBookmark(title: self.currentMovie!)
+            bookmarkButton.configuration?.image = UIImage(systemName: "bookmark",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
+            bookmarkButton.configuration?.baseForegroundColor = .white
+            Toast.show(message: "Bookmark removed", controller: self)
+            flash()
+        } else {
+            storage.addBookmarkForTitle(title: self.currentMovie!)
+            bookmarkButton.configuration?.image = UIImage(systemName: "bookmark.fill",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
+            bookmarkButton.configuration?.baseForegroundColor = .green
+            Toast.show(message: "Bookmark added", controller: self)
+            pulsate()
+        }
+
+    }
+    
+    func checkBookmarkButton(){
+        if storage.isTitleInStorage(title: self.currentMovie! ) {
+           
+            bookmarkButton.configuration?.image = UIImage(systemName: "bookmark.fill",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
+            bookmarkButton.configuration?.baseForegroundColor = .green
+           
+        } else {
+            bookmarkButton.configuration?.image?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.white]))
+            bookmarkButton.configuration?.image = UIImage(systemName: "bookmark",withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
+            bookmarkButton.configuration?.baseForegroundColor = .white
+        }
+    }
+    
+    
+    func pulsate() {
+        let pulse = CASpringAnimation(keyPath: "transform.scale")
+        pulse.duration = 0.4
+        pulse.fromValue = 0.98
+        pulse.toValue = 1.2
+        pulse.autoreverses = true
+        pulse.repeatCount = 2
+        pulse.initialVelocity = 0.5
+        pulse.damping = 1.0
+        bookmarkButton.layer.add(pulse, forKey: nil)
+    }
+    func flash() {
+        let flash = CABasicAnimation(keyPath: "opacity")
+        flash.duration = 0.3
+        flash.fromValue = 1
+        flash.toValue = 0.1
+        flash.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        flash.autoreverses = true
+        flash.repeatCount = 2
+        bookmarkButton.layer.add(flash, forKey: nil)
+    }
+    
+    
+    
+    
+    
+    
     func showPopover(ofViewController popoverViewController: UIViewController, originView: UIView) {
         popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
         if let popoverController = popoverViewController.popoverPresentationController {
@@ -913,9 +973,9 @@ class MovieViewController: UIViewController {
        
 //        self.webView.load(URLRequest(url: url))
 //        self.webView.isUserInteractionEnabled = true
-        customThumnailImageView.sd_setImage(with: URL(string: "\(Constants.POSTER_PATH)/\(self.movieDetail?.backdropPath ?? self.movieDetail?.posterPath ?? "")"), placeholderImage: UIImage(named: "placeholder.png"))
+        customThumnailImageView.sd_setImage(with: URL(string: "\(Constants.POSTER_PATH)/\(self.movieDetail?.backdropPath ?? self.movieDetail?.posterPath ?? "")"), placeholderImage: UIImage(named: "film_poster_placeholder"))
         
-        customThumnailCardImageView.sd_setImage(with: URL(string: "\(Constants.POSTER_PATH)/\(self.movieDetail?.posterPath ?? self.movieDetail?.backdropPath ?? "")"), placeholderImage: UIImage(named: "placeholder.png"))
+        customThumnailCardImageView.sd_setImage(with: URL(string: "\(Constants.POSTER_PATH)/\(self.movieDetail?.posterPath ?? self.movieDetail?.backdropPath ?? "")"), placeholderImage: UIImage(named: "film_poster_placeholder"))
         
         trailers = model.youtubeView
         trailerView.load(withPlayerParams: playerVar)
@@ -937,7 +997,8 @@ class MovieViewController: UIViewController {
         self.getSimilarMovies(with: self.movieDetail?.id ?? 0)
         
         self.getMovieImages(with: self.movieDetail?.id ?? 0)
-    
+        self.currentMovie = model.movie
+        checkBookmarkButton()
     
     }
     

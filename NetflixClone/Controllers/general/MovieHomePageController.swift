@@ -81,7 +81,7 @@ class MovieHomePageViewController: UIViewController, WKUIDelegate {
              progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
              progressView.topAnchor.constraint(equalTo: view.topAnchor),
-             progressView.heightAnchor.constraint(equalToConstant: 12.0)
+             progressView.heightAnchor.constraint(equalToConstant: 2.0)
          ])
      }
 

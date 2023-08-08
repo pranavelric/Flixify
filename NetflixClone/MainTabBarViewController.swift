@@ -20,9 +20,9 @@ class MainTabBarViewController: UITabBarController {
          let homeVC = createNavigationController(rootViewController: HomeViewController(), title: "Home", imageName: "house")
          let upcomingVC = createNavigationController(rootViewController: UpcomingViewController(), title: "Coming soon", imageName: "play.circle")
          let searchVC = createNavigationController(rootViewController: SearchViewController(), title: "Top Search", imageName: "magnifyingglass")
-         let downloadsVC = createNavigationController(rootViewController: DownloadsViewController(), title: "Downloads", imageName: "arrow.down.to.line")
+         let bookmarkVC = createNavigationController(rootViewController: BookmarksViewController(), title: "Bookmarks", imageName: "bookmark")
          
-         setViewControllers([homeVC, upcomingVC, searchVC, downloadsVC], animated: true)
+         setViewControllers([homeVC, upcomingVC, searchVC, bookmarkVC], animated: true)
          tabBar.tintColor = .label
      }
      

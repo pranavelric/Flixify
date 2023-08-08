@@ -35,7 +35,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
     
     
     public func configure(with url: String){
-        posterImageView.sd_setImage(with: URL(string: "\(Constants.POSTER_PATH)/\(url)"), placeholderImage: UIImage(named: "placeholder.png"))
+        posterImageView.sd_setImage(with: URL(string: "\(Constants.POSTER_PATH)/\(url)"), placeholderImage: UIImage(named: "film_poster_placeholder"))
 
     }
     

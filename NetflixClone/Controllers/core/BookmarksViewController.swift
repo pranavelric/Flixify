@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DownloadsViewController: UIViewController {
+class BookmarksViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
