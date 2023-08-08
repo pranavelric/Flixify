@@ -18,6 +18,7 @@ enum Sections: Int{
 }
 
 
+
 class HomeViewController: UIViewController {
     
 //    later add : "Treding tv",
@@ -111,7 +112,7 @@ class HomeViewController: UIViewController {
                    let movie = self.headerMovieImage.randomElement()!
                    let url = movie?.poster_path ?? movie?.backdrop_path ?? ""
                    self.headerView.configure(imageUrl: url,currentMovie: movie,controller: self)
-                   cell.configure(with: response.results)
+                   cell.configure(with: response.results,controller: self)
                case .failure(let error):
                    print(error)
                }
@@ -135,7 +136,7 @@ class HomeViewController: UIViewController {
                switch result {
                case .success(let response):
                    self.headerMovieImage.append(response.results.randomElement())
-                   cell.configure(with: response.results)
+                   cell.configure(with: response.results, controller: self)
                case .failure(let error):
                    print(error)
                }
@@ -148,7 +149,7 @@ class HomeViewController: UIViewController {
                case .success(let response):
                    self.headerMovieImage.append(response.results.randomElement())
                    
-                   cell.configure(with: response.results)
+                   cell.configure(with: response.results,controller: self)
                case .failure(let error):
                    print(error)
                }
@@ -160,7 +161,7 @@ class HomeViewController: UIViewController {
                switch result {
                case .success(let response):
                    self.headerMovieImage.append(response.results.randomElement())
-                   cell.configure(with: response.results)
+                   cell.configure(with: response.results,controller: self)
                case .failure(let error):
                    print(error)
                }
@@ -171,7 +172,7 @@ class HomeViewController: UIViewController {
                switch result {
                case .success(let response):
                    self.headerMovieImage.append(response.results.randomElement())
-                   cell.configure(with: response.results)
+                   cell.configure(with: response.results,controller: self)
                case .failure(let error):
                    print(error)
                }
@@ -311,8 +312,8 @@ extension HomeViewController : CollectionViewTableViewCellDelegate{
             let vc = MovieViewController()
             vc.configure(with: viewModel)
             vc.modalPresentationStyle = .formSheet
-            self?.present(vc, animated: true)
-//            self?.navigationController?.pushViewController(vc, animated: true)
+//            self?.present(vc, animated: true)
+            self?.navigationController?.pushViewController(vc, animated: true)
         }
       
     }

@@ -115,7 +115,7 @@ class MovieViewController: UIViewController {
     private var movieImages: [Backdrop]? = []
     private var movieImagesPosters: [Poster]? = []
     private var movieImagesLogos: [Logo]? = []
-    let storage =  Storage()
+    let storage =  Storage.shared
     private let scrollView: UIScrollView  =  {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -1138,6 +1138,55 @@ class MovieViewController: UIViewController {
                 }
             }
     }
+    
+    
+    func getData(with movie: Movie?){
+        //        getMovieDetail(with:title.id,youtubeView: nil)
+        ApiCaller.shared.getMoviesFromYoutube(with: movie?.title ?? (movie?.original_title ?? "" ) + "trailer"){
+
+                    [weak self] (result: Result<YouTubeSearchListResponse, Error>) in
+                    switch result {
+                    case .success(let response):
+
+                        let videoNames = response.items
+                        
+                        guard let id = movie?.id else{
+                            return
+                        }
+                   
+                        
+                        self?.getMovieDetail(with:id,youtubeView: videoNames, movie: movie)
+
+
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+    }
+    
+    
+    func getMovieDetail(with movieId: Int,youtubeView videoNames: [YouTubeVideoItem]?, movie: Movie? ) {
+        //    https://api.themoviedb.org/3/movie/12
+        ApiCaller.shared.fetchData(from: Constants.MOVIE_DETAILS+"\(movieId)"){
+            (result: Result<MovieDetail, Error>) in
+            switch result {
+            case .success(let response):
+                let viewModel = MoviePreviewViewModel( movieDetail: response, youtubeView: videoNames, movie: movie )
+                DispatchQueue.main.async { [weak self] in
+                    let vc = MovieViewController()
+                    vc.configure(with: viewModel)
+//                    vc.modalPresentationStyle = .formSheet
+//                    self?.present(vc, animated: true)
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+ 
+    }
+    
+    
 
 }
 
@@ -1184,6 +1233,20 @@ extension MovieViewController : UICollectionViewDataSource, UICollectionViewDele
                 case .none:
                     return 0
                 }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch Section(rawValue: collectionView.tag) {
+        case .genres: break
+        case .cast: break
+        case .trailer: break
+        case .clips: break
+        case .recommended:
+            self.getData(with: self.recommendations?[indexPath.row])
+        case .similar:
+                self.getData(with: self.similarMovies?[indexPath.row])
+        case .none: break
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

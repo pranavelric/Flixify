@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 struct MovieCellActionsBuilder {
+    static let shared = MovieCellActionsBuilder()
     func createDeleteAction(performedAction: @escaping () -> Void) -> UIAction {
         UIAction(title: "Delete bookmark", image: UIImage(systemName: "bookmark.slash"), attributes: .destructive) { _ in
             performedAction()

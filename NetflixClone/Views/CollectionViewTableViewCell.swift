@@ -17,6 +17,7 @@ class CollectionViewTableViewCell: UITableViewCell {
     private let actionsBuilder = MovieCellActionsBuilder()
     weak var delegate: (CollectionViewTableViewCellDelegate)?
     private var titles:[Movie] = []
+    private var controller: UIViewController? = nil
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -47,8 +48,9 @@ class CollectionViewTableViewCell: UITableViewCell {
         collectionView.frame = contentView.bounds
     }
     
-    public func configure(with titles: [Movie]){
+    public func configure(with titles: [Movie],controller uiViewController: UIViewController){
         self.titles = titles
+        self.controller = uiViewController
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reloadData()
         }
@@ -75,10 +77,12 @@ class CollectionViewTableViewCell: UITableViewCell {
             return actionsBuilder.createDeleteAction {
 //                Storage.deleteBookmark(title : titles[indexPath.row])
                 storage.deleteBookmark(title: self.titles[indexPath.row])
+                Toast.show(message: "Bookmark removed", controller: self.controller!)
             }
         } else {
             return actionsBuilder.createAddToBookmarksAction {
                 storage.addBookmarkForTitle(title: self.titles[indexPath.row])
+                Toast.show(message: "Bookmark added", controller: self.controller!)
             }
         }
     }

@@ -13,7 +13,7 @@ class UpcomingViewController: UIViewController {
     private var toTop:Bool = false
     private var newOffset :CGFloat = CGFloat()
     private var currentOffset : CGFloat =  CGFloat()
-    
+    private let actionsBuilder = MovieCellActionsBuilder()
     private let upcomingTable: UITableView = {
         let table  = UITableView()
         table.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.IDENTIFIER)
@@ -79,6 +79,83 @@ class UpcomingViewController: UIViewController {
                }
            }
     }
+    
+    
+    
+    
+    func getData(with movie: Movie?){
+        //        getMovieDetail(with:title.id,youtubeView: nil)
+        ApiCaller.shared.getMoviesFromYoutube(with: movie?.title ?? (movie?.original_title ?? "" ) + "trailer"){
+
+                    [weak self] (result: Result<YouTubeSearchListResponse, Error>) in
+                    switch result {
+                    case .success(let response):
+
+                        let videoNames = response.items
+                        
+                        guard let id = movie?.id else{
+                            return
+                        }
+                   
+                        
+                        self?.getMovieDetail(with:id,youtubeView: videoNames, movie: movie)
+
+
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+    }
+    
+    
+    func getMovieDetail(with movieId: Int,youtubeView videoNames: [YouTubeVideoItem]?, movie: Movie? ) {
+        //    https://api.themoviedb.org/3/movie/12
+        ApiCaller.shared.fetchData(from: Constants.MOVIE_DETAILS+"\(movieId)"){
+            (result: Result<MovieDetail, Error>) in
+            switch result {
+            case .success(let response):
+                let viewModel = MoviePreviewViewModel( movieDetail: response, youtubeView: videoNames, movie: movie )
+                DispatchQueue.main.async { [weak self] in
+                    let vc = MovieViewController()
+                    vc.configure(with: viewModel)
+//                    vc.modalPresentationStyle = .formSheet
+//                    self?.present(vc, animated: true)
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+ 
+    }
+    
+    private func setupActionsForCell(at indexPath: IndexPath) -> [UIAction] {
+        let bookmarksAction = setupBookmarksAction(indexPath)
+        let learnMoreAction = setupLearnMoreAction(indexPath)
+        return [bookmarksAction, learnMoreAction]
+    }
+    
+    private func setupLearnMoreAction(_ indexPath: IndexPath) -> UIAction {
+        return actionsBuilder.createLearnMoreAction {
+           print("learn more")
+        }
+    }
+    private func setupBookmarksAction(_ indexPath: IndexPath) -> UIAction {
+        if Storage.shared.isTitleInStorage(title: upComingMovies[indexPath.row] ) {
+            return actionsBuilder.createDeleteAction {
+//                Storage.deleteBookmark(title : titles[indexPath.row])
+                Storage.shared.deleteBookmark(title: self.upComingMovies[indexPath.row])
+                Toast.show(message: "Bookmark removed", controller: self)
+            }
+        } else {
+            return actionsBuilder.createAddToBookmarksAction {
+                Storage.shared.addBookmarkForTitle(title: self.upComingMovies[indexPath.row])
+                Toast.show(message: "Bookmark added", controller: self)
+                
+            }
+        }
+    }
+    
 
 }
 
@@ -148,5 +225,19 @@ extension UpcomingViewController : UITableViewDelegate, UITableViewDataSource{
         }
         currentOffset = newOffset
     }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.getData(with: self.upComingMovies[indexPath.row])
+    }
  
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let config = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            return UIMenu(title: "", children: self.setupActionsForCell(at: indexPath))
+        }
+          return config
+    }
+
+    
+    
 }

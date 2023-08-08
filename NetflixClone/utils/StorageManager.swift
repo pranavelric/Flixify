@@ -12,7 +12,7 @@ import CoreData
 class StorageManager {
     
     //MARK: Properties
-    
+    static let shared = StorageManager()
     private let context: NSManagedObjectContext?
     
     //MARK: - Initialization
@@ -165,20 +165,20 @@ class StorageManager {
 
 
 struct Storage{
-    private let storageManager = StorageManager()
+    static let shared = Storage()
     func isTitleInStorage(title: Movie) -> Bool {
-        storageManager.isInStorage(title)
+        StorageManager.shared.isInStorage(title)
   
     }
 
     func deleteBookmark(title: Movie) {
         
-        storageManager.delete(title)
+        StorageManager.shared.delete(title)
     }
 
     func addBookmarkForTitle(title: Movie) {
         
-        storageManager.save(title)
+        StorageManager.shared.save(title)
     }
 
     func learnMoreAboutTitle(title: Movie) {

@@ -13,7 +13,7 @@ import UIKit
 
 
 class HeroHeaderUIView: UIView {
-    private let storage =  Storage()
+    private let storage =  Storage.shared
     private var currentMovie : Movie? = nil
     private var controller: UIViewController? = nil
     private let downloadButton:UIButton = {
@@ -210,7 +210,8 @@ class HeroHeaderUIView: UIView {
                     let vc = MovieViewController()
                     vc.configure(with: viewModel)
                     vc.modalPresentationStyle = .formSheet
-                    self?.controller?.present(vc, animated: true)
+                    //                    self?.controller?.present(vc, animated: true)
+                    self?.controller?.navigationController?.pushViewController(vc, animated: true)
                 }
             case .failure(let error):
                 print(error)
