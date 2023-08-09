@@ -56,7 +56,7 @@ class UpcomingViewController: UIViewController {
         setGradientBackground()
         super.viewDidLayoutSubviews()
         upcomingTable.frame = view.bounds
-   
+        navigationController?.navigationBar.isHidden = false
     
     }
     

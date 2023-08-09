@@ -732,7 +732,7 @@ class MovieViewController: UIViewController {
         let synopsisLabelConstraints = [
             synopsisLabel.topAnchor.constraint(equalTo: genreCollectionView.bottomAnchor,constant: 20),
             synopsisLabel.leadingAnchor.constraint(equalTo: customThumnailImageView.leadingAnchor,constant: 20),
-            synopsisLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            synopsisLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -5),
         ]
         
         let overviewLabelConstraints = [

@@ -48,6 +48,9 @@ class StorageManager {
         item.setValue(Int64(title.vote_count ?? 0), forKey: "voteCount")
         item.setValue(title.adult ?? false, forKey: "adult")
         item.setValue(title.video ?? false, forKey: "video")
+        item.setValue(title.genre_ids, forKey: "genre_ids")
+        item.setValue(title.popularity, forKey: "popularity")
+        item.setValue(title.release_date, forKey: "releaseDate")
 
         
 //        item.id = Int64(title.id)
