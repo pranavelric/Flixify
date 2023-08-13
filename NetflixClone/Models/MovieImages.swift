@@ -27,13 +27,13 @@ struct Backdrop: Codable {
 }
 
 struct Logo: Codable {
-    let aspectRatio: Double
-    let height: Int
+    let aspectRatio: Double?
+    let height: Int?
     let iso639_1: String?
-    let filePath: String
-    let voteAverage: Double
-    let voteCount: Int
-    let width: Int
+    let filePath: String?
+    let voteAverage: Double?
+    let voteCount: Int?
+    let width: Int?
     
     private enum CodingKeys: String, CodingKey {
         case aspectRatio = "aspect_ratio"
@@ -47,13 +47,13 @@ struct Logo: Codable {
 }
 
 struct Poster: Codable {
-    let aspectRatio: Double
-    let height: Int
+    let aspectRatio: Double?
+    let height: Int?
     let iso639_1: String?
-    let filePath: String
-    let voteAverage: Double
-    let voteCount: Int
-    let width: Int
+    let filePath: String?
+    let voteAverage: Double?
+    let voteCount: Int?
+    let width: Int?
     
     private enum CodingKeys: String, CodingKey {
         case aspectRatio = "aspect_ratio"

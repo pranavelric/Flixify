@@ -52,5 +52,338 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CF7CC6EC-4CDB-45B7-BA08-6822B2C5D370"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NetflixClone/Managers/ApiCaller.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "fetchData(from:with:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "CF7CC6EC-4CDB-45B7-BA08-6822B2C5D370 - ebc33f1fb1132c26"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "560">
+               </Location>
+               <Location
+                  uuid = "CF7CC6EC-4CDB-45B7-BA08-6822B2C5D370 - ebc33f1fb1132c26"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "600">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D44D77D3-263B-45A6-9672-C29AF85243B5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NetflixClone/Managers/ApiCaller.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "fetchData(from:with:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D44D77D3-263B-45A6-9672-C29AF85243B5 - ebc33f1fb1132c26"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "560">
+               </Location>
+               <Location
+                  uuid = "D44D77D3-263B-45A6-9672-C29AF85243B5 - ebc33f1fb1132c26"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "600">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "471C650D-5041-4363-9CBD-58FD3315070A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NetflixClone/Managers/ApiCaller.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "fetchData(from:with:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "471C650D-5041-4363-9CBD-58FD3315070A - ebc33f1fb1132be0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "760">
+               </Location>
+               <Location
+                  uuid = "471C650D-5041-4363-9CBD-58FD3315070A - ebc33f1fb1132be0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "1644">
+               </Location>
+               <Location
+                  uuid = "471C650D-5041-4363-9CBD-58FD3315070A - ebc33f1fb1132be0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40"
+                  offsetFromSymbolStart = "920">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BEF0FEA5-365D-4FA5-9F7C-D9A570C64CB6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NetflixClone/Managers/ApiCaller.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "fetchData(from:with:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "BEF0FEA5-365D-4FA5-9F7C-D9A570C64CB6 - ebc33f1fb1132bc1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "1344">
+               </Location>
+               <Location
+                  uuid = "BEF0FEA5-365D-4FA5-9F7C-D9A570C64CB6 - ebc33f1fb1132bc1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "1028">
+               </Location>
+               <Location
+                  uuid = "BEF0FEA5-365D-4FA5-9F7C-D9A570C64CB6 - ebc33f1fb1132bc1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "2184">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EC95F891-2DAD-4FA8-973F-8825E3F173BB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NetflixClone/Managers/ApiCaller.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "fetchData(from:with:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EC95F891-2DAD-4FA8-973F-8825E3F173BB - ebc33f1fb1132ba2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "42"
+                  endingLineNumber = "42"
+                  offsetFromSymbolStart = "1560">
+               </Location>
+               <Location
+                  uuid = "EC95F891-2DAD-4FA8-973F-8825E3F173BB - ebc33f1fb1132ba2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "42"
+                  endingLineNumber = "42"
+                  offsetFromSymbolStart = "1628">
+               </Location>
+               <Location
+                  uuid = "EC95F891-2DAD-4FA8-973F-8825E3F173BB - ebc33f1fb1132ba2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "42"
+                  endingLineNumber = "42"
+                  offsetFromSymbolStart = "1732">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "714EFC9C-69B2-4CB2-ACA7-ED164A65F44E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NetflixClone/Managers/ApiCaller.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "fetchData(from:with:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "714EFC9C-69B2-4CB2-ACA7-ED164A65F44E - ebc33f1fb1132b6c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "44"
+                  endingLineNumber = "44"
+                  offsetFromSymbolStart = "812">
+               </Location>
+               <Location
+                  uuid = "714EFC9C-69B2-4CB2-ACA7-ED164A65F44E - ebc33f1fb1132b83"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in NetflixClone.ApiCaller.fetchData&lt;&#x3c4;_0_0 where &#x3c4;_0_0: Swift.Decodable&gt;(from: Swift.String, with: Swift.Optional&lt;Swift.String&gt;, completion: (Swift.Result&lt;&#x3c4;_0_0, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "NetflixClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/pranavchoudhary/Developer/ios/NetflixClone/NetflixClone/Managers/ApiCaller.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "2092">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

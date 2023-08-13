@@ -166,6 +166,7 @@ extension SearchResultViewController : UICollectionViewDelegate, UICollectionVie
         cell.configure(with: posterPath)
         cell.backgroundColor = .darkGray
         cell.layer.cornerRadius = 8
+        cell.layer.masksToBounds = true
         return cell
     }
     

@@ -504,7 +504,7 @@ class MovieViewController: UIViewController {
     private let overviewLabel: UILabel = {
 
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.font = .systemFont(ofSize: 16, weight: .regular)
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -856,7 +856,13 @@ class MovieViewController: UIViewController {
             let vc = MovieHomePageViewController()
             vc.configure(with: self?.movieDetail?.homepage )
           
-            vc.modalPresentationStyle = .formSheet
+            vc.modalPresentationStyle = .pageSheet
+            if let sheet = vc.sheetPresentationController {
+                // 2
+                sheet.detents = [.medium(),.large()]
+                sheet.prefersGrabberVisible = true
+
+            }
             self?.present(vc, animated: true)
 //            self?.navigationController?.pushViewController(vc, animated: true)
         }
@@ -872,13 +878,14 @@ class MovieViewController: UIViewController {
             vc.popoverPresentationController?.permittedArrowDirections = .up
             vc.modalTransitionStyle = .crossDissolve
             
+            
             vc.preferredContentSize = .init(width:  1500, height:  600)  // the size of popover
 //            vc.preferredContentSize = .init(width: 500, height: 600)  // the size of popover
 //                   the view of the popover
                 vc.popoverPresentationController?.sourceRect = CGRect(    // the place to display the popover
                     origin: CGPoint(
                         x: self?.view.frame.midX ?? 0,
-                        y: 50
+                        y: 150
                     ),
                     size: .zero
                 )
@@ -1238,7 +1245,15 @@ extension MovieViewController : UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch Section(rawValue: collectionView.tag) {
         case .genres: break
-        case .cast: break
+        case .cast:
+            DispatchQueue.main.async { [weak self] in
+                let vc = CharacterDetailViewController()
+                
+//                vc.modalPresentationStyle = .formSheet
+                vc.configure(self!.castMembers![indexPath.row])
+//                self?.present(vc, animated: true)
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
         case .trailer: break
         case .clips: break
         case .recommended:
@@ -1344,12 +1359,16 @@ extension MovieViewController : UICollectionViewDataSource, UICollectionViewDele
 //        return 40
 //    }
     
+    
+    
     }
     
 
 
+
 extension MovieViewController: UIPopoverPresentationControllerDelegate {
 
+    
     func adaptivePresentationStyle(for: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none
         //return UIModalPresentationStyle.fullScreen
