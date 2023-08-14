@@ -985,7 +985,7 @@ class MovieViewController: UIViewController {
         
         trailers = model.youtubeView
         trailerView.load(withPlayerParams: playerVar)
-        trailerView.load(withVideoId: "\(model.youtubeView?[0].id.videoId ?? "64766d1c00508a00a72cfd2f" )", playerVars: playerVar)
+        trailerView.load(withVideoId: "\(model.youtubeView?.first?.id.videoId ?? "64766d1c00508a00a72cfd2f" )", playerVars: playerVar)
         trailerView.layer.cornerRadius = 10
         trailerView.clipsToBounds = true
         

@@ -73,6 +73,7 @@ class HomeViewController: UIViewController {
         setGradientBackground()
         super.viewDidLayoutSubviews()
         homeFeedTable.frame = view.bounds
+        navigationController?.navigationBar.isHidden = false
         
     }
     

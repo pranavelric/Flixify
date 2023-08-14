@@ -61,6 +61,7 @@ class CharacterDetailViewController: UIViewController {
     let detailViewController = CharacterPopupViewController()
     private var cast: Cast? = nil
     private var characterImages: [CharacterImage]? = []
+    private var characterMovie: [Movie]? = []
     private var randomBgImage: String? = nil
     private var person: Person? = nil
     fileprivate var imageView: UIImageView = {
@@ -189,12 +190,13 @@ class CharacterDetailViewController: UIViewController {
     }()
     
     
+        
     
     private let characterMoviesLabel : UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 22, weight: .bold)
         label.textColor = .white.withAlphaComponent(0.9)
-        label.text = "Cast"
+        label.text = "Featured Films"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.numberOfLines = 0
@@ -208,7 +210,7 @@ class CharacterDetailViewController: UIViewController {
                 castCollectioView.translatesAutoresizingMaskIntoConstraints = false
                 castCollectioView.backgroundColor = .clear
                 castCollectioView.tag = CharacterSection.movies.rawValue
-                castCollectioView.register(CreditCollectionViewCell.self, forCellWithReuseIdentifier: CreditCollectionViewCell.identifier)
+                castCollectioView.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.identifier)
                 castLayout.minimumInteritemSpacing = 20
                 castCollectioView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
                 return castCollectioView
@@ -226,6 +228,10 @@ class CharacterDetailViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         characterImagesCollectionView.dataSource = self
         characterImagesCollectionView.delegate = self
+        
+        characterMoviesCollectionView.dataSource = self
+        characterMoviesCollectionView.delegate  = self
+        
         configureConstraints()
 
         self.edgesForExtendedLayout = []
@@ -247,10 +253,7 @@ class CharacterDetailViewController: UIViewController {
         scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-//
-//        mContentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
-//        mContentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-//
+
         mContentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         mContentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         mContentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
@@ -261,14 +264,11 @@ class CharacterDetailViewController: UIViewController {
         mContentView.addSubview(imageView)
         mContentView.addSubview(characterName)
         mContentView.addSubview(movieCharacterLabel)
-        mContentView.addSubview(goToWebsiteButton)
         mContentView.addSubview(characterImagesCollectionView)
         mContentView.addSubview(bioTitleLabel)
         mContentView.addSubview(bioLabel)
-        
-        
-       
-       
+        mContentView.addSubview(characterMoviesLabel)
+        mContentView.addSubview(characterMoviesCollectionView)
     }
 
  
@@ -346,11 +346,26 @@ class CharacterDetailViewController: UIViewController {
         
         let bioLabelConstraint = [
             bioLabel.topAnchor.constraint(equalTo: bioTitleLabel.bottomAnchor,constant: 10),
-            bioLabel.bottomAnchor.constraint(equalTo: mContentView.bottomAnchor,constant: -20),
+//            bioLabel.bottomAnchor.constraint(equalTo: mContentView.bottomAnchor,constant: -20),
             bioLabel.trailingAnchor.constraint(equalTo: mContentView.trailingAnchor,constant: -20),
             bioLabel.leadingAnchor.constraint(equalTo: mContentView.leadingAnchor,constant: 10)
         ]
         
+        
+        let characterMovieCollectionLabelConstraint = [
+            characterMoviesLabel.topAnchor.constraint(equalTo: bioLabel.bottomAnchor,constant: 10),
+            characterMoviesLabel.trailingAnchor.constraint(equalTo: mContentView.trailingAnchor),
+            characterMoviesLabel.leadingAnchor.constraint(equalTo: mContentView.leadingAnchor,constant: 10)
+        ]
+        
+        
+        let characterMovieCollectionConstraint = [
+            characterMoviesCollectionView.topAnchor.constraint(equalTo: characterMoviesLabel.bottomAnchor,constant: 10),
+            characterMoviesCollectionView.trailingAnchor.constraint(equalTo: mContentView.trailingAnchor),
+            characterMoviesCollectionView.heightAnchor.constraint(equalToConstant: 200),
+            characterMoviesCollectionView.leadingAnchor.constraint(equalTo: mContentView.leadingAnchor,constant: 0),
+            characterMoviesCollectionView.bottomAnchor.constraint(equalTo: mContentView.bottomAnchor,constant: -20),
+        ]
         
         
         NSLayoutConstraint.activate(bgImageViewConstraints)
@@ -360,7 +375,8 @@ class CharacterDetailViewController: UIViewController {
         NSLayoutConstraint.activate(characterImageCollectionConstraint)
         NSLayoutConstraint.activate(bioTitleLabelConstraint)
         NSLayoutConstraint.activate(bioLabelConstraint)
-        
+        NSLayoutConstraint.activate(characterMovieCollectionLabelConstraint)
+        NSLayoutConstraint.activate(characterMovieCollectionConstraint)
         
        
      
@@ -440,6 +456,22 @@ class CharacterDetailViewController: UIViewController {
                     }
                 }
         
+        ApiCaller.shared.fetchData(from: "/3/person/\(self.cast?.id ?? 0)/movie_credits"){
+
+                    [weak self] (result: Result<PersonMovieCredit, Error>) in
+                    switch result {
+                    case .success(let response):
+
+                        self?.characterMovie = response.cast
+                        DispatchQueue.main.async {
+                            self?.characterMoviesCollectionView.reloadData()
+                        }
+                        
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+        
         
     }
     
@@ -451,6 +483,53 @@ class CharacterDetailViewController: UIViewController {
     
     
     
+    func getData(with movie: Movie?){
+        //        getMovieDetail(with:title.id,youtubeView: nil)
+        ApiCaller.shared.getMoviesFromYoutube(with: movie?.title ?? (movie?.original_title ?? "" ) + "trailer"){
+
+                    [weak self] (result: Result<YouTubeSearchListResponse, Error>) in
+                    switch result {
+                    case .success(let response):
+
+                        let videoNames = response.items
+                        
+                        guard let id = movie?.id else{
+                            return
+                        }
+                   
+                        
+                        self?.getMovieDetail(with:id,youtubeView: videoNames, movie: movie)
+
+
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+    }
+    
+    
+    
+    func getMovieDetail(with movieId: Int,youtubeView videoNames: [YouTubeVideoItem]?, movie: Movie? ) {
+        //    https://api.themoviedb.org/3/movie/12
+        ApiCaller.shared.fetchData(from: Constants.MOVIE_DETAILS+"\(movieId)"){
+            (result: Result<MovieDetail, Error>) in
+            switch result {
+            case .success(let response):
+                let viewModel = MoviePreviewViewModel( movieDetail: response, youtubeView: videoNames, movie: movie )
+                DispatchQueue.main.async { [weak self] in
+                    let vc = MovieViewController()
+                    vc.configure(with: viewModel)
+//                    vc.modalPresentationStyle = .formSheet
+//                    self?.present(vc, animated: true)
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+ 
+    }
+    
     
     
 
@@ -459,17 +538,50 @@ class CharacterDetailViewController: UIViewController {
 
 extension CharacterDetailViewController : UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return characterImages?.count ?? 10
+        switch CharacterSection(rawValue: collectionView.tag) {
+        case .images:
+            return characterImages?.count ?? 0
+        case .movies:
+            return characterMovie?.count ?? 0
+        case .none:
+            return 0
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifier, for: indexPath) as! TitleCollectionViewCell
-        cell.configure(with: self.characterImages?[indexPath.row].filePath ?? "")
-        print(self.characterImages?[indexPath.row].filePath)
-        cell.layer.cornerRadius = 8
-        cell.layer.masksToBounds = true
-        return cell
+        
+        
+        switch CharacterSection(rawValue: collectionView.tag) {
+        case .images:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifier, for: indexPath) as! TitleCollectionViewCell
+            cell.configure(with: self.characterImages?[indexPath.row].filePath ?? "")
+            cell.layer.cornerRadius = 8
+            cell.layer.masksToBounds = true
+            return cell
+        case .movies:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifier, for: indexPath) as! TitleCollectionViewCell
+            cell.configure(with: self.characterMovie?[indexPath.row].poster_path ?? self.characterMovie?[indexPath.row].backdrop_path ?? "")
+            cell.layer.cornerRadius = 8
+            cell.layer.masksToBounds = true
+            return cell
+        case .none:
+            return UICollectionViewCell()
+        }
+        
+
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch CharacterSection(rawValue: collectionView.tag) {
+        case .images:
+                break
+        case .movies:
+            self.getData(with: self.characterMovie?[indexPath.row])
+        case .none: break
+        }
+    }
+
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -477,6 +589,12 @@ extension CharacterDetailViewController : UICollectionViewDataSource, UICollecti
         let width = 120 //some width
         let height = 180//ratio
         return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+
+        let config = UIContextMenuConfiguration()
+          return config
     }
     
 }

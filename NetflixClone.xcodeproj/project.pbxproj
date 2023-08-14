@@ -62,6 +62,7 @@
 		1EDF031E2A54311500985EBE /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDF031D2A54311500985EBE /* SearchViewController.swift */; };
 		1EDF03202A54312C00985EBE /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDF031F2A54312C00985EBE /* BookmarksViewController.swift */; };
 		1EE332192A769F2C00142376 /* GenreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE332182A769F2C00142376 /* GenreCollectionViewCell.swift */; };
+		1EF28AB72A8A172E00079665 /* PersonMovieCredit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF28AB62A8A172E00079665 /* PersonMovieCredit.swift */; };
 		1EFF626B2A55AB2E00D953A9 /* HeroHeaderUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFF626A2A55AB2E00D953A9 /* HeroHeaderUIView.swift */; };
 /* End PBXBuildFile section */
 
@@ -116,6 +117,7 @@
 		1EDF031D2A54311500985EBE /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		1EDF031F2A54312C00985EBE /* BookmarksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewController.swift; sourceTree = "<group>"; };
 		1EE332182A769F2C00142376 /* GenreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreCollectionViewCell.swift; sourceTree = "<group>"; };
+		1EF28AB62A8A172E00079665 /* PersonMovieCredit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonMovieCredit.swift; sourceTree = "<group>"; };
 		1EFF626A2A55AB2E00D953A9 /* HeroHeaderUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroHeaderUIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -177,6 +179,7 @@
 				1EBAA89C2A7E534100710A0B /* MovieImages.swift */,
 				1EAE52BA2A88F995008EE52F /* CharacterImage.swift */,
 				1EAE52BC2A890591008EE52F /* PersonDetail.swift */,
+				1EF28AB62A8A172E00079665 /* PersonMovieCredit.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				1E9650ED2A7A9C6E00E58366 /* Clip.swift in Sources */,
 				1E66CEF22A87A16900C49AB1 /* CharacterPopupController.swift in Sources */,
 				1EAE52BB2A88F995008EE52F /* CharacterImage.swift in Sources */,
+				1EF28AB72A8A172E00079665 /* PersonMovieCredit.swift in Sources */,
 				1EDF031E2A54311500985EBE /* SearchViewController.swift in Sources */,
 				1E82921F2A6D4BF10069B858 /* Constants.swift in Sources */,
 				1E7FE4652A7D10B3005037AD /* MovieImagesViewModel.swift in Sources */,
