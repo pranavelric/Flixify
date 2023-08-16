@@ -88,7 +88,7 @@ class SearchViewController: UIViewController {
     }
     
     private func getTopSearchMovies(){
-        ApiCaller.shared.fetchData(from: Constants.DICOVER_MOVIES, with: "&include_adult=true&include_video=true&language=en-US&page=1&sort_by=popularity.desc") { (result: Result<TrendingMovieResponse, Error>) in
+        ApiCaller.shared.fetchData(from: Constants.DICOVER_MOVIES, with: "&include_adult=false&include_video=true&language=en-US&page=1&sort_by=popularity.desc") { (result: Result<TrendingMovieResponse, Error>) in
                switch result {
                case .success(let response):
                    self.topSearchMovies = response.results
@@ -112,7 +112,7 @@ class SearchViewController: UIViewController {
     
     private func getSearchedMovies(with query: String, controller searchResultController : SearchResultViewController){
         
-        let searchQuery = "query=\(query)&include_adult=true&language=en-US&page=1"
+        let searchQuery = "query=\(query)&include_adult=false&language=en-US&page=1"
         
         
         ApiCaller.shared.fetchData(from: Constants.SEARCH_MOVIE,with: searchQuery) { (result: Result<TrendingMovieResponse, Error>) in

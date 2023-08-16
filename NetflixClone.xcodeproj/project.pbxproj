@@ -306,10 +306,10 @@
 				1E627C5A2A54797A008AC834 /* Views */,
 				1EDF03182A5430CA00985EBE /* Controllers */,
 				1EDF03032A542D1E00985EBE /* AppDelegate.swift */,
+				1EDF030E2A542D1F00985EBE /* LaunchScreen.storyboard */,
 				1EDF03052A542D1E00985EBE /* SceneDelegate.swift */,
 				1EDF03072A542D1E00985EBE /* MainTabBarViewController.swift */,
 				1EDF030C2A542D1F00985EBE /* Assets.xcassets */,
-				1EDF030E2A542D1F00985EBE /* LaunchScreen.storyboard */,
 				1EDF03112A542D1F00985EBE /* Info.plist */,
 				1E729A692A81335E00550490 /* MovieModel.xcdatamodeld */,
 			);
