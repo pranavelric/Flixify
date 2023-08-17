@@ -420,11 +420,8 @@ class MovieViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-
         // Do any additional setup after loading the view.
         view.backgroundColor = .systemBackground
-        
         setupScrollView()
         setupViews()
         trailerView.delegate = self
@@ -465,6 +462,10 @@ class MovieViewController: UIViewController {
         contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        navigationController?.navigationBar.isHidden = true
     }
     private func setupViews(){
       
@@ -776,7 +777,7 @@ class MovieViewController: UIViewController {
                 vc.popoverPresentationController?.sourceRect = CGRect(    // the place to display the popover
                     origin: CGPoint(
                         x: self?.view.frame.midX ?? 0,
-                        y: 150
+                        y: 120
                     ),
                     size: .zero
                 )

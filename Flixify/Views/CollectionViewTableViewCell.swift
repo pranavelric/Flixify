@@ -68,14 +68,10 @@ class CollectionViewTableViewCell: UITableViewCell {
         }
     }
     private func setupBookmarksAction(_ indexPath: IndexPath) -> UIAction {
-//        return actionsBuilder.createAddToBookmarksAction {
-//           print("add to bookmark")
-//            Storage().addBookmarkForTitle(title: self.titles[indexPath.row])
-//        }
+
         let storage =  Storage()
         if storage.isTitleInStorage(title: titles[indexPath.row] ) {
             return actionsBuilder.createDeleteAction {
-//                Storage.deleteBookmark(title : titles[indexPath.row])
                 storage.deleteBookmark(title: self.titles[indexPath.row])
                 Toast.show(message: "Bookmark removed", controller: self.controller!)
             }

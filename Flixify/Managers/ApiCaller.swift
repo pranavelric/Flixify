@@ -24,7 +24,7 @@ class ApiCaller{
             completion(.failure(error))
             return
         }
-        print("url is \(url)")
+
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
 
             guard let data = data, error == nil else {
@@ -37,7 +37,6 @@ class ApiCaller{
                 let results = try JSONDecoder().decode(T.self, from: data)
                 completion(.success(results))
             } catch let err{
-                print("error is \(err)")
                 completion(.failure(APIError.failedToGetData))
             }
         }
