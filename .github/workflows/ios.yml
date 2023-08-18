@@ -14,6 +14,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set Default Scheme
+        run: |
+          scheme_list=$(xcodebuild -list -json | tr -d "\n")
+          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
+          echo $default | cat >default
+          echo Using default scheme: $default
       - name: Build
         run: |
-          xcodebuild clean build analyze -scheme RenetikLayout -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11'
+          xcodebuild clean build analyze -scheme "$scheme" -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11'
