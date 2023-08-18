@@ -21,10 +21,8 @@ class MovieTableViewCell: UITableViewCell {
     }()
     
     private var movie: Movie? = nil
-    // another uiIamge view for icon
     private let remindMeButton : UIButton = {
         let button:UIButton =  UIButton()
-//        button.setTitle("Remind Me", for: .normal)
         button.configuration = .tinted()
         button.titleLabel?.font = .systemFont(ofSize: 2)
         button.configuration?.baseBackgroundColor = .clear
@@ -41,7 +39,6 @@ class MovieTableViewCell: UITableViewCell {
     
     private let infoButton : UIButton = {
         let button:UIButton =  UIButton()
-//        button.setTitle("Info", for: .normal)
         button.configuration = .tinted()
         button.titleLabel?.font = .systemFont(ofSize: 2)
         button.configuration?.baseBackgroundColor = .clear
@@ -79,7 +76,7 @@ class MovieTableViewCell: UITableViewCell {
         label.textColor = .lightGray
         label.translatesAutoresizingMaskIntoConstraints = false
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label.numberOfLines = 0
+        label.numberOfLines = 5
 
         return label
     }()
@@ -139,9 +136,6 @@ class MovieTableViewCell: UITableViewCell {
         moviePosterImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20).isActive = true
         moviePosterImageView .leadingAnchor.constraint(equalTo: leadingAnchor, constant: margin).isActive = true
         moviePosterImageView .trailingAnchor.constraint(equalTo: trailingAnchor, constant: -margin).isActive = true
-//        moviePosterImageView .topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
-//        moviePosterImageView .bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin-100).isActive = true
-
     }
     
     private func configureReleaseDateLabel(){
