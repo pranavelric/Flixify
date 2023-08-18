@@ -59,6 +59,7 @@ class SearchViewController: UIViewController {
         title = "Search"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.isHidden = false
         view.addSubview(topSearchTable)
         topSearchTable.dataSource = self
         topSearchTable.delegate = self
@@ -111,25 +112,12 @@ class SearchViewController: UIViewController {
     
     
     private func getSearchedMovies(with query: String, controller searchResultController : SearchResultViewController){
-        
-        let searchQuery = "query=\(query)&include_adult=false&language=en-US&page=1"
-        
-        
-        ApiCaller.shared.fetchData(from: Constants.SEARCH_MOVIE,with: searchQuery) { (result: Result<TrendingMovieResponse, Error>) in
-                DispatchQueue.main.async {
-                    
-                    switch result {
-                    case .success(let response):
-
-                        searchResultController.movies = response.results
-                        searchResultController.searcResultCollectionView.reloadData()
-                    case .failure(let error):
-                        print(error)
-                    }
-                    
-                }
-
-           }
+        print("query is here \(query)\n\n\n\n\n\n\n")
+        if (searchResultController.viewModel.query != query){
+            searchResultController.viewModel.movies = []
+            searchResultController.viewModel.page = 1
+        }
+        searchResultController.viewModel.getMovies(with: query)
     }
     
     
@@ -141,7 +129,6 @@ class SearchViewController: UIViewController {
     
     
     func getData(with movie: Movie?){
-        //        getMovieDetail(with:title.id,youtubeView: nil)
         ApiCaller.shared.getMoviesFromYoutube(with: movie?.title ?? (movie?.original_title ?? "" ) + "trailer"){
 
                     [weak self] (result: Result<YouTubeSearchListResponse, Error>) in
@@ -175,8 +162,6 @@ class SearchViewController: UIViewController {
                 DispatchQueue.main.async { [weak self] in
                     let vc = MovieViewController()
                     vc.configure(with: viewModel)
-//                    vc.modalPresentationStyle = .formSheet
-//                    self?.present(vc, animated: true)
                     self?.navigationController?.pushViewController(vc, animated: true)
                 }
             case .failure(let error):
@@ -230,12 +215,6 @@ extension SearchViewController  : UITableViewDelegate, UITableViewDataSource{
         return self.topSearchMovies.count
     }
     
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 420
-//    }
-    
-
-
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
            return 600
        }
@@ -256,26 +235,6 @@ extension SearchViewController  : UITableViewDelegate, UITableViewDataSource{
     }
     
     
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        // instead of return perhaps should do a simpler animation
-//        if !tableView.isDragging || indexPath.row == self.topSearchMovies.count { return }
-//        
-//
-//        
-//        
-//        if toTop {
-//            cell.contentView.transform = CGAffineTransformMakeTranslation(0, -80)
-//            
-//        } else {
-//            cell.contentView.transform = CGAffineTransformMakeTranslation(0, 80)
-//            
-//        }
-//        
-//        UIView.animate(withDuration: 1.0, delay: 0.05 , usingSpringWithDamping: 0.8, initialSpringVelocity: 0.1, options: UIView.AnimationOptions.curveEaseOut, animations: { () -> Void in
-//            cell.contentView.transform = CGAffineTransformMakeTranslation(0, 0)
-//        }, completion: nil)
-//        
-//    }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         currentOffset = scrollView.contentOffset.y

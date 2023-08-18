@@ -45,6 +45,8 @@
 		1EBAA89B2A7E4E1500710A0B /* ImageCardContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBAA89A2A7E4E1500710A0B /* ImageCardContentView.swift */; };
 		1EBAA89D2A7E534100710A0B /* MovieImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBAA89C2A7E534100710A0B /* MovieImages.swift */; };
 		1EBAA89F2A7E695A00710A0B /* MovieHomePageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBAA89E2A7E695A00710A0B /* MovieHomePageController.swift */; };
+		1EBB7CDB2A8F3DD7009AC860 /* SearchResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBB7CDA2A8F3DD7009AC860 /* SearchResultViewModel.swift */; };
+		1EBB7CDD2A8F5F95009AC860 /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBB7CDC2A8F5F95009AC860 /* UICollectionView.swift */; };
 		1ECA11772A6EAF46000E7E53 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECA11762A6EAF46000E7E53 /* SearchResultViewController.swift */; };
 		1ECD4DF12A7FE55A00EAB8A8 /* MovieCellActionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECD4DF02A7FE55A00EAB8A8 /* MovieCellActionBuilder.swift */; };
 		1ECD4DF32A7FE67700EAB8A8 /* MovieCellContextMenuBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECD4DF22A7FE67700EAB8A8 /* MovieCellContextMenuBuilder.swift */; };
@@ -98,6 +100,8 @@
 		1EBAA89A2A7E4E1500710A0B /* ImageCardContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCardContentView.swift; sourceTree = "<group>"; };
 		1EBAA89C2A7E534100710A0B /* MovieImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieImages.swift; sourceTree = "<group>"; };
 		1EBAA89E2A7E695A00710A0B /* MovieHomePageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieHomePageController.swift; sourceTree = "<group>"; };
+		1EBB7CDA2A8F3DD7009AC860 /* SearchResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewModel.swift; sourceTree = "<group>"; };
+		1EBB7CDC2A8F5F95009AC860 /* UICollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionView.swift; sourceTree = "<group>"; };
 		1ECA11762A6EAF46000E7E53 /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		1ECD4DF02A7FE55A00EAB8A8 /* MovieCellActionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCellActionBuilder.swift; sourceTree = "<group>"; };
 		1ECD4DF22A7FE67700EAB8A8 /* MovieCellContextMenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCellContextMenuBuilder.swift; sourceTree = "<group>"; };
@@ -158,6 +162,7 @@
 			children = (
 				1E1AA15A2A7186B200EA8EC6 /* MoviePreviewViewModel.swift */,
 				1E7FE4642A7D10B3005037AD /* MovieImagesViewModel.swift */,
+				1EBB7CDA2A8F3DD7009AC860 /* SearchResultViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -184,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				1E30D1F12A616C8D00F4CB94 /* Extensions.swift */,
+				1EBB7CDC2A8F5F95009AC860 /* UICollectionView.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -426,10 +432,12 @@
 				1ECD4DF32A7FE67700EAB8A8 /* MovieCellContextMenuBuilder.swift in Sources */,
 				1EDF03202A54312C00985EBE /* BookmarksViewController.swift in Sources */,
 				1E7FE4672A7D10ED005037AD /* MovieImagesViewController.swift in Sources */,
+				1EBB7CDB2A8F3DD7009AC860 /* SearchResultViewModel.swift in Sources */,
 				1E1AA1592A717EE100EA8EC6 /* MovieViewController.swift in Sources */,
 				1E6046002A6BB9B500FC0141 /* TableHeaderViewCarouselCellCollectionViewCell.swift in Sources */,
 				1E1204DB2A823D69006512D3 /* Toast.swift in Sources */,
 				1EB8ED7B2A6C715500E970CF /* MovieTableViewCell.swift in Sources */,
+				1EBB7CDD2A8F5F95009AC860 /* UICollectionView.swift in Sources */,
 				1EBAA89B2A7E4E1500710A0B /* ImageCardContentView.swift in Sources */,
 				1E8292212A6D4E320069B858 /* GenreResponse.swift in Sources */,
 				1EAE52BD2A890591008EE52F /* PersonDetail.swift in Sources */,
