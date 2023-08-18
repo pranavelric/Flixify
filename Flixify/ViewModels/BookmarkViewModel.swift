@@ -48,7 +48,7 @@ extension BookmarkViewModel: BookmarkViewModelInterface {
         do {
             storageManager.delete(bookmarkedMovies[indexPath.row])
             bookmarkedMovies.remove(at: indexPath.row)
-                self.view?.reloadCollectionView()
+                self.view?.enableToDeleteAllButton()
         }
         catch{
             print("Index out of range")

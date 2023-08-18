@@ -14,6 +14,7 @@ protocol BookmarkInterface: AnyObject {
     func didTapItem(with viewModel: MoviePreviewViewModel)
     func showToast(message msg: String)
     func deleteAllBookmarks(_ alert: UIAlertController)
+    func enableToDeleteAllButton()
 }
 
 
@@ -184,17 +185,6 @@ extension BookmarksViewController : UITableViewDelegate, UITableViewDataSource{
             deleteMovieIndexPath = nil
         }
 
-    
-//    private func deleteAction(indexPath: IndexPath) -> UIContextualAction {
-//        let action = UIContextualAction(style: .destructive, title: "") { [weak self] _, _, completion in
-//            self?.viewModel.deleteBookmark(at: indexPath)
-//
-//        }
-//        action.image = UIImage(systemName: "trash")
-//        return action
-//    }
-    
-    
 }
 
 
@@ -217,7 +207,11 @@ extension BookmarksViewController: BookmarkInterface {
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
+    func enableToDeleteAllButton(){
+        setEnablingToDeleteAllButton()
+    }
     func reloadCollectionView() {
+        self.bookmarkTable.reloadOnMainThread()
         setEnablingToDeleteAllButton()
     }
 
