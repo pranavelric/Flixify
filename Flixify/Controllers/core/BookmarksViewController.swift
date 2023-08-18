@@ -174,7 +174,7 @@ extension BookmarksViewController : UITableViewDelegate, UITableViewDataSource{
     func handleDeletePlanet(alertAction: UIAlertAction!) -> Void {
             if let indexPath = deleteMovieIndexPath {
                 self.bookmarkTable.beginUpdates()
-                self.viewModel.bookmarkedMovies.remove(at: indexPath.row)
+                self.viewModel.deleteBookmark(at: indexPath)
                 self.bookmarkTable.deleteRows(at: [indexPath], with: .automatic)
                 deleteMovieIndexPath = nil
                 self.bookmarkTable.endUpdates()
@@ -218,7 +218,6 @@ extension BookmarksViewController: BookmarkInterface {
     }
 
     func reloadCollectionView() {
-        self.bookmarkTable.reloadOnMainThread()
         setEnablingToDeleteAllButton()
     }
 

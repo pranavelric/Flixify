@@ -9,7 +9,6 @@ import UIKit
 
 enum Sections: Int{
     case TrendingMovie  = 0
-//    case TrendingTv     = 1
     case Popular        = 1
     case UpcomingMovies = 2
     case TopRated       = 3
@@ -18,13 +17,25 @@ enum Sections: Int{
 }
 
 
+protocol MovieInterface: AnyObject {
+    func configureVC()
+    func configureCollectionView()
+    func reloadCollectionView()
+    func didTapItem(with viewModel: MoviePreviewViewModel)
+    func showToast(message msg: String)
+    func reloadCollectionViewRows(at indexPaths: [IndexPath])
+    func configureHeaderView(imageUrl url: String, currentMovie movie: Movie?)
+    func configureCell(with cell:CollectionViewTableViewCell,results result : [Movie])
+}
+
+
+
 
 class HomeViewController: UIViewController {
     
-//    later add : "Treding tv",
     let sectionTitle:[String] = ["Trending movies","Popular","Upcoming movies","Top rated", "Now playing"]
-
-    var headerMovieImage: [Movie?] = []
+    public var viewModel = MovieViewModel.shared
+//    var headerMovieImage: [Movie?] = []
     private var  headerView : HeroHeaderUIView = HeroHeaderUIView()
     private let homeFeedTable: UITableView = {
         let table = UITableView(frame: CGRect(), style: .grouped)
@@ -35,34 +46,11 @@ class HomeViewController: UIViewController {
         
     }()
     
-    func setGradientBackground() {
-        let colorTop =  UIColor(red: 0.60, green: 0.21, blue: 0.08, alpha: 0.2).cgColor
-        let colorBetween = UIColor(red: 0.00, green: 0.00, blue: 0.00, alpha: 1.00).cgColor
-        let colorBottom = UIColor(red: 0.00, green: 0.00, blue: 0.00, alpha: 1.00).cgColor
-             
-                    
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [colorTop, colorBetween , colorBottom]
-        gradientLayer.locations = [0.0, 1.0]
-        gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 450)
-        self.view.layer.insertSublayer(gradientLayer, at:0)
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .systemBackground
-        view.addSubview(homeFeedTable)
-       
-        headerView  = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 550))
-        homeFeedTable.delegate   = self
-        homeFeedTable.dataSource = self
-        homeFeedTable.tableHeaderView =  headerView
-        homeFeedTable.sectionHeaderTopPadding = 0
-        configNavBar()
-        
-        
-        
+        viewModel.view = self
+        viewModel.viewDidLoad()
         
 
     }
@@ -70,7 +58,7 @@ class HomeViewController: UIViewController {
 
     
     override func viewDidLayoutSubviews() {
-        setGradientBackground()
+        view.setGradientBackground()
         super.viewDidLayoutSubviews()
         homeFeedTable.frame = view.bounds
         navigationController?.navigationBar.isHidden = false
@@ -91,8 +79,6 @@ class HomeViewController: UIViewController {
         label.font = .systemFont(ofSize: 25, weight: .semibold)
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: label)
-        
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: nil)
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(image: UIImage(systemName: "person"), style: .plain, target: self, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "play.rectangle"), style: .done, target: self, action: nil)
@@ -104,82 +90,70 @@ class HomeViewController: UIViewController {
     }
 
     
-    private func getTrendingMovies(with cell:CollectionViewTableViewCell){
-        ApiCaller.shared.fetchData(from: Constants.TRENDING_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
-               switch result {
-               case .success(let response):
-                   self.headerMovieImage.append(response.results.randomElement())
-//                   self.headerMovieImage?.append(response.results.randomElement()?.poster_path ?? response.results.randomElement()?.backdrop_path ?? "")
-                   let movie = self.headerMovieImage.randomElement()!
-                   let url = movie?.poster_path ?? movie?.backdrop_path ?? ""
-                   self.headerView.configure(imageUrl: url,currentMovie: movie,controller: self)
-                   cell.configure(with: response.results,controller: self)
-               case .failure(let error):
-                   print(error)
-               }
-           }
-    }
-    
-//    private func getTrendingTv(with cell:CollectionViewTableViewCell){
-//        ApiCaller.shared.fetchData(from: Constants.TRENDING_TV) { (result: Result<TrendingTvResponse, Error>) in
+//    private func getTrendingMovies(with cell:CollectionViewTableViewCell){
+//        ApiCaller.shared.fetchData(from: Constants.TRENDING_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
 //               switch result {
 //               case .success(let response):
-//                   cell.configure(with: response.results)
+//                   self.headerMovieImage.append(response.results.randomElement())
+//                   let movie = self.headerMovieImage.randomElement()!
+//                   let url = movie?.poster_path ?? movie?.backdrop_path ?? ""
+//                   self.headerView.configure(imageUrl: url,currentMovie: movie,controller: self)
+//                   cell.configure(with: response.results,controller: self)
 //               case .failure(let error):
 //                   print(error)
 //               }
 //           }
 //    }
-    
-    
-    private func getTopRatedMovies(with cell:CollectionViewTableViewCell){
-        ApiCaller.shared.fetchData(from: Constants.TOP_RATED_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
-               switch result {
-               case .success(let response):
-                   self.headerMovieImage.append(response.results.randomElement())
-                   cell.configure(with: response.results, controller: self)
-               case .failure(let error):
-                   print(error)
-               }
-           }
-    }
-    
-    private func getUpComingMovies(with cell:CollectionViewTableViewCell){
-        ApiCaller.shared.fetchData(from: Constants.UPCOMING_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
-               switch result {
-               case .success(let response):
-                   self.headerMovieImage.append(response.results.randomElement())
-                   
-                   cell.configure(with: response.results,controller: self)
-               case .failure(let error):
-                   print(error)
-               }
-           }
-    }
-    
-    private func getPopularMovies(with cell:CollectionViewTableViewCell){
-        ApiCaller.shared.fetchData(from: Constants.POPULAR_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
-               switch result {
-               case .success(let response):
-                   self.headerMovieImage.append(response.results.randomElement())
-                   cell.configure(with: response.results,controller: self)
-               case .failure(let error):
-                   print(error)
-               }
-           }
-    }
-    private func getNowPlayingMovies(with cell:CollectionViewTableViewCell){
-        ApiCaller.shared.fetchData(from: Constants.POPULAR_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
-               switch result {
-               case .success(let response):
-                   self.headerMovieImage.append(response.results.randomElement())
-                   cell.configure(with: response.results,controller: self)
-               case .failure(let error):
-                   print(error)
-               }
-           }
-    }
-    
+//
+//
+//    private func getTopRatedMovies(with cell:CollectionViewTableViewCell){
+//        ApiCaller.shared.fetchData(from: Constants.TOP_RATED_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
+//               switch result {
+//               case .success(let response):
+//                   self.headerMovieImage.append(response.results.randomElement())
+//                   cell.configure(with: response.results, controller: self)
+//               case .failure(let error):
+//                   print(error)
+//               }
+//           }
+//    }
+//
+//    private func getUpComingMovies(with cell:CollectionViewTableViewCell){
+//        ApiCaller.shared.fetchData(from: Constants.UPCOMING_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
+//               switch result {
+//               case .success(let response):
+//                   self.headerMovieImage.append(response.results.randomElement())
+//
+//                   cell.configure(with: response.results,controller: self)
+//               case .failure(let error):
+//                   print(error)
+//               }
+//           }
+//    }
+//
+//    private func getPopularMovies(with cell:CollectionViewTableViewCell){
+//        ApiCaller.shared.fetchData(from: Constants.POPULAR_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
+//               switch result {
+//               case .success(let response):
+//                   self.headerMovieImage.append(response.results.randomElement())
+//                   cell.configure(with: response.results,controller: self)
+//               case .failure(let error):
+//                   print(error)
+//               }
+//           }
+//    }
+//    private func getNowPlayingMovies(with cell:CollectionViewTableViewCell){
+//        ApiCaller.shared.fetchData(from: Constants.POPULAR_MOVIES) { (result: Result<TrendingMovieResponse, Error>) in
+//               switch result {
+//               case .success(let response):
+//                   self.headerMovieImage.append(response.results.randomElement())
+//                   cell.configure(with: response.results,controller: self)
+//               case .failure(let error):
+//                   print(error)
+//               }
+//           }
+//    }
+//
 
     
     
@@ -223,17 +197,15 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource{
         cell.delegate = self
         switch indexPath.section{
             case Sections.TrendingMovie.rawValue:
-                getTrendingMovies(with: cell)
-//            case Sections.TrendingTv.rawValue:
-//                getTrendingTv(with: cell)
+            self.viewModel.getTrendingMovies(with: cell)
             case Sections.Popular.rawValue:
-                getPopularMovies(with: cell)
+            self.viewModel.getPopularMovies(with: cell)
             case Sections.UpcomingMovies.rawValue:
-                getUpComingMovies(with: cell)
+            self.viewModel.getUpComingMovies(with: cell)
             case Sections.TopRated.rawValue:
-                getTopRatedMovies(with: cell)
+            self.viewModel.getTopRatedMovies(with: cell)
             case Sections.NowPlaying.rawValue:
-                getNowPlayingMovies(with: cell)
+            self.viewModel.getNowPlayingMovies(with: cell)
             default:
                 return UITableViewCell()
         }
@@ -258,9 +230,6 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource{
 
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let defaultOffset =
-//        let offset =  + defaultOffset
-//        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0,-offset))
         let gradientLayer =  self.view?.layer.sublayers?.first
                let offsetY = self.homeFeedTable.contentOffset.y
                let gradientY = min(-offsetY, 0)
@@ -290,16 +259,6 @@ extension HomeViewController : UITableViewDelegate, UITableViewDataSource{
         return sectionHeaderLabelView
     }
     
-    
-//    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-//        guard let header = view as? UITableViewHeaderFooterView else {return}
-//        header.contentView.backgroundColor = .black
-//        header.textLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
-//        header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
-//        header.textLabel?.textColor = .white
-//        header.textLabel?.text = header.textLabel?.text?.capitalizeFirstLetter()
-//    }
-    
 
     
 }
@@ -313,10 +272,56 @@ extension HomeViewController : CollectionViewTableViewCellDelegate{
             let vc = MovieViewController()
             vc.configure(with: viewModel)
             vc.modalPresentationStyle = .formSheet
-//            self?.present(vc, animated: true)
             self?.navigationController?.pushViewController(vc, animated: true)
         }
       
     }
+}
+
+
+
+extension HomeViewController: MovieInterface {
+    func configureHeaderView(imageUrl url: String, currentMovie movie: Movie?) {
+        self.headerView.configure(imageUrl: url,currentMovie: movie,controller: self)
+    }
+    
+    func configureCell(with cell:CollectionViewTableViewCell, results result: [Movie]) {
+        cell.configure(with: result,controller: self)
+    }
+    
+    func showToast(message msg: String) {
+        Toast.show(message: msg, controller: self)
+    }
+
+    func didTapItem(with viewModel: MoviePreviewViewModel) {
+        let vc = MovieViewController()
+        vc.configure(with: viewModel)
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    func reloadCollectionView() {
+    }
+    
+    func reloadCollectionViewRows(at indexPaths: [IndexPath]){
+
+    }
+    func configureVC() {
+        view.backgroundColor = .systemBackground
+        view.addSubview(homeFeedTable)
+       
+        
+       
+    }
+
+    func configureCollectionView() {
+        headerView  = HeroHeaderUIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 550))
+        homeFeedTable.delegate   = self
+        homeFeedTable.dataSource = self
+        homeFeedTable.tableHeaderView =  headerView
+        homeFeedTable.sectionHeaderTopPadding = 0
+        configNavBar()
+    }
+
+
 }
 

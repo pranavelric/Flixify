@@ -115,4 +115,27 @@ extension SearchViewModel: SearchViewModelInterface {
     }
 
     
+    func bookmarkAction(indexPath: IndexPath) -> UIContextualAction {
+        if Storage.shared.isTitleInStorage(title: self.topSearchMovies[indexPath.row] ) {
+            let action = UIContextualAction(style: .destructive, title: "Remove bookmark") { [weak self] _, _, completion in
+                Storage.shared.deleteBookmark(title: (self?.topSearchMovies[indexPath.row])!)
+                self?.view?.showToast(message: "Bookmark removed")
+                self?.view?.reloadCollectionViewRows(at: [indexPath])
+            }
+            action.image = UIImage(systemName: "bookmark.slash")
+            return action
+            
+        } else {
+            let action = UIContextualAction(style: .normal, title: "Add bookmark") { [weak self] _, _, completion in
+                Storage.shared.addBookmarkForTitle(title: self!.topSearchMovies[indexPath.row])
+                self?.view?.showToast(message: "Bookmark added")
+                self?.view?.reloadCollectionViewRows(at: [indexPath])
+            }
+            action.image = UIImage(systemName: "bookmark")
+            return action
+        }
+        
+       
+    }
+    
 }

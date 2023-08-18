@@ -14,6 +14,7 @@ protocol SearchInterface: AnyObject {
     func reloadCollectionView()
     func didTapItem(with viewModel: MoviePreviewViewModel)
     func showToast(message msg: String)
+    func reloadCollectionViewRows(at indexPaths: [IndexPath])
 }
 
 
@@ -154,8 +155,12 @@ extension SearchViewController  : UITableViewDelegate, UITableViewDataSource{
         }
           return config
     }
-
-
+    
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let bookmark = self.viewModel.bookmarkAction(indexPath: indexPath)
+        return UISwipeActionsConfiguration(actions: [bookmark])
+    }
     
  
 }
@@ -210,6 +215,10 @@ extension SearchViewController :  UISearchResultsUpdating, SearchResultsViewCont
 
 
 extension SearchViewController: SearchInterface {
+    func reloadCollectionViewRows(at indexPaths: [IndexPath]) {
+        self.topSearchTable.reloadRows(at: indexPaths, with: .automatic)
+    }
+    
     func showToast(message msg: String) {
         Toast.show(message: msg, controller: self)
     }
