@@ -37,9 +37,6 @@ extension UpcomingViewModel: UpcomingViewModelInterface {
                    self.upcomingMovies.append(contentsOf: response.results)
                    self.view?.reloadCollectionView()
                    self.page += 1
-//                   self.topSearchTable.reloadData()
-//                   self.topSearchTable.scrollToBottom()
-//                   self.topSearchTable.scrollToTop()
                case .failure(let error):
                    print(error)
                }
@@ -104,14 +101,39 @@ extension UpcomingViewModel: UpcomingViewModelInterface {
             return actionsBuilder.createDeleteAction {
                 Storage.shared.deleteBookmark(title: self.upcomingMovies[indexPath.row])
                 self.view?.showToast(message: "Bookmark removed")
+                
                
             }
         } else {
             return actionsBuilder.createAddToBookmarksAction {
                 Storage.shared.addBookmarkForTitle(title: self.upcomingMovies[indexPath.row])
                 self.view?.showToast(message: "Bookmark added")
+                
             }
         }
+    }
+    
+    func bookmarkAction(indexPath: IndexPath) -> UIContextualAction {
+        if Storage.shared.isTitleInStorage(title: self.upcomingMovies[indexPath.row] ) {
+            let action = UIContextualAction(style: .destructive, title: "Remove bookmark") { [weak self] _, _, completion in
+                Storage.shared.deleteBookmark(title: self!.upcomingMovies[indexPath.row])
+                self?.view?.showToast(message: "Bookmark removed")
+                self?.view?.reloadCollectionViewRows(at: [indexPath])
+            }
+            action.image = UIImage(systemName: "bookmark.slash")
+            return action
+            
+        } else {
+            let action = UIContextualAction(style: .normal, title: "Add bookmark") { [weak self] _, _, completion in
+                Storage.shared.addBookmarkForTitle(title: self!.upcomingMovies[indexPath.row])
+                self?.view?.showToast(message: "Bookmark added")
+                self?.view?.reloadCollectionViewRows(at: [indexPath])
+            }
+            action.image = UIImage(systemName: "bookmark")
+            return action
+        }
+        
+       
     }
 
     

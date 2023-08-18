@@ -13,6 +13,7 @@ protocol UpcomingInterface: AnyObject {
     func reloadCollectionView()
     func didTapItem(with viewModel: MoviePreviewViewModel)
     func showToast(message msg: String)
+    func reloadCollectionViewRows(at indexPaths: [IndexPath])
 }
 
 
@@ -128,6 +129,42 @@ extension UpcomingViewController : UITableViewDelegate, UITableViewDataSource{
           return config
     }
 
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let bookmark = self.viewModel.bookmarkAction(indexPath: indexPath)
+        return UISwipeActionsConfiguration(actions: [bookmark])
+    }
+    
+    
+    func bookmarkAction(indexPath: IndexPath) -> UIContextualAction {
+//        if Storage.shared.isTitleInStorage(title: self.viewModel.upcomingMovies[indexPath.row] ) {
+//            let action = UIContextualAction(style: .destructive, title: "Remove bookmark") { [weak self] _, _, completion in
+//
+//                Storage.shared.deleteBookmark(title: (self?.viewModel.upcomingMovies[indexPath.row])!)
+////                self.view?.showToast(message: "Bookmark removed")
+//            }
+//            action.image = UIImage(systemName: "bookmark.slash")
+//            return action
+//
+//        } else {
+//            let action = UIContextualAction(style: .normal, title: "Add bookmark") { [weak self] _, _, completion in
+//                Storage.shared.addBookmarkForTitle(title: (self?.viewModel.upcomingMovies[indexPath.row])!)
+////                self.view?.showToast(message: "Bookmark added")
+//
+//            }
+//            action.image = UIImage(systemName: "bookmark")
+//            return action
+//        }
+        let action = UIContextualAction(style: .normal, title: "Add bookmark") { [weak self] _, _, completion in
+            Storage.shared.addBookmarkForTitle(title: (self?.viewModel.upcomingMovies[indexPath.row])!)
+//                self.view?.showToast(message: "Bookmark added")
+            self?.showToast(message: "Bookmark added")
+            self?.upcomingTable.reloadRows(at: [indexPath], with: .fade)
+        }
+        action.image = UIImage(systemName: "bookmark")
+        return action
+       
+    }
+
     
     
 }
@@ -149,8 +186,16 @@ extension UpcomingViewController: UpcomingInterface {
 
     func reloadCollectionView() {
         upcomingTable.reloadOnMainThread()
+        
 
     }
+    
+    func reloadCollectionViewRows(at indexPaths: [IndexPath]){
+
+            self.upcomingTable.reloadRows(at: indexPaths, with: .automatic)
+        
+    }
+    
 
 
     func configureVC() {
