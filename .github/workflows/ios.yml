@@ -22,4 +22,4 @@ jobs:
           echo Using default scheme: $default
       - name: Build
         run: |
-          xcodebuild clean build analyze -scheme "$scheme" -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11'
+          xcodebuild clean build analyze -scheme "$default" -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11'
