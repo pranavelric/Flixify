@@ -7,8 +7,8 @@
 
 import Foundation
 struct Constants{
-    static let API_KEY              = "9c8b6d11ed2c2ff1c474a2724a27e190"
-    static let YOUTUBE_API_KEY      = "AIzaSyBgQdnTD-pvQNQMd05L3F1VlR5dCTCJZMw"
+    static let API_KEY              = "***************"
+    static let YOUTUBE_API_KEY      = "***************"
     static let POSTER_PATH          = "https://image.tmdb.org/t/p/w600_and_h900_bestv2"
     static let BACKDROP_PATH        = "https://image.tmdb.org/t/p/w533_and_h300_bestv2"
     static let ORIGINAL_BG_PATH     = "https://image.tmdb.org/t/p/original"
