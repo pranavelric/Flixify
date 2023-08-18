@@ -1,11 +1,11 @@
 # Flixify - Your Ultimate Movie Companion 🎬
 
 <div align="left">
-  <img src="/screenshots/image1.png" alt="Screenshot 1" width="190"/>
-  <img src="/screenshots/image2.png" alt="Screenshot 2" width="190"/>
-  <img src="/screenshots/image3.png" alt="Screenshot 3" width="190"/>
-  <img src="/screenshots/image4.png" alt="Screenshot 4" width="190"/>
-  <img src="/screenshots/image5.png" alt="Screenshot 5" width="190"/>
+  <img src="/screenshots/image1.png" alt="Screenshot 1" width="150"/>
+  <img src="/screenshots/image2.png" alt="Screenshot 2" width="150"/>
+  <img src="/screenshots/image3.png" alt="Screenshot 3" width="150"/>
+  <img src="/screenshots/image4.png" alt="Screenshot 4" width="150"/>
+  <img src="/screenshots/image5.png" alt="Screenshot 5" width="150"/>
 </div>
 
 ## Description
