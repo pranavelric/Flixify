@@ -77,6 +77,7 @@ We welcome contributions from the community! If you'd like to contribute to Flix
 - [x] Cast details and information
 - [x] Watch trailers and related clips
 - [x] Intuitive search functionality
+- [x] Pagination for seamless browsing
 - [ ] Login functionality
 - [ ] User profiles
 - [ ] TV Shows section
@@ -85,6 +86,5 @@ We welcome contributions from the community! If you'd like to contribute to Flix
 - [ ] Share movies and TV shows with friends
 - [ ] Customizable themes for a personalized experience
 - [ ] Movies and TV shows based on genres
-- [ ] Pagination for seamless browsing
 - [ ] Enhanced user engagement features (e.g., user reviews, ratings)
-- [ ]  Refactoring code for improved performance and maintainability
+- [ ] Refactoring code for improved performance and maintainability
